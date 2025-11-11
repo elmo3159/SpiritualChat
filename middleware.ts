@@ -28,9 +28,9 @@ function checkBasicAuth(request: NextRequest): NextResponse | null {
     })
   }
 
-  // Basic認証のデコード
+  // Basic認証のデコード（エッジランタイム対応）
   const base64Credentials = authHeader.split(' ')[1]
-  const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8')
+  const credentials = atob(base64Credentials)
   const [username, password] = credentials.split(':')
 
   // 認証情報の検証
