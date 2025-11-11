@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 
 /**
- * クーポン作�EAPI
+ * クーポン作成API
  * POST /api/admin/coupons
  */
 export async function POST(request: NextRequest) {
@@ -23,15 +23,15 @@ export async function POST(request: NextRequest) {
       is_active,
     } = body
 
-    // バリチE�Eション
+    // バリデーション
     if (!code || !discount_type || !discount_value || !valid_from || !valid_until) {
       return NextResponse.json(
-        { success: false, message: '忁E��頁E��が�E力されてぁE��せん' },
+        { success: false, message: '必須項目が入力されていません' },
         { status: 400 }
       )
     }
 
-    // コード�E重褁E��ェチE��
+    // コードの重複チェック
     const { data: existingCoupon } = await supabase
       .from('coupons')
       .select('id')
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     if (existingCoupon) {
       return NextResponse.json(
-        { success: false, message: 'こ�Eクーポンコード�E既に使用されてぁE��ぁE },
+        { success: false, message: 'このクーポンコードは既に使用されています' },
         { status: 400 }
       )
     }
@@ -63,22 +63,22 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('クーポン作�Eエラー:', error)
+      console.error('クーポン作成エラー:', error)
       return NextResponse.json(
-        { success: false, message: 'クーポンの作�Eに失敗しました' },
+        { success: false, message: 'クーポンの作成に失敗しました' },
         { status: 500 }
       )
     }
 
     return NextResponse.json({
       success: true,
-      message: 'クーポンを作�Eしました',
+      message: 'クーポンを作成しました',
       data,
     })
   } catch (error: any) {
-    console.error('クーポン作�Eエラー:', error)
+    console.error('クーポン作成エラー:', error)
     return NextResponse.json(
-      { success: false, message: 'サーバ�Eエラーが発生しました' },
+      { success: false, message: 'サーバーエラーが発生しました' },
       { status: 500 }
     )
   }
