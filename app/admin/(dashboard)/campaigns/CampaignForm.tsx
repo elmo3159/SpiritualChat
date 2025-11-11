@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Save, Loader2, Upload, X } from 'lucide-react'
-import { createBrowserClient } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 interface CampaignData {
   name: string
@@ -54,7 +54,7 @@ export default function CampaignForm({ campaign }: Props) {
 
     setUploading(true)
     try {
-      const supabase = createBrowserClient()
+      const supabase = createClient()
       const fileExt = file.name.split('.').pop()
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
       const filePath = `campaign-banners/${fileName}`
