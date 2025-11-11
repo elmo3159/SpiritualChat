@@ -12,6 +12,11 @@ function checkBasicAuth(request: NextRequest): NextResponse | null {
   const validUser = process.env.ADMIN_BASIC_AUTH_USER
   const validPassword = process.env.ADMIN_BASIC_AUTH_PASSWORD
 
+  // デバッグ用ログ
+  console.log('[Basic Auth Debug] validUser exists:', !!validUser)
+  console.log('[Basic Auth Debug] validPassword exists:', !!validPassword)
+  console.log('[Basic Auth Debug] authHeader exists:', !!authHeader)
+
   // 環境変数が設定されていない場合はベーシック認証をスキップ
   if (!validUser || !validPassword) {
     console.warn('ベーシック認証の環境変数が設定されていません')
