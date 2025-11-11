@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
               .limit(10)
 
             const chatHistory = messages?.map((msg) => ({
-              role: msg.sender_type === 'user' ? 'user' : 'assistant',
+              role: (msg.sender_type === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
               content: msg.content,
             })) || []
 
