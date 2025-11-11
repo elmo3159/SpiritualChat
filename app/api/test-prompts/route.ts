@@ -69,7 +69,6 @@ export async function GET() {
     // Test 4: buildInitialSuggestionPrompt
     const test4 = buildInitialSuggestionPrompt(
       systemPrompt,
-      '月詠 みのり',
       testContext
     )
     console.log('Test 4 - buildInitialSuggestionPrompt: OK')
