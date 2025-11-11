@@ -30,9 +30,11 @@ export async function GET() {
     const testContext: DivinationContext = {
       userNickname: 'さくら',
       birthDate: '1995-03-21',
+      userAge: 29,
       gender: '女性',
       concernCategory: '仕事',
       concernDescription: '最近、職場での人間関係に悩んでいます。',
+      currentJapanTime: new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }),
       chatHistory: [
         {
           role: 'user',
