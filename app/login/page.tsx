@@ -182,6 +182,13 @@ function LoginForm() {
             >
               プライバシーポリシー
             </Link>
+            <span className="mx-2">•</span>
+            <Link
+              href="/legal/tokusho"
+              className="hover:text-purple-600 transition-colors underline"
+            >
+              特定商取引法に基づく表記
+            </Link>
           </div>
         </div>
 

@@ -227,12 +227,19 @@ export default function SignUpPage() {
             >
               利用規約
             </Link>
-            と
+            、
             <Link
               href="/privacy"
               className="text-purple-600 hover:text-purple-700 underline transition-colors"
             >
               プライバシーポリシー
+            </Link>
+            、
+            <Link
+              href="/legal/tokusho"
+              className="text-purple-600 hover:text-purple-700 underline transition-colors"
+            >
+              特定商取引法に基づく表記
             </Link>
             に同意したものとみなされます
           </p>

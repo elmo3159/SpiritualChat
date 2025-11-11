@@ -46,7 +46,8 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith('/auth') &&
     !request.nextUrl.pathname.startsWith('/terms') &&
     !request.nextUrl.pathname.startsWith('/privacy') &&
-    !request.nextUrl.pathname.startsWith('/legal')
+    !request.nextUrl.pathname.startsWith('/legal') &&
+    !request.nextUrl.pathname.startsWith('/points')
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
@@ -63,7 +64,8 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith('/auth') &&
     !request.nextUrl.pathname.startsWith('/terms') &&
     !request.nextUrl.pathname.startsWith('/privacy') &&
-    !request.nextUrl.pathname.startsWith('/legal')
+    !request.nextUrl.pathname.startsWith('/legal') &&
+    !request.nextUrl.pathname.startsWith('/points')
   ) {
     const { data: profile } = await supabase
       .from('profiles')
