@@ -101,7 +101,7 @@ export async function createCheckoutSession(
     // Stripe Checkoutセッションを作成
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
-      payment_method_types: ['card', 'paypay'],
+      payment_method_types: ['card'] as any, // PayPayは自動的に表示されます
       line_items: [
         {
           price_data: {
