@@ -58,11 +58,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const signIn = async (email: string, password: string) => {
+    // ログイン試行前にアカウントロックをチェック
+    try {
+      const checkResponse = await fetch('/api/security/check-login-attempt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, success: false }),
+      })
+
+      if (checkResponse.ok) {
+        const checkData = await checkResponse.json()
+
+        // アカウントがロックされている場合
+        if (checkData.locked) {
+          return {
+            error: {
+              message: checkData.message || 'アカウントがロックされています',
+            } as AuthError,
+          }
+        }
+      }
+    } catch (error) {
+      console.error('ログイン試行チェックエラー:', error)
+      // チェック失敗してもログインは続行
+    }
+
     const supabase = createClient()
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
+
+    // ログイン結果を記録
+    try {
+      await fetch('/api/security/check-login-attempt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, success: !error }),
+      })
+    } catch (recordError) {
+      console.error('ログイン結果の記録エラー:', recordError)
+    }
 
     if (!error) {
       router.refresh()
