@@ -4,51 +4,11 @@ import { updateSession } from '@/lib/supabase/middleware'
 /**
  * ベーシック認証チェック
  * 管理者画面のセキュリティ対策として実装
+ * 現在は無効化されています
  */
 function checkBasicAuth(request: NextRequest): NextResponse | null {
-  const authHeader = request.headers.get('authorization')
-
-  // 環境変数から認証情報を取得
-  const validUser = process.env.ADMIN_BASIC_AUTH_USER
-  const validPassword = process.env.ADMIN_BASIC_AUTH_PASSWORD
-
-  // デバッグ用ログ
-  console.log('[Basic Auth Debug] validUser exists:', !!validUser)
-  console.log('[Basic Auth Debug] validPassword exists:', !!validPassword)
-  console.log('[Basic Auth Debug] authHeader exists:', !!authHeader)
-
-  // 環境変数が設定されていない場合はベーシック認証をスキップ
-  if (!validUser || !validPassword) {
-    console.warn('ベーシック認証の環境変数が設定されていません')
-    return null
-  }
-
-  // Authorization ヘッダーがない場合
-  if (!authHeader) {
-    return new NextResponse('認証が必要です', {
-      status: 401,
-      headers: {
-        'WWW-Authenticate': 'Basic realm="Admin Area"',
-      },
-    })
-  }
-
-  // Basic認証のデコード（エッジランタイム対応）
-  const base64Credentials = authHeader.split(' ')[1]
-  const credentials = atob(base64Credentials)
-  const [username, password] = credentials.split(':')
-
-  // 認証情報の検証
-  if (username !== validUser || password !== validPassword) {
-    return new NextResponse('認証に失敗しました', {
-      status: 401,
-      headers: {
-        'WWW-Authenticate': 'Basic realm="Admin Area"',
-      },
-    })
-  }
-
-  // 認証成功
+  // ベーシック認証を完全に無効化
+  // アプリケーション内の認証（メール/パスワード + ログイン試行制限）で十分なセキュリティを確保
   return null
 }
 
