@@ -55,10 +55,20 @@ function checkBasicAuth(request: NextRequest): NextResponse | null {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // ログインページや認証関連のパスはベーシック認証をスキップ
+  const authBypassPaths = [
+    '/admin/login',
+    '/api/auth/',
+  ]
+
+  const shouldBypassAuth = authBypassPaths.some(path =>
+    pathname === path || pathname.startsWith(path)
+  )
+
   // 管理者ルート（/admin/*）とAPIルート（/api/admin/*）にベーシック認証を適用
   if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin/')) {
-    // 管理者ログインページはベーシック認証をスキップ
-    if (!pathname.startsWith('/admin/login')) {
+    // ログインページや認証関連パスはベーシック認証をスキップ
+    if (!shouldBypassAuth) {
       const authResponse = checkBasicAuth(request)
       if (authResponse) {
         return authResponse
