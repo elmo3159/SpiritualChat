@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { generateContent } from '@/lib/gemini'
 import { buildRegenerateSuggestionPrompt } from '@/lib/gemini/prompts'
 import { calculateAge, getCurrentJapanTime } from '@/lib/utils/datetime'
@@ -192,8 +192,11 @@ export async function generateAndSaveAIResponse(
       throw new Error('AI応答がクリーンアップ後に空になりました')
     }
 
+    // 占い師のメッセージをINSERTするためにAdmin Clientを使用
+    const adminSupabase = createAdminClient()
+
     // AI応答を保存
-    const { data: savedMessage, error: saveError } = await supabase
+    const { data: savedMessage, error: saveError } = await adminSupabase
       .from('chat_messages')
       .insert({
         user_id: userId,

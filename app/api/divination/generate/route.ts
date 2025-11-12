@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { generateFullDivination } from '@/lib/gemini/client'
 import { buildFullDivinationPrompt } from '@/lib/gemini/prompts'
 import type { DivinationContext, ChatHistory } from '@/lib/gemini/types'
@@ -164,8 +164,11 @@ export async function POST(request: NextRequest) {
     // 鑑定結果の最初の20文字をプレビューとして取得
     const resultPreview = divination.resultMessage.substring(0, 20)
 
+    // 占い師のメッセージをINSERTするためにAdmin Clientを使用
+    const adminSupabase = createAdminClient()
+
     // 1. 鑑定前メッセージを保存
-    const { error: greetingError } = await supabase
+    const { error: greetingError } = await adminSupabase
       .from('chat_messages')
       .insert({
         user_id: user.id,
@@ -184,7 +187,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. 鑑定結果を保存
-    const { data: savedDivination, error: insertError } = await supabase
+    const { data: savedDivination, error: insertError } = await adminSupabase
       .from('divination_results')
       .insert({
         user_id: user.id,
@@ -209,7 +212,7 @@ export async function POST(request: NextRequest) {
     const savedDivinationId = savedDivination.id
 
     // 3. 鑑定後メッセージを保存
-    const { error: afterError } = await supabase
+    const { error: afterError } = await adminSupabase
       .from('chat_messages')
       .insert({
         user_id: user.id,

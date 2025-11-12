@@ -54,10 +54,10 @@ export default function ChatContainer({
   const hasFetchedDivinations = useRef(false)
   const router = useRouter()
 
-  // メッセージが更新されたら自動スクロール
+  // メッセージまたは鑑定結果が更新されたら自動スクロール
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [messages, divinations])
 
   // Supabase Realtimeでメッセージをリアルタイム受信
   useEffect(() => {
