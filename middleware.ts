@@ -59,6 +59,7 @@ export async function middleware(request: NextRequest) {
   const authBypassPaths = [
     '/admin/login',
     '/api/auth/',
+    '/api/admin/login',
   ]
 
   const shouldBypassAuth = authBypassPaths.some(path =>
