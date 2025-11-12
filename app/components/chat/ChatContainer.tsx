@@ -120,18 +120,29 @@ export default function ChatContainer({
                   : undefined,
             }
 
-            // 既に存在するメッセージでないか確認（重複防止）
-            setMessages((prev) => {
-              const exists = prev.some((msg) => msg.id === newMessage.id)
-              if (exists) {
-                return prev
-              }
-              return [...prev, newMessage]
-            })
-
-            // 占い師からのメッセージが届いたらローディング状態を解除
+            // メッセージを遅延表示（占い師からのメッセージのみ）
             if (payload.new.sender_type === 'fortune_teller') {
-              setIsLoading(false)
+              // 1秒の遅延を入れてリアルタイム感を演出
+              setTimeout(() => {
+                // 既に存在するメッセージでないか確認（重複防止）
+                setMessages((prev) => {
+                  const exists = prev.some((msg) => msg.id === newMessage.id)
+                  if (exists) {
+                    return prev
+                  }
+                  return [...prev, newMessage]
+                })
+                setIsLoading(false)
+              }, 1000)
+            } else {
+              // ユーザーメッセージは即座に表示
+              setMessages((prev) => {
+                const exists = prev.some((msg) => msg.id === newMessage.id)
+                if (exists) {
+                  return prev
+                }
+                return [...prev, newMessage]
+              })
             }
           }
         )
@@ -165,14 +176,17 @@ export default function ChatContainer({
               createdAt: payload.new.created_at,
             }
 
-            // 既に存在する鑑定結果でないか確認（重複防止）
-            setDivinations((prev) => {
-              const exists = prev.some((div) => div.id === newDivination.id)
-              if (exists) {
-                return prev
-              }
-              return [...prev, newDivination]
-            })
+            // 2秒の遅延を入れて鑑定結果を表示（メッセージの後に来るように）
+            setTimeout(() => {
+              // 既に存在する鑑定結果でないか確認（重複防止）
+              setDivinations((prev) => {
+                const exists = prev.some((div) => div.id === newDivination.id)
+                if (exists) {
+                  return prev
+                }
+                return [...prev, newDivination]
+              })
+            }, 2000)
           }
         )
         .subscribe((status) => {
@@ -401,9 +415,6 @@ export default function ChatContainer({
       if (result.remainingCount !== undefined) {
         setRemainingMessageCount(result.remainingCount)
       }
-
-      // ページをリフレッシュしてサーバーから最新のメッセージを取得
-      router.refresh()
 
       // メッセージ送信後、AI応答は sendMessage 内で自動生成されるため、
       // ここで regenerateSuggestions を呼ぶ必要はありません

@@ -164,7 +164,7 @@ export async function POST(request: NextRequest) {
     // 鑑定結果の最初の20文字をプレビューとして取得
     const resultPreview = divination.resultMessage.substring(0, 20)
 
-    // 1. 鑑定前メッセージを即座に保存
+    // 1. 鑑定前メッセージを保存
     const { error: greetingError } = await supabase
       .from('chat_messages')
       .insert({
@@ -183,75 +183,64 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 2. 10秒後に鑑定結果を保存（非同期で実行）
-    let savedDivinationId: string | null = null
+    // 2. 鑑定結果を保存
+    const { data: savedDivination, error: insertError } = await supabase
+      .from('divination_results')
+      .insert({
+        user_id: user.id,
+        fortune_teller_id: fortuneTellerId,
+        greeting_message: divination.greetingMessage,
+        result_encrypted: divination.resultMessage,
+        result_preview: resultPreview,
+        after_message: divination.afterMessage,
+        is_unlocked: false,
+      })
+      .select()
+      .single()
 
-    setTimeout(async () => {
-      try {
-        const { data: savedDivination, error: insertError } = await supabase
-          .from('divination_results')
-          .insert({
-            user_id: user.id,
-            fortune_teller_id: fortuneTellerId,
-            greeting_message: divination.greetingMessage,
-            result_encrypted: divination.resultMessage,
-            result_preview: resultPreview,
-            after_message: divination.afterMessage,
-            is_unlocked: false,
-          })
-          .select()
-          .single()
+    if (insertError || !savedDivination) {
+      console.error('鑑定結果保存エラー:', insertError)
+      return NextResponse.json(
+        { success: false, message: '鑑定結果の保存に失敗しました' },
+        { status: 500 }
+      )
+    }
 
-        if (insertError || !savedDivination) {
-          console.error('鑑定結果保存エラー:', insertError)
-          return
-        }
+    const savedDivinationId = savedDivination.id
 
-        savedDivinationId = savedDivination.id
+    // 3. 鑑定後メッセージを保存
+    const { error: afterError } = await supabase
+      .from('chat_messages')
+      .insert({
+        user_id: user.id,
+        fortune_teller_id: fortuneTellerId,
+        sender_type: 'fortune_teller',
+        content: divination.afterMessage,
+        is_divination_request: false,
+      })
 
-        // 3. さらに3秒後に鑑定後メッセージを保存
-        setTimeout(async () => {
-          try {
-            const { error: afterError } = await supabase
-              .from('chat_messages')
-              .insert({
-                user_id: user.id,
-                fortune_teller_id: fortuneTellerId,
-                sender_type: 'fortune_teller',
-                content: divination.afterMessage,
-                is_divination_request: false,
-              })
+    if (afterError) {
+      console.error('鑑定後メッセージ保存エラー:', afterError)
+      // 鑑定後メッセージの保存に失敗してもエラーにはしない
+    } else {
+      console.log('鑑定の3つのメッセージを全て送信しました')
+    }
 
-            if (afterError) {
-              console.error('鑑定後メッセージ保存エラー:', afterError)
-            } else {
-              console.log('鑑定の3つのメッセージを全て送信しました')
-            }
-          } catch (error) {
-            console.error('鑑定後メッセージ送信エラー:', error)
-          }
-        }, 3000) // 鑑定結果から3秒後
-
-      } catch (error) {
-        console.error('鑑定結果送信エラー:', error)
-      }
-    }, 10000) // 鑑定前メッセージから10秒後
-
-    // レスポンスを即座に返却（鑑定前メッセージのみ送信済み）
-    // 鑑定結果と鑑定後メッセージは非同期で送信される
+    // レスポンスを返却（全メッセージ送信済み）
+    // クライアント側のRealtimeサブスクリプションでリアルタイムに表示される
     const response: GenerateDivinationResponse = {
       success: true,
       message: '鑑定を開始しました',
       data: {
         divination: {
-          id: 'pending', // 実際のIDは10秒後に生成される
+          id: savedDivinationId,
           greetingMessage: divination.greetingMessage,
           resultPreview: resultPreview,
           afterMessage: divination.afterMessage,
           isUnlocked: false,
           pointsConsumed: null,
           unlockedAt: null,
-          createdAt: new Date().toISOString(),
+          createdAt: savedDivination.created_at,
         },
       },
     }
