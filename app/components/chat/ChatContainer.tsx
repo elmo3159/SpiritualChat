@@ -67,177 +67,91 @@ export default function ChatContainer({
     scrollToBottom()
   }, [messages, divinations])
 
-  // Supabase Realtimeでメッセージをリアルタイム受信
+  // ポーリングでメッセージと鑑定結果を定期的に取得
   useEffect(() => {
     const supabase = createClient()
-    let currentUserId: string | null = null
+    let polling = true
+    let pollingInterval: NodeJS.Timeout | null = null
 
-    // 既に購読済みの場合は何もしない（多重購読を防ぐ）
-    if (channelRef.current?.state === ('subscribed' as any)) {
-      console.log('既にRealtime購読済みのためスキップ')
-      return
-    }
+    const fetchLatestData = async () => {
+      if (!polling) return
 
-    // ユーザーIDを取得してからリアルタイム監視を開始
-    const setupRealtimeSubscription = async () => {
       try {
         const {
           data: { user },
         } = await supabase.auth.getUser()
 
-        if (!user) {
-          console.error('[Realtime] ユーザーが認証されていません')
-          return
+        if (!user) return
+
+        // 最新のメッセージを取得
+        const { data: latestMessages } = await supabase
+          .from('chat_messages')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('fortune_teller_id', fortuneTellerId)
+          .order('created_at', { ascending: true })
+          .limit(100)
+
+        if (latestMessages) {
+          const messageDisplays: ChatMessageDisplay[] = latestMessages.map((msg) => ({
+            id: msg.id,
+            content: msg.content,
+            sender_type: msg.sender_type,
+            created_at: msg.created_at,
+            sender_name:
+              msg.sender_type === 'fortune_teller'
+                ? fortuneTellerNameRef.current
+                : undefined,
+            sender_avatar:
+              msg.sender_type === 'fortune_teller'
+                ? fortuneTellerAvatarRef.current
+                : undefined,
+          }))
+
+          setMessages(messageDisplays)
         }
 
-        currentUserId = user.id
-        console.log('[Realtime] ユーザーID:', user.id)
-        console.log('[Realtime] 占い師ID:', fortuneTellerId)
+        // 最新の鑑定結果を取得
+        const { data: latestDivinations } = await supabase
+          .from('divination_results')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('fortune_teller_id', fortuneTellerId)
+          .order('created_at', { ascending: true })
 
-        // シンプルなチャンネル名を使用
-        const channelName = `chat_${fortuneTellerId}_${user.id}`
-        console.log('[Realtime] チャンネル名:', channelName)
+        if (latestDivinations) {
+          const divinationDisplays: DivinationResultDisplay[] = latestDivinations.map((d) => ({
+            id: d.id,
+            greetingMessage: d.greeting_message,
+            resultPreview: d.result_preview,
+            resultFull: d.is_unlocked ? d.result_encrypted : undefined,
+            afterMessage: d.after_message,
+            isUnlocked: d.is_unlocked,
+            pointsConsumed: d.points_consumed,
+            unlockedAt: d.unlocked_at,
+            createdAt: d.created_at,
+          }))
 
-        const channel = supabase.channel(channelName, {
-          config: {
-            broadcast: { self: false },
-            presence: { key: user.id },
-          },
-        })
-      channelRef.current = channel
+          setDivinations(divinationDisplays)
+        }
 
-      // chat_messagesテーブルのINSERTイベントを監視
-      channel
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'chat_messages',
-            filter: `fortune_teller_id=eq.${fortuneTellerId}`,
-          },
-          (payload) => {
-            // 自分のメッセージのみ処理
-            if (payload.new.user_id !== currentUserId) {
-              return
-            }
-
-            console.log('リアルタイムメッセージ受信:', payload)
-
-            // 新しいメッセージをChatMessageDisplay形式に変換
-            const newMessage: ChatMessageDisplay = {
-              id: payload.new.id,
-              content: payload.new.content,
-              sender_type: payload.new.sender_type,
-              created_at: payload.new.created_at,
-              sender_name:
-                payload.new.sender_type === 'fortune_teller'
-                  ? fortuneTellerNameRef.current
-                  : undefined,
-              sender_avatar:
-                payload.new.sender_type === 'fortune_teller'
-                  ? fortuneTellerAvatarRef.current
-                  : undefined,
-            }
-
-            // メッセージを遅延表示（占い師からのメッセージのみ）
-            if (payload.new.sender_type === 'fortune_teller') {
-              // 1秒の遅延を入れてリアルタイム感を演出
-              setTimeout(() => {
-                // 既に存在するメッセージでないか確認（重複防止）
-                setMessages((prev) => {
-                  const exists = prev.some((msg) => msg.id === newMessage.id)
-                  if (exists) {
-                    return prev
-                  }
-                  return [...prev, newMessage]
-                })
-                setIsLoading(false)
-              }, 1000)
-            } else {
-              // ユーザーメッセージは即座に表示
-              setMessages((prev) => {
-                const exists = prev.some((msg) => msg.id === newMessage.id)
-                if (exists) {
-                  return prev
-                }
-                return [...prev, newMessage]
-              })
-            }
-          }
-        )
-        // divination_resultsテーブルのINSERTイベントも監視
-        .on(
-          'postgres_changes',
-          {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'divination_results',
-            filter: `fortune_teller_id=eq.${fortuneTellerId}`,
-          },
-          (payload) => {
-            // 自分の鑑定結果のみ処理
-            if (payload.new.user_id !== currentUserId) {
-              return
-            }
-
-            console.log('リアルタイム鑑定結果受信:', payload)
-
-            // 新しい鑑定結果をDivinationResultDisplay形式に変換
-            const newDivination: DivinationResultDisplay = {
-              id: payload.new.id,
-              greetingMessage: payload.new.greeting_message,
-              resultPreview: payload.new.result_preview,
-              resultFull: payload.new.is_unlocked ? payload.new.result_encrypted : undefined,
-              afterMessage: payload.new.after_message,
-              isUnlocked: payload.new.is_unlocked,
-              pointsConsumed: payload.new.points_consumed,
-              unlockedAt: payload.new.unlocked_at,
-              createdAt: payload.new.created_at,
-            }
-
-            // 2秒の遅延を入れて鑑定結果を表示（メッセージの後に来るように）
-            setTimeout(() => {
-              // 既に存在する鑑定結果でないか確認（重複防止）
-              setDivinations((prev) => {
-                const exists = prev.some((div) => div.id === newDivination.id)
-                if (exists) {
-                  return prev
-                }
-                return [...prev, newDivination]
-              })
-            }, 2000)
-          }
-        )
-        .subscribe((status, err) => {
-          console.log('[Realtime] 購読状態:', status)
-          if (err) {
-            console.error('[Realtime] 購読エラー:', err)
-          }
-
-          if (status === 'SUBSCRIBED') {
-            console.log('[Realtime] 購読成功！')
-          } else if (status === 'TIMED_OUT') {
-            console.error('[Realtime] タイムアウト - 再試行が必要です')
-          } else if (status === 'CHANNEL_ERROR') {
-            console.error('[Realtime] チャンネルエラー')
-          } else if (status === 'CLOSED') {
-            console.warn('[Realtime] チャンネルが閉じられました')
-          }
-        })
+        setIsLoading(false)
       } catch (error) {
-        console.error('[Realtime] セットアップエラー:', error)
+        console.error('[Polling] データ取得エラー:', error)
       }
     }
 
-    setupRealtimeSubscription()
+    // 初回取得
+    fetchLatestData()
 
-    // クリーンアップ: コンポーネントのアンマウント時にチャンネルを削除
+    // 2秒ごとにポーリング
+    pollingInterval = setInterval(fetchLatestData, 2000)
+
+    // クリーンアップ
     return () => {
-      console.log('[Realtime] チャンネルをクリーンアップ')
-      if (channelRef.current) {
-        supabase.removeChannel(channelRef.current)
-        channelRef.current = null
+      polling = false
+      if (pollingInterval) {
+        clearInterval(pollingInterval)
       }
     }
   }, [fortuneTellerId])
