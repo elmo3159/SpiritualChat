@@ -154,6 +154,7 @@ export default async function ChatPage({ params }: Props) {
       {/* チャットエリア */}
       <div className="flex-1 overflow-hidden">
         <ChatContainer
+          key={params.id}
           initialMessages={initialMessages}
           fortuneTellerId={params.id}
           fortuneTellerName={fortuneTeller.name}

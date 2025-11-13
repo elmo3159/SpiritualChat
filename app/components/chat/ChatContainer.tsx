@@ -52,7 +52,15 @@ export default function ChatContainer({
   const hasFetchedSuggestion = useRef(false)
   const hasFetchedLimit = useRef(false)
   const hasFetchedDivinations = useRef(false)
+  const fortuneTellerNameRef = useRef(fortuneTellerName)
+  const fortuneTellerAvatarRef = useRef(fortuneTellerAvatar)
   const router = useRouter()
+
+  // 占い師情報のrefを更新
+  useEffect(() => {
+    fortuneTellerNameRef.current = fortuneTellerName
+    fortuneTellerAvatarRef.current = fortuneTellerAvatar
+  }, [fortuneTellerName, fortuneTellerAvatar])
 
   // メッセージまたは鑑定結果が更新されたら自動スクロール
   useEffect(() => {
@@ -112,11 +120,11 @@ export default function ChatContainer({
               created_at: payload.new.created_at,
               sender_name:
                 payload.new.sender_type === 'fortune_teller'
-                  ? fortuneTellerName
+                  ? fortuneTellerNameRef.current
                   : undefined,
               sender_avatar:
                 payload.new.sender_type === 'fortune_teller'
-                  ? fortuneTellerAvatar
+                  ? fortuneTellerAvatarRef.current
                   : undefined,
             }
 
@@ -204,7 +212,7 @@ export default function ChatContainer({
         channelRef.current = null
       }
     }
-  }, [fortuneTellerId, fortuneTellerName, fortuneTellerAvatar])
+  }, [fortuneTellerId])
 
   // 残りメッセージ送信回数を取得する共通関数
   const refetchMessageLimit = async () => {
