@@ -125,14 +125,16 @@ export async function sendMessage(
       console.error('メッセージカウントの更新に失敗しましたが、メッセージは送信されました')
     }
 
-    // AI応答を生成（非同期で実行、ブロックしない）
+    // AI応答を生成（同期的に実行して確実に完了させる）
     // 占い依頼ではない通常メッセージの場合のみ自動応答を生成
     if (!isDivinationRequest) {
-      generateAndSaveAIResponse(user.id, fortuneTellerId, content.trim()).catch(
-        (error) => {
-          console.error('AI応答生成の非同期実行でエラー:', error)
-        }
-      )
+      try {
+        await generateAndSaveAIResponse(user.id, fortuneTellerId, content.trim())
+        console.log('AI応答生成完了')
+      } catch (error) {
+        console.error('AI応答生成エラー:', error)
+        // AI応答生成に失敗してもユーザーメッセージは送信済みなのでエラーにしない
+      }
     }
 
     // チャットページをリバリデート

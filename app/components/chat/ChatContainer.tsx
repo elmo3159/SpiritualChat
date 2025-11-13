@@ -146,17 +146,12 @@ export default function ChatContainer({
 
           setDivinations(divinationDisplays)
         }
-
-        setIsLoading(false)
       } catch (error) {
         console.error('[Polling] データ取得エラー:', error)
       }
     }
 
-    // 初回取得
-    fetchLatestData()
-
-    // 2秒ごとにポーリング
+    // 2秒ごとにポーリング（初回は2秒後から開始してHydration Errorを回避）
     pollingInterval = setInterval(fetchLatestData, 2000)
 
     // クリーンアップ
@@ -378,9 +373,11 @@ export default function ChatContainer({
         setRemainingMessageCount(result.remainingCount)
       }
 
-      // メッセージ送信後、AI応答は sendMessage 内で自動生成されるため、
-      // ここで regenerateSuggestions を呼ぶ必要はありません
-      // isLoadingは、AI応答がRealtimeで届いた時点でfalseになります
+      // Server ActionでAI応答が生成・保存完了
+      // ポーリングで取得されるまで3秒待ってから「入力中...」を消す
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 3000)
     } catch (error) {
       console.error('メッセージ送信エラー:', error)
       setError('予期しないエラーが発生しました')
