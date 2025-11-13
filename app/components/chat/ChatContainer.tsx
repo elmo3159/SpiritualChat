@@ -54,6 +54,8 @@ export default function ChatContainer({
   const hasFetchedDivinations = useRef(false)
   const fortuneTellerNameRef = useRef(fortuneTellerName)
   const fortuneTellerAvatarRef = useRef(fortuneTellerAvatar)
+  const prevMessagesLengthRef = useRef(0)
+  const prevDivinationsLengthRef = useRef(0)
   const router = useRouter()
 
   // 占い師情報のrefを更新
@@ -62,9 +64,19 @@ export default function ChatContainer({
     fortuneTellerAvatarRef.current = fortuneTellerAvatar
   }, [fortuneTellerName, fortuneTellerAvatar])
 
-  // メッセージまたは鑑定結果が更新されたら自動スクロール
+  // 新しいメッセージまたは鑑定結果が追加された時だけ自動スクロール
   useEffect(() => {
-    scrollToBottom()
+    const totalLength = messages.length + divinations.length
+    const prevLength = prevMessagesLengthRef.current + prevDivinationsLengthRef.current
+
+    // 新しいメッセージが追加された時だけスクロール
+    if (totalLength > prevLength) {
+      scrollToBottom()
+    }
+
+    // 現在の長さを保存
+    prevMessagesLengthRef.current = messages.length
+    prevDivinationsLengthRef.current = divinations.length
   }, [messages, divinations])
 
   // ポーリングでメッセージと鑑定結果を定期的に取得
