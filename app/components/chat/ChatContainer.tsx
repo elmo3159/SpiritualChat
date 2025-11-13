@@ -74,24 +74,36 @@ export default function ChatContainer({
 
     // 既に購読済みの場合は何もしない（多重購読を防ぐ）
     if (channelRef.current?.state === ('subscribed' as any)) {
+      console.log('既にRealtime購読済みのためスキップ')
       return
     }
 
     // ユーザーIDを取得してからリアルタイム監視を開始
     const setupRealtimeSubscription = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
 
-      if (!user) {
-        console.error('ユーザーが認証されていません')
-        return
-      }
+        if (!user) {
+          console.error('[Realtime] ユーザーが認証されていません')
+          return
+        }
 
-      currentUserId = user.id
+        currentUserId = user.id
+        console.log('[Realtime] ユーザーID:', user.id)
+        console.log('[Realtime] 占い師ID:', fortuneTellerId)
 
-      // チャンネルを作成（占い師ごとにユニークなチャンネル名）
-      const channel = supabase.channel(`chat:${fortuneTellerId}:${user.id}`)
+        // シンプルなチャンネル名を使用
+        const channelName = `chat_${fortuneTellerId}_${user.id}`
+        console.log('[Realtime] チャンネル名:', channelName)
+
+        const channel = supabase.channel(channelName, {
+          config: {
+            broadcast: { self: false },
+            presence: { key: user.id },
+          },
+        })
       channelRef.current = channel
 
       // chat_messagesテーブルのINSERTイベントを監視
@@ -197,16 +209,32 @@ export default function ChatContainer({
             }, 2000)
           }
         )
-        .subscribe((status) => {
-          console.log('Realtime購読状態:', status)
+        .subscribe((status, err) => {
+          console.log('[Realtime] 購読状態:', status)
+          if (err) {
+            console.error('[Realtime] 購読エラー:', err)
+          }
+
+          if (status === 'SUBSCRIBED') {
+            console.log('[Realtime] 購読成功！')
+          } else if (status === 'TIMED_OUT') {
+            console.error('[Realtime] タイムアウト - 再試行が必要です')
+          } else if (status === 'CHANNEL_ERROR') {
+            console.error('[Realtime] チャンネルエラー')
+          } else if (status === 'CLOSED') {
+            console.warn('[Realtime] チャンネルが閉じられました')
+          }
         })
+      } catch (error) {
+        console.error('[Realtime] セットアップエラー:', error)
+      }
     }
 
     setupRealtimeSubscription()
 
     // クリーンアップ: コンポーネントのアンマウント時にチャンネルを削除
     return () => {
-      console.log('Realtimeチャンネルをクリーンアップ')
+      console.log('[Realtime] チャンネルをクリーンアップ')
       if (channelRef.current) {
         supabase.removeChannel(channelRef.current)
         channelRef.current = null
