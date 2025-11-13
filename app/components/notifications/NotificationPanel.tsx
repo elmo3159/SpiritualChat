@@ -207,7 +207,7 @@ export default function NotificationPanel() {
           />
 
           {/* パネル */}
-          <div className="absolute right-0 top-12 w-80 md:w-96 max-w-[calc(100vw-2rem)] max-h-[500px] bg-spiritual-dark border-2 border-spiritual-lavender/30 rounded-2xl shadow-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-4 duration-200">
+          <div className="absolute right-0 md:right-0 top-12 w-[calc(100vw-2rem)] md:w-96 max-w-[calc(100vw-2rem)] max-h-[500px] bg-spiritual-dark border-2 border-spiritual-lavender/30 rounded-2xl shadow-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-4 duration-200 -translate-x-4 md:translate-x-0">
             {/* ヘッダー */}
             <div className="bg-gradient-to-r from-spiritual-purple to-spiritual-light px-4 py-3 flex items-center justify-between border-b border-spiritual-lavender/30">
               <h3 className="font-bold text-white flex items-center gap-2">
