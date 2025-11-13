@@ -186,6 +186,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    console.log('鑑定前メッセージを送信しました')
+
+    // 10秒待機
+    await new Promise(resolve => setTimeout(resolve, 10000))
+
     // 2. 鑑定結果を保存
     const { data: savedDivination, error: insertError } = await adminSupabase
       .from('divination_results')
@@ -211,6 +216,11 @@ export async function POST(request: NextRequest) {
 
     const savedDivinationId = savedDivination.id
 
+    console.log('鑑定結果を送信しました')
+
+    // 5秒待機
+    await new Promise(resolve => setTimeout(resolve, 5000))
+
     // 3. 鑑定後メッセージを保存
     const { error: afterError } = await adminSupabase
       .from('chat_messages')
@@ -226,8 +236,10 @@ export async function POST(request: NextRequest) {
       console.error('鑑定後メッセージ保存エラー:', afterError)
       // 鑑定後メッセージの保存に失敗してもエラーにはしない
     } else {
-      console.log('鑑定の3つのメッセージを全て送信しました')
+      console.log('鑑定後メッセージを送信しました')
     }
+
+    console.log('鑑定の3つのメッセージを全て送信しました')
 
     // レスポンスを返却（全メッセージ送信済み）
     // クライアント側のRealtimeサブスクリプションでリアルタイムに表示される
