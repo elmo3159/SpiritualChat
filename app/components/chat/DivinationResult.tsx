@@ -56,9 +56,16 @@ export default function DivinationResult({
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-spiritual-lavender/20 rounded-full blur-3xl"></div>
 
         <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-spiritual-gold animate-pulse" />
-            <h3 className="font-bold text-base md:text-lg text-gray-100">鑑定結果</h3>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-spiritual-gold animate-pulse" />
+              <h3 className="font-bold text-base md:text-lg text-gray-100">鑑定結果</h3>
+            </div>
+            {!divination.isUnlocked && divination.resultLength && (
+              <div className="text-xs md:text-sm text-spiritual-gold/90 font-medium">
+                {divination.resultLength}文字
+              </div>
+            )}
           </div>
 
           {/* 鑑定結果本文 */}
@@ -110,7 +117,7 @@ export default function DivinationResult({
                           ) : (
                             <>
                               <Lock className="w-5 h-5 md:w-6 md:h-6" />
-                              <span>全文を読む</span>
+                              <span>すべて読む</span>
                               <span className="text-xs md:text-sm font-normal opacity-90">(1000pt)</span>
                             </>
                           )}

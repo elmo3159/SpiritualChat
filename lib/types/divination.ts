@@ -37,6 +37,7 @@ export interface DivinationResultDisplay {
   greetingMessage: string // 鑑定前メッセージ
   resultPreview: string // 最初の20文字
   resultFull?: string // 開封後のみ利用可能
+  resultLength?: number // 鑑定結果の文字数（未開封時のみ）
   afterMessage: string // 鑑定後メッセージ
   isUnlocked: boolean
   pointsConsumed: number | null
