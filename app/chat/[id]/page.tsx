@@ -152,15 +152,13 @@ export default async function ChatPage({ params }: Props) {
       </header>
 
       {/* チャットエリア */}
-      <div className="flex-1 overflow-hidden">
-        <ChatContainer
-          key={params.id}
-          initialMessages={initialMessages}
-          fortuneTellerId={params.id}
-          fortuneTellerName={fortuneTeller.name}
-          fortuneTellerAvatar={fortuneTeller.avatar_url}
-        />
-      </div>
+      <ChatContainer
+        key={params.id}
+        initialMessages={initialMessages}
+        fortuneTellerId={params.id}
+        fortuneTellerName={fortuneTeller.name}
+        fortuneTellerAvatar={fortuneTeller.avatar_url}
+      />
     </div>
   )
 }
