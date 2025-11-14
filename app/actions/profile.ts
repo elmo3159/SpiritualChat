@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { profileSchema, type ProfileFormData } from '@/lib/validations/profile'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { checkAndAwardBadges } from '@/lib/services/badge-service'
 
 export async function getProfile() {
   try {
@@ -149,6 +150,9 @@ export async function createProfile(formData: ProfileFormData) {
     // キャッシュを再検証
     revalidatePath('/')
 
+    // バッジチェックを実行
+    await checkAndAwardBadges(user.id)
+
     return {
       success: true,
     }
@@ -208,6 +212,9 @@ export async function updateProfile(formData: ProfileFormData) {
 
     // キャッシュを再検証
     revalidatePath('/')
+
+    // バッジチェックを実行
+    await checkAndAwardBadges(user.id)
 
     return {
       success: true,
