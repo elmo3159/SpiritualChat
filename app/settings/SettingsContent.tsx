@@ -44,6 +44,12 @@ export default function SettingsContent({
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false)
   const [isContactFormOpen, setIsContactFormOpen] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const [isNavigating, setIsNavigating] = useState(false)
+
+  const handleNavigate = (path: string) => {
+    setIsNavigating(true)
+    router.push(path)
+  }
 
   const handleLogout = async () => {
     if (!confirm('ログアウトしてもよろしいですか？')) return
@@ -68,7 +74,17 @@ export default function SettingsContent({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-spiritual-dark via-spiritual-darker to-spiritual-dark pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-spiritual-dark via-spiritual-darker to-spiritual-dark pb-20 relative">
+      {/* ローディングオーバーレイ */}
+      {isNavigating && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center">
+          <div className="bg-spiritual-darker/90 rounded-2xl p-6 flex flex-col items-center gap-3 border border-spiritual-gold/30">
+            <div className="w-12 h-12 border-4 border-spiritual-gold/30 border-t-spiritual-gold rounded-full animate-spin"></div>
+            <p className="text-spiritual-gold font-medium">読み込み中...</p>
+          </div>
+        </div>
+      )}
+
       {/* ヘッダー */}
       <div className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg border-b border-spiritual-lavender/30">
         <div className="max-w-2xl mx-auto px-4 py-4">
@@ -100,8 +116,9 @@ export default function SettingsContent({
 
             {/* ポイント追加ボタン */}
             <button
-              onClick={() => router.push('/points/purchase')}
-              className="w-full px-6 py-4 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold shadow-lg shadow-spiritual-gold/30 hover:shadow-xl hover:shadow-spiritual-gold/50 transition-all duration-300 flex items-center justify-center gap-2"
+              onClick={() => handleNavigate('/points/purchase')}
+              disabled={isNavigating}
+              className="w-full px-6 py-4 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold shadow-lg shadow-spiritual-gold/30 hover:shadow-xl hover:shadow-spiritual-gold/50 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Coins className="w-5 h-5" />
               ポイントを追加
@@ -113,8 +130,9 @@ export default function SettingsContent({
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-gray-400">最近の購入履歴</p>
                   <button
-                    onClick={() => router.push('/points/history')}
-                    className="text-xs text-spiritual-gold hover:text-spiritual-accent transition-colors flex items-center gap-1"
+                    onClick={() => handleNavigate('/points/history')}
+                    disabled={isNavigating}
+                    className="text-xs text-spiritual-gold hover:text-spiritual-accent transition-colors flex items-center gap-1 disabled:opacity-50"
                   >
                     すべて見る
                     <ChevronRight className="w-3 h-3" />
@@ -154,8 +172,9 @@ export default function SettingsContent({
           <div className="divide-y divide-spiritual-lavender/10">
             {/* プロフィール編集 */}
             <button
-              onClick={() => router.push('/profile/edit')}
-              className="w-full px-5 py-4 hover:bg-spiritual-light/10 transition-colors flex items-center justify-between group"
+              onClick={() => handleNavigate('/profile/edit')}
+              disabled={isNavigating}
+              className="w-full px-5 py-4 hover:bg-spiritual-light/10 transition-colors flex items-center justify-between group disabled:opacity-50"
             >
               <div className="flex items-center gap-3">
                 <User className="w-5 h-5 text-spiritual-lavender" />
@@ -173,8 +192,9 @@ export default function SettingsContent({
 
             {/* 統計を見る */}
             <button
-              onClick={() => router.push('/profile/stats')}
-              className="w-full px-5 py-4 hover:bg-spiritual-light/10 transition-colors flex items-center justify-between group"
+              onClick={() => handleNavigate('/profile/stats')}
+              disabled={isNavigating}
+              className="w-full px-5 py-4 hover:bg-spiritual-light/10 transition-colors flex items-center justify-between group disabled:opacity-50"
             >
               <div className="flex items-center gap-3">
                 <BarChart3 className="w-5 h-5 text-spiritual-lavender" />
@@ -223,23 +243,6 @@ export default function SettingsContent({
               <ChevronRight className="w-5 h-5 text-gray-400" />
             </button>
 
-            {/* セキュリティ・ログイン履歴 */}
-            <button
-              onClick={() => router.push('/settings/security')}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <Lock className="w-5 h-5 text-gray-400" />
-                <div className="text-left">
-                  <p className="text-white">セキュリティ・ログイン履歴</p>
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    ログイン履歴と不審なアクティビティを確認
-                  </p>
-                </div>
-              </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
-            </button>
-
             {/* ログアウト */}
             <button
               onClick={handleLogout}
@@ -267,8 +270,9 @@ export default function SettingsContent({
           <div className="divide-y divide-spiritual-lavender/10">
             {/* アクセシビリティ設定 */}
             <button
-              onClick={() => router.push('/settings/accessibility')}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors"
+              onClick={() => handleNavigate('/settings/accessibility')}
+              disabled={isNavigating}
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors disabled:opacity-50"
             >
               <div className="flex items-center gap-3">
                 <svg
@@ -313,8 +317,9 @@ export default function SettingsContent({
 
             {/* 利用規約 */}
             <button
-              onClick={() => router.push('/terms')}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors"
+              onClick={() => handleNavigate('/terms')}
+              disabled={isNavigating}
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors disabled:opacity-50"
             >
               <span className="text-white">利用規約</span>
               <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -322,8 +327,9 @@ export default function SettingsContent({
 
             {/* プライバシーポリシー */}
             <button
-              onClick={() => router.push('/privacy')}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors"
+              onClick={() => handleNavigate('/privacy')}
+              disabled={isNavigating}
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors disabled:opacity-50"
             >
               <span className="text-white">プライバシーポリシー</span>
               <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -331,8 +337,9 @@ export default function SettingsContent({
 
             {/* 特定商取引法に基づく表記 */}
             <button
-              onClick={() => router.push('/legal/tokusho')}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors"
+              onClick={() => handleNavigate('/legal/tokusho')}
+              disabled={isNavigating}
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors disabled:opacity-50"
             >
               <span className="text-white">特定商取引法に基づく表記</span>
               <ChevronRight className="w-5 h-5 text-gray-400" />
