@@ -109,18 +109,15 @@ export default function SignUpPage() {
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-200/50 p-8">
           {/* Logo/Title */}
           <div className="text-center mb-8">
-            <div className="inline-block">
-              <div className="mb-3 flex justify-center">
-                <Image
-                  src="/images/logo.png"
-                  alt="スピチャ"
-                  width={280}
-                  height={100}
-                  className="w-auto h-20"
-                  priority
-                />
-              </div>
-              <p className="text-sm text-purple-600/70">新規登録</p>
+            <div className="mb-3 flex justify-center">
+              <Image
+                src="/images/logo.png"
+                alt="スピチャ"
+                width={280}
+                height={100}
+                className="w-auto h-20"
+                priority
+              />
             </div>
           </div>
 

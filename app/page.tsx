@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import FortuneTellerList from '@/app/components/fortune-tellers/FortuneTellerList'
 import NotificationPanel from '@/app/components/notifications/NotificationPanel'
-import OnboardingTutorial from '@/app/components/onboarding/OnboardingTutorial'
 import HomeTabView from '@/app/components/HomeTabView'
 import { getDailyFortune } from '@/app/actions/daily-fortune'
 import type { FortuneTeller } from '@/lib/types/fortune-teller'
@@ -114,9 +113,6 @@ export default async function Home() {
           today={today}
         />
       </div>
-
-      {/* オンボーディングチュートリアル */}
-      {user && <OnboardingTutorial />}
     </main>
   )
 }

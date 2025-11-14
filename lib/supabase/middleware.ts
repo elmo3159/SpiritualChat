@@ -55,7 +55,7 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Check if logged-in user has a profile
+  // Check if logged-in user has completed onboarding
   if (
     user &&
     !request.nextUrl.pathname.startsWith('/profile/create') &&
@@ -69,11 +69,12 @@ export async function updateSession(request: NextRequest) {
   ) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('id')
+      .select('onboarding_completed')
       .eq('id', user.id)
       .single()
 
-    if (!profile) {
+    // プロフィールが存在しない、またはonboarding未完了の場合はプロフィール作成画面にリダイレクト
+    if (!profile || !profile.onboarding_completed) {
       const url = request.nextUrl.clone()
       url.pathname = '/profile/create'
       return NextResponse.redirect(url)
