@@ -60,9 +60,9 @@ export default async function Home() {
               <Image
                 src="/images/logo.png"
                 alt="スピチャ"
-                width={200}
-                height={70}
-                className="w-auto h-10 md:h-12"
+                width={240}
+                height={84}
+                className="w-auto h-14 md:h-16"
                 priority
               />
             </div>
