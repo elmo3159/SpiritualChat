@@ -17,6 +17,7 @@ import {
 import ChangePasswordModal from './ChangePasswordModal'
 import DeleteAccountModal from './DeleteAccountModal'
 import ContactForm from '@/app/components/contact/ContactForm'
+import Image from 'next/image'
 
 interface Transaction {
   id: string
@@ -87,8 +88,16 @@ export default function SettingsContent({
 
       {/* ヘッダー */}
       <div className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg border-b border-spiritual-lavender/30">
-        <div className="max-w-2xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-spiritual-gold">設定</h1>
+        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Image
+            src="/images/logo.png"
+            alt="スピチャ"
+            width={160}
+            height={56}
+            className="w-auto h-9"
+            priority
+          />
+          <span className="text-lg font-semibold text-spiritual-gold">設定</span>
         </div>
       </div>
 

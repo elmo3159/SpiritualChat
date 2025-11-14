@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import PointsPurchaseClient from './PointsPurchaseClient'
+import Image from 'next/image'
 
 /**
  * ポイント購入ページ
@@ -42,7 +43,18 @@ export default async function PointsPurchasePage() {
             <span>戻る</span>
           </Link>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <div className="mb-4 flex justify-center md:justify-start">
+            <Image
+              src="/images/logo.png"
+              alt="スピチャ"
+              width={240}
+              height={84}
+              className="w-auto h-16"
+              priority
+            />
+          </div>
+
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
             ポイント購入
           </h1>
           <p className="text-gray-600">

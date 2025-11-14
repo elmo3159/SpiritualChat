@@ -8,6 +8,7 @@ import type { FortuneTeller } from '@/lib/types/fortune-teller'
 import Link from 'next/link'
 import { getLevelDetails } from '@/lib/services/level-service'
 import LevelGauge from '@/app/components/level/LevelGauge'
+import Image from 'next/image'
 
 // キャッシュを無効化して常に最新のデータを取得
 export const dynamic = 'force-dynamic'
@@ -55,9 +56,16 @@ export default async function Home() {
       <header className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg shadow-lg border-b border-spiritual-lavender/30">
         <div className="container mx-auto px-4 py-3 md:py-5">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl md:text-3xl font-bold bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-clip-text text-transparent">
-              スピチャ
-            </h1>
+            <div className="flex items-center">
+              <Image
+                src="/images/logo.png"
+                alt="スピチャ"
+                width={200}
+                height={70}
+                className="w-auto h-10 md:h-12"
+                priority
+              />
+            </div>
             <div className="flex items-center gap-1 md:gap-3">
               {/* 通知パネル */}
               {user && <NotificationPanel />}

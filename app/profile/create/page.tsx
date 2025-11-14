@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { profileSchema, concernCategories, type ProfileFormData } from '@/lib/validations/profile'
 import { createProfile } from '@/app/actions/profile'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 // 日本の都道府県リスト
 const PREFECTURES = [
@@ -70,7 +71,17 @@ export default function ProfileCreatePage() {
           {/* Header */}
           <div className="text-center mb-6 md:mb-8">
             <div className="inline-block">
-              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-clip-text text-transparent mb-2">
+              <div className="mb-4 flex justify-center">
+                <Image
+                  src="/images/logo.png"
+                  alt="スピチャ"
+                  width={240}
+                  height={84}
+                  className="w-auto h-16 md:h-20"
+                  priority
+                />
+              </div>
+              <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-clip-text text-transparent mb-2">
                 プロフィール登録
               </h1>
               <p className="text-sm text-spiritual-lavender">あなたの情報を教えてください</p>

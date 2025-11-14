@@ -4,6 +4,7 @@ import { useState, Suspense, useEffect } from 'react'
 import { useAuth } from '@/lib/contexts/AuthContext'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -64,9 +65,16 @@ function LoginForm() {
           {/* Logo/Title */}
           <div className="text-center mb-8">
             <div className="inline-block">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 via-purple-500 to-gold-500 bg-clip-text text-transparent mb-2">
-                スピチャ
-              </h1>
+              <div className="mb-3 flex justify-center">
+                <Image
+                  src="/images/logo.png"
+                  alt="スピチャ"
+                  width={280}
+                  height={100}
+                  className="w-auto h-20"
+                  priority
+                />
+              </div>
               <p className="text-sm text-purple-600/70">AI占いアプリ</p>
             </div>
           </div>
