@@ -6,6 +6,7 @@ import { calculateAge, getCurrentJapanTime } from '@/lib/utils/datetime'
 import { generateContent } from '@/lib/gemini'
 import { buildRegenerateSuggestionPrompt } from '@/lib/gemini/prompts'
 import { cleanupMessageText } from '@/lib/utils/text-cleanup'
+import { updateLevelOnPointsUsed } from '@/lib/services/level-service'
 
 /**
  * 鑑定結果開封API
@@ -103,6 +104,9 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // ポイント消費成功 → 経験値とレベルを更新
+    await updateLevelOnPointsUsed(user.id, UNLOCK_COST)
 
     // 鑑定結果を開封済みに更新
     const { error: updateError } = await supabase
