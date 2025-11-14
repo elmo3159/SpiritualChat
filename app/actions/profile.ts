@@ -70,7 +70,7 @@ export async function createProfile(formData: ProfileFormData) {
     // 既存のプロフィールを確認
     const { data: existingProfile, error: selectError } = await supabase
       .from('profiles')
-      .select('id')
+      .select('id, onboarding_completed')
       .eq('id', user.id)
       .maybeSingle()
 
@@ -82,34 +82,67 @@ export async function createProfile(formData: ProfileFormData) {
       }
     }
 
+    // 既存レコードがある場合（トリガーで作成済み）はUPDATE、ない場合はINSERT
     if (existingProfile) {
-      return {
-        success: false,
-        error: 'プロフィールは既に登録されています',
+      // onboarding完了済みの場合のみエラー
+      if (existingProfile.onboarding_completed) {
+        return {
+          success: false,
+          error: 'プロフィールは既に登録されています',
+        }
       }
-    }
 
-    // プロフィールを作成
-    const { error: insertError } = await supabase.from('profiles').insert({
-      id: user.id,
-      nickname: validatedData.nickname,
-      birth_date: validatedData.birthDate,
-      birth_time: validatedData.birthTime || null,
-      birth_place: validatedData.birthPlace || null,
-      gender: validatedData.gender,
-      concern_category: validatedData.concernCategory,
-      concern_description: validatedData.concernDescription,
-      partner_name: validatedData.partnerName || null,
-      partner_gender: validatedData.partnerGender || null,
-      partner_birth_date: validatedData.partnerBirthDate || null,
-      partner_age: validatedData.partnerAge || null,
-    })
+      // トリガーで作成された空のプロフィールを更新
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          nickname: validatedData.nickname,
+          birth_date: validatedData.birthDate,
+          birth_time: validatedData.birthTime || null,
+          birth_place: validatedData.birthPlace || null,
+          gender: validatedData.gender,
+          concern_category: validatedData.concernCategory,
+          concern_description: validatedData.concernDescription,
+          partner_name: validatedData.partnerName || null,
+          partner_gender: validatedData.partnerGender || null,
+          partner_birth_date: validatedData.partnerBirthDate || null,
+          partner_age: validatedData.partnerAge || null,
+          onboarding_completed: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', user.id)
 
-    if (insertError) {
-      console.error('プロフィール作成エラー:', insertError)
-      return {
-        success: false,
-        error: 'プロフィールの作成に失敗しました',
+      if (updateError) {
+        console.error('プロフィール更新エラー:', updateError)
+        return {
+          success: false,
+          error: 'プロフィールの作成に失敗しました',
+        }
+      }
+    } else {
+      // プロフィールを新規作成（トリガーが動作しなかった場合のフォールバック）
+      const { error: insertError } = await supabase.from('profiles').insert({
+        id: user.id,
+        nickname: validatedData.nickname,
+        birth_date: validatedData.birthDate,
+        birth_time: validatedData.birthTime || null,
+        birth_place: validatedData.birthPlace || null,
+        gender: validatedData.gender,
+        concern_category: validatedData.concernCategory,
+        concern_description: validatedData.concernDescription,
+        partner_name: validatedData.partnerName || null,
+        partner_gender: validatedData.partnerGender || null,
+        partner_birth_date: validatedData.partnerBirthDate || null,
+        partner_age: validatedData.partnerAge || null,
+        onboarding_completed: true,
+      })
+
+      if (insertError) {
+        console.error('プロフィール作成エラー:', insertError)
+        return {
+          success: false,
+          error: 'プロフィールの作成に失敗しました',
+        }
       }
     }
 
