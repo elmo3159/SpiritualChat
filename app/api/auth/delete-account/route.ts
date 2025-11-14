@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createAdminClient } from '@supabase/supabase-js'
 
 /**
  * アカウント削除API
@@ -24,6 +25,8 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
+    const userId = user.id
+
     // データベースからユーザーデータを削除
     // CASCADE設定により、関連するデータも自動的に削除されます
     // - profiles
@@ -32,12 +35,13 @@ export async function DELETE(request: NextRequest) {
     // - user_points
     // - points_transactions
     // - message_limits
+    // - user_levels
 
     // プロフィールを削除（CASCADE で他のテーブルも削除される）
     const { error: profileDeleteError } = await supabase
       .from('profiles')
       .delete()
-      .eq('id', user.id)
+      .eq('id', userId)
 
     if (profileDeleteError) {
       console.error('プロフィール削除エラー:', profileDeleteError)
@@ -53,23 +57,39 @@ export async function DELETE(request: NextRequest) {
       }
     }
 
-    // Supabase Authからユーザーを削除
-    const { error: authDeleteError } = await supabase.auth.admin.deleteUser(
-      user.id
+    // サインアウト（auth.usersからの削除前に実行）
+    await supabase.auth.signOut()
+
+    // Service Role Keyを使用した管理者クライアントでauth.usersから削除
+    const supabaseAdmin = createAdminClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
+    )
+
+    const { error: authDeleteError } = await supabaseAdmin.auth.admin.deleteUser(
+      userId
     )
 
     if (authDeleteError) {
       console.error('認証ユーザー削除エラー:', authDeleteError)
-      // 管理者権限がない場合は、signOutで対応
-      console.log('管理者権限がないため、サインアウトを実行します')
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'アカウントの完全な削除に失敗しました',
+        },
+        { status: 500 }
+      )
     }
-
-    // サインアウト
-    await supabase.auth.signOut()
 
     return NextResponse.json({
       success: true,
-      message: 'アカウントを削除しました',
+      message: 'アカウントを完全に削除しました',
     })
   } catch (error: any) {
     console.error('アカウント削除エラー:', error)
