@@ -40,7 +40,7 @@ export default function MessageInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className="sticky bottom-0 z-40 border-t border-spiritual-purple/30 bg-spiritual-dark/95 backdrop-blur-lg p-4 shadow-lg"
+      className="sticky bottom-0 z-40 border-t border-spiritual-purple/30 bg-spiritual-dark/95 backdrop-blur-lg p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-lg"
     >
       <div className="flex items-end gap-2 md:gap-3 max-w-3xl mx-auto">
         {/* テキストエリア */}
