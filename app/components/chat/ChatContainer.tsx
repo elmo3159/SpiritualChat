@@ -530,9 +530,9 @@ export default function ChatContainer({
   ].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
 
   return (
-    <>
+    <div className="flex-1 flex flex-col min-h-0">
       {/* メッセージ一覧エリア */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden">
         <div className="max-w-3xl mx-auto px-4 py-6">
           {combinedItems.length === 0 ? (
             <div className="space-y-6">
@@ -673,7 +673,7 @@ export default function ChatContainer({
       )}
 
       {/* 占ってもらうボタン */}
-      <div className="sticky bottom-[calc(env(safe-area-inset-bottom)+5rem)] z-30 px-4 py-1 bg-spiritual-dark/95 backdrop-blur-lg border-t border-spiritual-purple/30 shadow-lg">
+      <div className="flex-shrink-0 px-4 py-1.5 bg-spiritual-dark/95 backdrop-blur-lg border-t border-spiritual-purple/30 shadow-lg">
         <div className="max-w-3xl mx-auto">
           <DivinationButton
             fortuneTellerId={fortuneTellerId}
@@ -692,6 +692,6 @@ export default function ChatContainer({
             : '本日の送信回数制限に達しました'
         }
       />
-    </>
+    </div>
   )
 }

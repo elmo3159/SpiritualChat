@@ -69,7 +69,7 @@ export default async function ChatPage({ params }: Props) {
     })) || []
 
   return (
-    <div className="h-[100vh] h-[100dvh] flex flex-col relative overflow-hidden">
+    <div className="h-[100vh] h-[100dvh] flex flex-col relative">
       {/* 星空グラデーション背景 */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#0f172a] to-[#1e1b4b] -z-10" />
 
