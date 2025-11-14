@@ -124,6 +124,90 @@ export async function checkAndAwardBadges(userId: string): Promise<string[]> {
 
     const currentLevel = levelData?.current_level || 1
 
+    // 連続ログイン日数を計算
+    const { data: loginHistory } = await supabase
+      .from('login_history')
+      .select('login_at')
+      .eq('user_id', userId)
+      .order('login_at', { ascending: false })
+
+    let loginStreak = 0
+    if (loginHistory && loginHistory.length > 0) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      let currentDate = new Date(today)
+      let streak = 0
+
+      for (const login of loginHistory) {
+        const loginDate = new Date(login.login_at)
+        loginDate.setHours(0, 0, 0, 0)
+
+        // 現在チェック中の日付と一致するか確認
+        if (loginDate.getTime() === currentDate.getTime()) {
+          streak++
+          // 前日をチェック
+          currentDate.setDate(currentDate.getDate() - 1)
+        } else if (loginDate.getTime() < currentDate.getTime()) {
+          // 連続が途切れた
+          break
+        }
+      }
+
+      loginStreak = streak
+    }
+
+    // 朝の時間帯チェック（5:00-11:59）と夜の時間帯チェック（18:00-23:59）
+    const { data: morningLogins } = await supabase
+      .from('login_history')
+      .select('login_at')
+      .eq('user_id', userId)
+
+    let hasMorningCheck = false
+    let hasNightCheck = false
+
+    if (morningLogins && morningLogins.length > 0) {
+      for (const login of morningLogins) {
+        const loginDate = new Date(login.login_at)
+        const hour = loginDate.getHours()
+
+        if (hour >= 5 && hour < 12) {
+          hasMorningCheck = true
+        }
+        if (hour >= 18 && hour < 24) {
+          hasNightCheck = true
+        }
+
+        if (hasMorningCheck && hasNightCheck) break
+      }
+    }
+
+    // カテゴリ別の相談回数を取得
+    const { data: categoryConsultations } = await supabase
+      .from('divination_results')
+      .select('id')
+      .eq('user_id', userId)
+
+    // プロフィールからユーザーの悩みカテゴリを取得して、そのカテゴリでの相談回数をカウント
+    const concernCategory = profile?.concern_category
+    let categoryLoveCount = 0
+    let categoryWorkCount = 0
+    let categoryMoneyCount = 0
+
+    if (concernCategory) {
+      const loveCategories = ['恋愛', '片思い', '復縁', '不倫/浮気', '結婚']
+      const workCategories = ['仕事']
+      const moneyCategories = ['金運']
+
+      if (loveCategories.includes(concernCategory)) {
+        categoryLoveCount = categoryConsultations?.length || 0
+      } else if (workCategories.includes(concernCategory)) {
+        categoryWorkCount = categoryConsultations?.length || 0
+      } else if (moneyCategories.includes(concernCategory)) {
+        categoryMoneyCount = categoryConsultations?.length || 0
+      }
+    }
+
     // バッジ定義を取得
     const { data: badgeDefinitions } = await supabase
       .from('badge_definitions')
@@ -156,6 +240,24 @@ export async function checkAndAwardBadges(userId: string): Promise<string[]> {
           break
         case 'level':
           shouldAward = currentLevel >= badge.condition_value
+          break
+        case 'login_streak':
+          shouldAward = loginStreak >= badge.condition_value
+          break
+        case 'morning_check':
+          shouldAward = hasMorningCheck
+          break
+        case 'night_check':
+          shouldAward = hasNightCheck
+          break
+        case 'category_love':
+          shouldAward = categoryLoveCount >= badge.condition_value
+          break
+        case 'category_work':
+          shouldAward = categoryWorkCount >= badge.condition_value
+          break
+        case 'category_money':
+          shouldAward = categoryMoneyCount >= badge.condition_value
           break
       }
 
@@ -379,6 +481,86 @@ export async function getUnearnedBadges(userId: string): Promise<UnearnedBadge[]
 
     const currentLevel = levelData?.current_level || 1
 
+    // 連続ログイン日数を計算
+    const { data: loginHistory } = await supabase
+      .from('login_history')
+      .select('login_at')
+      .eq('user_id', userId)
+      .order('login_at', { ascending: false })
+
+    let loginStreak = 0
+    if (loginHistory && loginHistory.length > 0) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      let currentDate = new Date(today)
+      let streak = 0
+
+      for (const login of loginHistory) {
+        const loginDate = new Date(login.login_at)
+        loginDate.setHours(0, 0, 0, 0)
+
+        if (loginDate.getTime() === currentDate.getTime()) {
+          streak++
+          currentDate.setDate(currentDate.getDate() - 1)
+        } else if (loginDate.getTime() < currentDate.getTime()) {
+          break
+        }
+      }
+
+      loginStreak = streak
+    }
+
+    // 朝の時間帯チェックと夜の時間帯チェック
+    const { data: morningLogins } = await supabase
+      .from('login_history')
+      .select('login_at')
+      .eq('user_id', userId)
+
+    let hasMorningCheck = false
+    let hasNightCheck = false
+
+    if (morningLogins && morningLogins.length > 0) {
+      for (const login of morningLogins) {
+        const loginDate = new Date(login.login_at)
+        const hour = loginDate.getHours()
+
+        if (hour >= 5 && hour < 12) {
+          hasMorningCheck = true
+        }
+        if (hour >= 18 && hour < 24) {
+          hasNightCheck = true
+        }
+
+        if (hasMorningCheck && hasNightCheck) break
+      }
+    }
+
+    // カテゴリ別の相談回数を取得
+    const { data: categoryConsultations } = await supabase
+      .from('divination_results')
+      .select('id')
+      .eq('user_id', userId)
+
+    const concernCategory = profile?.concern_category
+    let categoryLoveCount = 0
+    let categoryWorkCount = 0
+    let categoryMoneyCount = 0
+
+    if (concernCategory) {
+      const loveCategories = ['恋愛', '片思い', '復縁', '不倫/浮気', '結婚']
+      const workCategories = ['仕事']
+      const moneyCategories = ['金運']
+
+      if (loveCategories.includes(concernCategory)) {
+        categoryLoveCount = categoryConsultations?.length || 0
+      } else if (workCategories.includes(concernCategory)) {
+        categoryWorkCount = categoryConsultations?.length || 0
+      } else if (moneyCategories.includes(concernCategory)) {
+        categoryMoneyCount = categoryConsultations?.length || 0
+      }
+    }
+
     // バッジ定義を取得
     const { data: badgeDefinitions } = await supabase
       .from('badge_definitions')
@@ -422,22 +604,28 @@ export async function getUnearnedBadges(userId: string): Promise<UnearnedBadge[]
           requirementText = `レベル${badge.condition_value}に到達する`
           break
         case 'login_streak':
-          // ログイン連続日数は別途実装が必要なため、現時点では0
-          currentProgress = 0
+          currentProgress = loginStreak
           requirementText = `${badge.condition_value}日連続でログインする`
           break
         case 'morning_check':
+          currentProgress = hasMorningCheck ? 1 : 0
+          requirementText = badge.description || '朝の時間帯（5:00-11:59）にログインする'
+          break
         case 'night_check':
-          // 時間帯チェックは別途実装が必要
-          currentProgress = 0
-          requirementText = badge.description
+          currentProgress = hasNightCheck ? 1 : 0
+          requirementText = badge.description || '夜の時間帯（18:00-23:59）にログインする'
           break
         case 'category_love':
+          currentProgress = categoryLoveCount
+          requirementText = `恋愛カテゴリで${badge.condition_value}回相談する`
+          break
         case 'category_work':
+          currentProgress = categoryWorkCount
+          requirementText = `仕事カテゴリで${badge.condition_value}回相談する`
+          break
         case 'category_money':
-          // カテゴリ別相談回数は別途実装が必要
-          currentProgress = 0
-          requirementText = badge.description
+          currentProgress = categoryMoneyCount
+          requirementText = `金運カテゴリで${badge.condition_value}回相談する`
           break
       }
 
