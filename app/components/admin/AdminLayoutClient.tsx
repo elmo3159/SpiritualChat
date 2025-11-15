@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Ticket,
   Megaphone,
+  Bell,
 } from 'lucide-react'
 // import { motion, AnimatePresence } from 'framer-motion'
 import type { AdminTokenPayload } from '@/lib/auth/admin'
@@ -54,6 +55,11 @@ const navItems: NavItem[] = [
     href: '/admin/campaigns',
     label: 'キャンペーン管理',
     icon: <Megaphone className="w-5 h-5" />,
+  },
+  {
+    href: '/admin/push-notifications',
+    label: 'プッシュ通知',
+    icon: <Bell className="w-5 h-5" />,
   },
 ]
 
