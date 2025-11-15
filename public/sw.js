@@ -110,3 +110,62 @@ async function networkFirst(request) {
     throw error
   }
 }
+
+// プッシュ通知イベント
+self.addEventListener('push', (event) => {
+  const data = event.data?.json() || {}
+  const title = data.title || 'スピチャ'
+  const options = {
+    body: data.body || '新しいお知らせがあります',
+    icon: '/icons/icon-192x192.png',
+    badge: '/icons/icon-72x72.png',
+    vibrate: [200, 100, 200],
+    data: {
+      url: data.url || '/',
+      ...data,
+    },
+    actions: data.actions || [],
+    tag: data.tag || 'default',
+    requireInteraction: data.requireInteraction || false,
+  }
+
+  event.waitUntil(self.registration.showNotification(title, options))
+})
+
+// 通知クリックイベント
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+
+  const urlToOpen = event.notification.data?.url || '/'
+
+  event.waitUntil(
+    clients
+      .matchAll({ type: 'window', includeUncontrolled: true })
+      .then((windowClients) => {
+        // 既に開いているウィンドウがあるかチェック
+        for (let i = 0; i < windowClients.length; i++) {
+          const client = windowClients[i]
+          if (client.url === urlToOpen && 'focus' in client) {
+            return client.focus()
+          }
+        }
+        // 新しいウィンドウを開く
+        if (clients.openWindow) {
+          return clients.openWindow(urlToOpen)
+        }
+      })
+  )
+})
+
+// バックグラウンド同期イベント（将来的に使用）
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'sync-messages') {
+    event.waitUntil(syncMessages())
+  }
+})
+
+async function syncMessages() {
+  // オフライン時に保存されたメッセージを送信
+  // 実装は後で追加
+  console.log('Background sync: messages')
+}

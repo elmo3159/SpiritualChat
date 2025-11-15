@@ -5,6 +5,7 @@ import { AuthProvider } from "@/lib/contexts/AuthContext";
 import BottomNavigation from "@/app/components/navigation/BottomNavigation";
 import GoogleAnalytics from "@/lib/analytics/google-analytics";
 import RegisterServiceWorker from "@/lib/pwa/register-sw";
+import InstallPrompt from "@/app/components/pwa/InstallPrompt";
 import { Suspense } from "react";
 import NextTopLoader from "nextjs-toploader";
 
@@ -66,6 +67,7 @@ export default function RootLayout({
         />
         {gaId && <GoogleAnalytics measurementId={gaId} />}
         <RegisterServiceWorker />
+        <InstallPrompt />
         <AuthProvider>
           {children}
           <Suspense fallback={null}>
