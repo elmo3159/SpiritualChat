@@ -91,7 +91,7 @@ export async function createCheckoutSession(
       .lte('start_date', now.toISOString())
       .gte('end_date', now.toISOString())
       .limit(1)
-      .single()
+      .maybeSingle()
 
     if (campaigns) {
       campaignId = campaigns.id
