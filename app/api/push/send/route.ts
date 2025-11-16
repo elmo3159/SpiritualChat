@@ -2,15 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import webpush from 'web-push'
 
-// VAPID設定
-const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || ''
-const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || ''
-const vapidSubject = process.env.VAPID_SUBJECT || 'mailto:support@spiritualchat.pro'
-
-if (vapidPublicKey && vapidPrivateKey) {
-  webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey)
-}
-
 export interface PushNotificationPayload {
   title: string
   body: string
@@ -39,6 +30,20 @@ export interface PushNotificationPayload {
  */
 export async function POST(request: NextRequest) {
   try {
+    // VAPID設定（実行時に環境変数を読み込む）
+    const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
+    const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY
+    const vapidSubject = process.env.VAPID_SUBJECT || 'mailto:support@spiritualchat.pro'
+
+    if (!vapidPublicKey || !vapidPrivateKey) {
+      return NextResponse.json(
+        { success: false, error: 'VAPID設定が見つかりません' },
+        { status: 500 }
+      )
+    }
+
+    webpush.setVapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey)
+
     const supabase = await createClient()
 
     // 認証チェック（管理者のみ実行可能にする場合はここで確認）
