@@ -6,6 +6,7 @@ import FortuneTellerList from './fortune-tellers/FortuneTellerList'
 import type { FortuneTeller } from '@/lib/types/fortune-teller'
 import Link from 'next/link'
 import IOSInstallGuide from './pwa/IOSInstallGuide'
+import WelcomePopup from './welcome/WelcomePopup'
 import {
   shouldShowIOSInstallGuide,
   isInstallGuideHidden,
@@ -21,6 +22,7 @@ interface HomeTabViewProps {
   currentPoints: number
   today: string
   hasUnlockedDivination: boolean
+  isNewUser: boolean
 }
 
 type Tab = 'chat' | 'fortune'
@@ -31,9 +33,11 @@ export default function HomeTabView({
   currentPoints,
   today,
   hasUnlockedDivination,
+  isNewUser,
 }: HomeTabViewProps) {
   const [activeTab, setActiveTab] = useState<Tab>('chat')
   const [showInstallGuide, setShowInstallGuide] = useState(false)
+  const [showWelcomePopup, setShowWelcomePopup] = useState(false)
 
   useEffect(() => {
     // チャットタブで、鑑定結果開封済み、iOS、未インストール、非表示設定なしの場合にガイド表示
@@ -50,6 +54,25 @@ export default function HomeTabView({
       return () => clearTimeout(timer)
     }
   }, [activeTab, hasUnlockedDivination])
+
+  useEffect(() => {
+    // 新規ユーザーで、チャットタブで、まだウェルカムポップアップを表示していない場合
+    if (activeTab === 'chat' && isNewUser) {
+      const hasShownWelcome = localStorage.getItem('welcome-popup-shown')
+      if (!hasShownWelcome) {
+        // 少し遅延させてから表示（UX向上）
+        const timer = setTimeout(() => {
+          setShowWelcomePopup(true)
+        }, 500)
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [activeTab, isNewUser])
+
+  const handleCloseWelcomePopup = () => {
+    setShowWelcomePopup(false)
+    localStorage.setItem('welcome-popup-shown', 'true')
+  }
 
   const formattedDate = new Date(today).toLocaleDateString('ja-JP', {
     month: 'numeric',
@@ -205,6 +228,11 @@ export default function HomeTabView({
       {/* PWAインストールガイド */}
       {showInstallGuide && (
         <IOSInstallGuide onClose={() => setShowInstallGuide(false)} />
+      )}
+
+      {/* ウェルカムポップアップ */}
+      {showWelcomePopup && (
+        <WelcomePopup points={1000} onClose={handleCloseWelcomePopup} />
       )}
     </div>
   )

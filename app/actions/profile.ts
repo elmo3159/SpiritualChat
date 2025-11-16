@@ -147,6 +147,42 @@ export async function createProfile(formData: ProfileFormData) {
       }
     }
 
+    // 新規登録ボーナスとして1000ptを付与
+    const { data: existingPoints } = await supabase
+      .from('user_points')
+      .select('points_balance')
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    if (existingPoints) {
+      // 既存のポイント残高を更新
+      await supabase
+        .from('user_points')
+        .update({
+          points_balance: existingPoints.points_balance + 1000,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('user_id', user.id)
+    } else {
+      // 新規レコードを作成
+      await supabase
+        .from('user_points')
+        .insert({
+          user_id: user.id,
+          points_balance: 1000,
+        })
+    }
+
+    // ポイント取引履歴を記録
+    await supabase
+      .from('points_transactions')
+      .insert({
+        user_id: user.id,
+        points: 1000,
+        transaction_type: 'bonus',
+        description: '新規登録ボーナス',
+      })
+
     // キャッシュを再検証
     revalidatePath('/')
 

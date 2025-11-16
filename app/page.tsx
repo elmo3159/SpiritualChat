@@ -51,6 +51,7 @@ export default async function Home() {
 
   // 鑑定結果を開封したことがあるかチェック
   let hasUnlockedDivination = false
+  let isNewUser = false
   if (user) {
     const { data: unlockedResults } = await supabase
       .from('divination_results')
@@ -60,6 +61,15 @@ export default async function Home() {
       .limit(1)
 
     hasUnlockedDivination = (unlockedResults?.length || 0) > 0
+
+    // 新規ユーザーかチェック（プロフィール登録完了済み）
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('onboarding_completed')
+      .eq('id', user.id)
+      .single()
+
+    isNewUser = profile?.onboarding_completed === true
   }
 
   return (
@@ -125,6 +135,7 @@ export default async function Home() {
           currentPoints={currentPoints}
           today={today}
           hasUnlockedDivination={hasUnlockedDivination}
+          isNewUser={isNewUser}
         />
       </div>
     </main>
