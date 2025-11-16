@@ -110,7 +110,7 @@ export default async function ChatPage({ params }: Props) {
 
       {/* ヘッダー */}
       <header className="sticky top-0 z-50 bg-[#1e1b4b]/80 backdrop-blur-md shadow-sm border-b border-purple-500/20">
-        <div className="flex items-center gap-4 px-4 py-3 max-w-3xl mx-auto">
+        <div className="flex items-center gap-4 px-4 py-2 max-w-3xl mx-auto">
           {/* 戻るボタン */}
           <Link
             href="/"
