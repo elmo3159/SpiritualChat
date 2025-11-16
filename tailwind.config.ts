@@ -89,6 +89,9 @@ const config: Config = {
         shimmer: 'shimmer 3s ease-in-out infinite',
         twinkle: 'twinkle 3s ease-in-out infinite',
       },
+      padding: {
+        'safe': 'env(safe-area-inset-bottom)',
+      },
     }
   },
   plugins: [require("tailwindcss-animate")],

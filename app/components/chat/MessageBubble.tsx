@@ -51,7 +51,7 @@ export default function MessageBubble({ message }: Props) {
       <div className={`flex flex-col max-w-[75%] ${isUser ? 'items-end' : 'items-start'}`}>
         {/* 送信者名（占い師の場合のみ） */}
         {!isUser && message.sender_name && (
-          <span className="text-xs text-gray-600 mb-1 px-1">
+          <span className="text-xs text-gray-300 mb-1 px-1">
             {message.sender_name}
           </span>
         )}

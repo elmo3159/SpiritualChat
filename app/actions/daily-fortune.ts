@@ -16,6 +16,11 @@ const SYSTEM_PROMPT = `
 - その日の全体的な傾向、心構え、注意点を伝える
 - ユーザーが前向きに一日を過ごせるようサポートする
 
+【言葉遣いについて】
+- 難しい言葉や専門用語は使わず、誰にでもわかりやすい日常的な言葉で話してください
+- 小学生でも理解できるような、やさしくシンプルな表現を心がけてください
+- 漢字が多くならないよう、ひらがなも適度に使ってください
+
 【重要な制約】
 1. 確証のない具体的行動指示は絶対に避けてください
    ❌ NG例: "今日彼に連絡してみるといいでしょう"
@@ -37,6 +42,15 @@ const SYSTEM_PROMPT = `
 
 💡 改行ルールの指定
 ・文章を読みやすくするため、文末には必ず改行を入れて視覚的なボリューム感を出してください
+
+【ラッキーアイテムとラッキー行動について】
+- ラッキーアイテムは、日常的に身近にあるもの、すぐに手に入るものを選んでください
+  ✅ 良い例: ハンカチ、ボールペン、お茶、チョコレート、スマホケース、靴下、マグカップなど
+  ❌ 悪い例: パワーストーン、高級な物、入手困難なもの
+
+- ラッキー行動は、普通の人が簡単にできる、日常的な行動を選んでください
+  ✅ 良い例: 朝のストレッチ、好きな音楽を聴く、温かい飲み物を飲む、笑顔で挨拶する、窓を開けて深呼吸など
+  ❌ 悪い例: 瞑想、ヨガ、特別な修行、珍しい場所に行くこと
 
 【出力形式】
 以下の形式で、合計400文字程度で出力してください。
@@ -219,6 +233,17 @@ async function buildUserContext(userId: string, date: string): Promise<string> {
     .eq('sender_type', 'user')
     .order('created_at', { ascending: false })
 
+  // 過去の運勢データから、過去30日分のラッキーアイテムとラッキー行動を取得
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+  const { data: pastFortunes } = await supabaseAdmin
+    .from('daily_fortunes')
+    .select('lucky_item, lucky_action, fortune_date')
+    .eq('user_id', userId)
+    .gte('fortune_date', thirtyDaysAgo.toISOString().split('T')[0])
+    .order('fortune_date', { ascending: false })
+    .limit(30)
+
   const concernCategoryMap: Record<string, string> = {
     'love': '恋愛',
     'crush': '片思い',
@@ -274,8 +299,38 @@ ${messages.map(m => `- ${m.content}`).join('\n')}
   userPrompt += `
 【占う日付】
 ${date}（${weekday}）
+`
 
-上記の情報を踏まえ、この方の今日一日の運勢を占ってください。
+  // 過去のラッキーアイテムとラッキー行動がある場合、重複回避の指示を追加
+  if (pastFortunes && pastFortunes.length > 0) {
+    const pastItems = pastFortunes
+      .map(f => f.lucky_item)
+      .filter(item => item)
+      .join('、')
+
+    const pastActions = pastFortunes
+      .map(f => f.lucky_action)
+      .filter(action => action)
+      .join('、')
+
+    if (pastItems || pastActions) {
+      userPrompt += `
+【重要: 過去に提案したラッキーアイテム・ラッキー行動】
+以下は過去30日間にこのユーザーに提案したラッキーアイテムとラッキー行動です。
+今回は、これらと重複しないものを選んでください。
+
+`
+      if (pastItems) {
+        userPrompt += `過去のラッキーアイテム: ${pastItems}\n`
+      }
+      if (pastActions) {
+        userPrompt += `過去のラッキー行動: ${pastActions}\n`
+      }
+      userPrompt += '\n'
+    }
+  }
+
+  userPrompt += `上記の情報を踏まえ、この方の今日一日の運勢を占ってください。
 制約を守り、指定された出力形式で回答してください。
 `
 

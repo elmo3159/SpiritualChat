@@ -119,6 +119,13 @@ export default function NotificationPanel() {
     }
   }, [])
 
+  // パネルを開いたときに自動的にすべて既読にする
+  useEffect(() => {
+    if (isOpen && unreadCount > 0) {
+      markAllAsRead()
+    }
+  }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // すべて既読にする
   const markAllAsRead = async () => {
     const unreadIds = notifications
