@@ -138,6 +138,12 @@ export async function createCheckoutSession(
     return { url: checkoutSession.url! }
   } catch (error: any) {
     console.error('チェックアウトセッション作成エラー:', error)
+    console.error('エラースタック:', error.stack)
+    console.error('エラー詳細:', {
+      message: error.message,
+      name: error.name,
+      cause: error.cause,
+    })
     throw new Error(
       error.message || 'チェックアウトセッションの作成に失敗しました'
     )
