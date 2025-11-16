@@ -13,10 +13,10 @@ function getStripeClient(): Stripe {
     )
   }
 
-  console.log('Creating Stripe client with API version: 2025-10-29.clover')
+  console.log('Creating Stripe client with API version: 2024-11-20')
 
   return new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2025-10-29.clover',
+    apiVersion: '2024-11-20',
     typescript: true,
   })
 }
