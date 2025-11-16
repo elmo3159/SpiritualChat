@@ -152,11 +152,20 @@ export async function getLevelDetails(userId: string) {
  */
 export function getLevelTitle(level: number): string {
   if (level >= 100) return '伝説の占い師'
+  if (level >= 90) return '運命の織り手'
   if (level >= 75) return '神秘の求道者'
-  if (level >= 50) return '運命の探究者'
+  if (level >= 65) return '天界の使者'
+  if (level >= 55) return '霊視の賢者'
+  if (level >= 45) return '聖なる導き手'
+  if (level >= 35) return '運命の探究者'
+  if (level >= 30) return '神託の受け手'
   if (level >= 25) return '占いの達人'
-  if (level >= 10) return '占いの修行者'
+  if (level >= 20) return '星詠みの賢者'
+  if (level >= 15) return 'タロットの使い手'
+  if (level >= 11) return '占いの修行者'
+  if (level >= 8) return '月の探究者'
   if (level >= 5) return '占い初級者'
+  if (level >= 3) return '星見習い'
   return '占いの門下生'
 }
 
