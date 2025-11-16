@@ -1,10 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MessageCircle, Sparkles, Star as StarIcon } from 'lucide-react'
 import FortuneTellerList from './fortune-tellers/FortuneTellerList'
 import type { FortuneTeller } from '@/lib/types/fortune-teller'
 import Link from 'next/link'
+import IOSInstallGuide from './pwa/IOSInstallGuide'
+import {
+  shouldShowIOSInstallGuide,
+  isInstallGuideHidden,
+} from '@/lib/utils/device-detection'
 
 interface HomeTabViewProps {
   fortuneTellers: FortuneTeller[]
@@ -15,6 +20,7 @@ interface HomeTabViewProps {
   } | null
   currentPoints: number
   today: string
+  hasUnlockedDivination: boolean
 }
 
 type Tab = 'chat' | 'fortune'
@@ -24,8 +30,26 @@ export default function HomeTabView({
   fortune,
   currentPoints,
   today,
+  hasUnlockedDivination,
 }: HomeTabViewProps) {
   const [activeTab, setActiveTab] = useState<Tab>('chat')
+  const [showInstallGuide, setShowInstallGuide] = useState(false)
+
+  useEffect(() => {
+    // チャットタブで、鑑定結果開封済み、iOS、未インストール、非表示設定なしの場合にガイド表示
+    if (
+      activeTab === 'chat' &&
+      hasUnlockedDivination &&
+      shouldShowIOSInstallGuide() &&
+      !isInstallGuideHidden()
+    ) {
+      // 少し遅延させてから表示（UX向上）
+      const timer = setTimeout(() => {
+        setShowInstallGuide(true)
+      }, 800)
+      return () => clearTimeout(timer)
+    }
+  }, [activeTab, hasUnlockedDivination])
 
   const formattedDate = new Date(today).toLocaleDateString('ja-JP', {
     month: 'numeric',
@@ -176,6 +200,11 @@ export default function HomeTabView({
             )}
           </Link>
         </div>
+      )}
+
+      {/* PWAインストールガイド */}
+      {showInstallGuide && (
+        <IOSInstallGuide onClose={() => setShowInstallGuide(false)} />
       )}
     </div>
   )

@@ -13,10 +13,12 @@ import {
   BarChart3,
   User,
   MessageSquare,
+  Smartphone,
 } from 'lucide-react'
 import ChangePasswordModal from './ChangePasswordModal'
 import DeleteAccountModal from './DeleteAccountModal'
 import ContactForm from '@/app/components/contact/ContactForm'
+import PWAGuideSection from '@/app/components/settings/PWAGuideSection'
 import Image from 'next/image'
 
 interface Transaction {
@@ -218,6 +220,19 @@ export default function SettingsContent({
               </div>
               <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-spiritual-gold transition-colors" />
             </button>
+          </div>
+        </section>
+
+        {/* アプリ化（PWA）セクション */}
+        <section className="bg-spiritual-darker/50 backdrop-blur-sm rounded-xl border border-spiritual-lavender/20 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-lavender/20">
+            <h2 className="text-lg font-semibold text-spiritual-gold flex items-center gap-2">
+              <Smartphone className="w-5 h-5" />
+              アプリとして使う
+            </h2>
+          </div>
+          <div className="p-5">
+            <PWAGuideSection />
           </div>
         </section>
 

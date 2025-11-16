@@ -49,6 +49,19 @@ export default async function Home() {
   const today = new Date().toISOString().split('T')[0]
   const { fortune } = user ? await getDailyFortune(today) : { fortune: null }
 
+  // 鑑定結果を開封したことがあるかチェック
+  let hasUnlockedDivination = false
+  if (user) {
+    const { data: unlockedResults } = await supabase
+      .from('divination_results')
+      .select('id')
+      .eq('user_id', user.id)
+      .not('unlocked_at', 'is', null)
+      .limit(1)
+
+    hasUnlockedDivination = (unlockedResults?.length || 0) > 0
+  }
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-spiritual-dark via-spiritual-darker to-spiritual-purple pb-16">
       {/* ヘッダー */}
@@ -111,6 +124,7 @@ export default async function Home() {
           fortune={fortune}
           currentPoints={currentPoints}
           today={today}
+          hasUnlockedDivination={hasUnlockedDivination}
         />
       </div>
     </main>
