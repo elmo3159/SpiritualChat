@@ -41,18 +41,18 @@ export default function PWAGuideSection() {
       ) : (
         <div className="bg-gradient-to-br from-spiritual-purple/30 to-spiritual-accent/20 rounded-xl p-6 border border-spiritual-lavender/30 relative overflow-hidden">
           {/* アプリアイコンを背景に表示 */}
-          <div className="absolute top-0 right-0 w-32 h-32 opacity-10">
+          <div className="absolute -top-6 -right-6 w-36 h-36 opacity-[0.08]">
             <Image
               src="/icons/icon-192x192.png"
               alt="スピチャアイコン"
-              width={128}
-              height={128}
-              className="object-contain"
+              width={144}
+              height={144}
+              className="object-cover w-full h-full"
             />
           </div>
 
           <div className="flex items-start gap-4 relative z-10">
-            <div className="p-3 bg-gradient-to-r from-spiritual-accent to-spiritual-gold rounded-full shadow-lg">
+            <div className="p-3 bg-gradient-to-r from-spiritual-accent to-spiritual-gold rounded-full shadow-lg flex-shrink-0">
               <Smartphone className="w-6 h-6 text-spiritual-dark" />
             </div>
             <div className="flex-1">
@@ -90,13 +90,13 @@ export default function PWAGuideSection() {
         <div className="bg-spiritual-darker/50 backdrop-blur-sm rounded-xl p-6 border border-spiritual-lavender/30">
           {/* アプリアイコンプレビュー */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg border-2 border-spiritual-gold/30">
+            <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg border-2 border-spiritual-gold/30 flex-shrink-0">
               <Image
                 src="/icons/icon-192x192.png"
                 alt="スピチャアプリアイコン"
                 width={64}
                 height={64}
-                className="object-contain"
+                className="object-cover w-full h-full"
               />
             </div>
             <div>
@@ -189,13 +189,13 @@ export default function PWAGuideSection() {
         <div className="bg-spiritual-darker/50 backdrop-blur-sm rounded-xl p-6 border border-spiritual-lavender/30">
           {/* アプリアイコンプレビュー */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg border-2 border-spiritual-gold/30">
+            <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg border-2 border-spiritual-gold/30 flex-shrink-0">
               <Image
                 src="/icons/icon-192x192.png"
                 alt="スピチャアプリアイコン"
                 width={64}
                 height={64}
-                className="object-contain"
+                className="object-cover w-full h-full"
               />
             </div>
             <div>
