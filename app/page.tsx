@@ -66,7 +66,7 @@ export default async function Home() {
     <main className="min-h-screen bg-gradient-to-br from-spiritual-dark via-spiritual-darker to-spiritual-purple pb-16">
       {/* ヘッダー */}
       <header className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg shadow-lg border-b border-spiritual-lavender/30">
-        <div className="container mx-auto px-4 py-3 md:py-5">
+        <div className="container mx-auto px-4 py-3 md:py-5 pt-safe-top">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Image
