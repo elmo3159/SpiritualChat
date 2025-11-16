@@ -90,7 +90,7 @@ export default function SettingsContent({
 
       {/* ヘッダー */}
       <div className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg border-b border-spiritual-lavender/30">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-2xl mx-auto px-4 py-4 pt-safe-top flex items-center justify-between">
           <Image
             src="/images/logo.png"
             alt="スピチャ"
