@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import { calculateLevel, calculateExpForLevel, calculateExpToNextLevel, calculateLevelProgress } from './badge-service'
+import { createLevelUpNotification } from './notification-service'
 
 export interface UserLevel {
   id: string
@@ -88,10 +89,14 @@ export async function updateLevelOnPointsUsed(userId: string, pointsUsed: number
       })
       .eq('user_id', userId)
 
-    // レベルアップした場合はバッジチェック
+    // レベルアップした場合はバッジチェックと通知作成
     if (newLevel > levelData.current_level) {
       // レベル関連のバッジチェックは次回のバッジチェックで行われる
       console.log(`レベルアップ: ${levelData.current_level} -> ${newLevel}`)
+
+      // レベルアップ通知を作成
+      const levelTitle = getLevelTitle(newLevel)
+      await createLevelUpNotification(userId, levelData.current_level, newLevel, levelTitle)
     }
   } catch (error) {
     console.error('レベル更新エラー:', error)

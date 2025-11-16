@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Bell, X, Check, Sparkles, Coins, MessageCircle, Info } from 'lucide-react'
+import { Bell, X, Check, Sparkles, Coins, MessageCircle, Info, TrendingUp, Award, Gift, Zap } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 interface Notification {
   id: string
-  type: 'new_message' | 'divination_ready' | 'points_low' | 'system'
+  type: 'new_message' | 'divination_ready' | 'points_low' | 'system' | 'level_up' | 'badge_earned' | 'points_awarded' | 'exp_awarded'
   title: string
   message: string
   is_read: boolean
@@ -36,6 +36,14 @@ export default function NotificationPanel() {
         return <Sparkles className="w-5 h-5 text-spiritual-accent" />
       case 'points_low':
         return <Coins className="w-5 h-5 text-yellow-500" />
+      case 'level_up':
+        return <TrendingUp className="w-5 h-5 text-spiritual-accent" />
+      case 'badge_earned':
+        return <Award className="w-5 h-5 text-spiritual-gold" />
+      case 'points_awarded':
+        return <Gift className="w-5 h-5 text-green-500" />
+      case 'exp_awarded':
+        return <Zap className="w-5 h-5 text-blue-500" />
       case 'system':
         return <Info className="w-5 h-5 text-spiritual-lavender" />
     }

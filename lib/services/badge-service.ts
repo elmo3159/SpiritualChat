@@ -1,4 +1,5 @@
 import { createAdminClient } from '@/lib/supabase/server'
+import { createBadgeEarnedNotification, createPointsAwardedNotification, createExpAwardedNotification } from './notification-service'
 
 export interface BadgeDefinition {
   badge_key: string
@@ -273,6 +274,14 @@ export async function checkAndAwardBadges(userId: string): Promise<string[]> {
         if (!error) {
           newBadges.push(badge.badge_key)
 
+          // バッジ獲得通知を作成
+          await createBadgeEarnedNotification(
+            userId,
+            badge.badge_key,
+            badge.name,
+            badge.description
+          )
+
           // ボーナスポイントを付与
           if (badge.bonus_points > 0) {
             await awardBonusPoints(userId, badge.bonus_points, badge.badge_key)
@@ -330,6 +339,9 @@ async function awardBonusPoints(userId: string, points: number, badgeKey: string
       .update({ bonus_points_claimed: true })
       .eq('user_id', userId)
       .eq('badge_key', badgeKey)
+
+    // ポイント付与通知を作成
+    await createPointsAwardedNotification(userId, points, 'バッジ獲得ボーナス')
   } catch (error) {
     console.error('ボーナスポイント付与エラー:', error)
   }
@@ -360,6 +372,9 @@ async function awardBonusExp(userId: string, exp: number): Promise<void> {
           updated_at: new Date().toISOString(),
         })
         .eq('user_id', userId)
+
+      // 経験値付与通知を作成
+      await createExpAwardedNotification(userId, exp, 'バッジ獲得ボーナス')
     }
   } catch (error) {
     console.error('ボーナス経験値付与エラー:', error)
