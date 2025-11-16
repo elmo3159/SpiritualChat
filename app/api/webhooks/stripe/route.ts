@@ -1,6 +1,6 @@
 import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
-import { stripe } from '@/lib/stripe/client'
+import { getStripeClient } from '@/lib/stripe/client'
 import { createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
 
@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Webhook署名を検証
+    const stripe = getStripeClient()
     let event: Stripe.Event
     try {
       event = stripe.webhooks.constructEvent(

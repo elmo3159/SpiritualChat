@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/server'
-import { stripe } from '@/lib/stripe/client'
+import { getStripeClient } from '@/lib/stripe/client'
 import { getPlanById } from '@/lib/data/point-plans'
 
 /**
@@ -98,7 +98,8 @@ export async function createCheckoutSession(
       bonusPoints = Math.round((plan.points * campaigns.bonus_percentage) / 100)
     }
 
-    // Stripe Checkoutセッションを作成
+    // Stripe Checkoutセッションを作成（実行時に初期化）
+    const stripe = getStripeClient()
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'] as any, // PayPayは自動的に表示されます

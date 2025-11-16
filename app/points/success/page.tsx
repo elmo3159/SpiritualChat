@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { stripe } from '@/lib/stripe/client'
+import { getStripeClient } from '@/lib/stripe/client'
 import { CheckCircle, Sparkles } from 'lucide-react'
 
 interface PageProps {
@@ -36,6 +36,7 @@ export default async function PointsSuccessPage({
   }
 
   // Stripeセッション情報を取得
+  const stripe = getStripeClient()
   let session
   try {
     session = await stripe.checkout.sessions.retrieve(sessionId)
