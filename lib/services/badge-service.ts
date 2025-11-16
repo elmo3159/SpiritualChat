@@ -92,8 +92,8 @@ export async function checkAndAwardBadges(userId: string): Promise<string[]> {
       profile.nickname &&
       profile.birth_date &&
       profile.gender &&
-      profile.worry_category &&
-      profile.worry_description
+      profile.concern_category &&
+      profile.concern_description
 
     // 占い師ごとの相談回数を取得（全占い師制覇バッジ用）
     const { data: fortuneTellerStats } = await supabase
@@ -454,8 +454,8 @@ export async function getUnearnedBadges(userId: string): Promise<UnearnedBadge[]
       profile.nickname &&
       profile.birth_date &&
       profile.gender &&
-      profile.worry_category &&
-      profile.worry_description
+      profile.concern_category &&
+      profile.concern_description
 
     const { data: fortuneTellerStats } = await supabase
       .from('divination_results')
