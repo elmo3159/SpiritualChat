@@ -19,6 +19,8 @@ export async function createNotification(
   const supabase = createAdminClient()
 
   try {
+    console.log(`[通知作成] タイプ: ${type}, ユーザーID: ${userId}, タイトル: ${title}`)
+
     const { error } = await supabase.from('notifications').insert({
       user_id: userId,
       type,
@@ -30,13 +32,19 @@ export async function createNotification(
     })
 
     if (error) {
-      console.error('通知作成エラー:', error)
+      console.error(`[通知作成エラー] タイプ: ${type}, ユーザーID: ${userId}`, {
+        error,
+        code: error.code,
+        message: error.message,
+        details: error.details,
+      })
       return false
     }
 
+    console.log(`[通知作成成功] タイプ: ${type}, ユーザーID: ${userId}`)
     return true
   } catch (error) {
-    console.error('通知作成エラー:', error)
+    console.error(`[通知作成例外] タイプ: ${type}, ユーザーID: ${userId}`, error)
     return false
   }
 }
