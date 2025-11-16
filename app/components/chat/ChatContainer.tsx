@@ -532,7 +532,7 @@ export default function ChatContainer({
   return (
     <div className="flex-1 flex flex-col min-h-0 relative">
       {/* メッセージ一覧エリア */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden pb-[160px]">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden pb-[145px]">
         <div className="max-w-3xl mx-auto px-4 py-6">
           {combinedItems.length === 0 ? (
             <div className="space-y-6">
@@ -656,14 +656,14 @@ export default function ChatContainer({
 
       {/* エラーメッセージ - 固定位置 */}
       {error && (
-        <div className="absolute bottom-[calc(120px+env(safe-area-inset-bottom))] left-0 right-0 px-4 py-2 bg-red-900/50 border-t border-red-700/50 backdrop-blur-sm z-10">
+        <div className="absolute bottom-[calc(105px+env(safe-area-inset-bottom))] left-0 right-0 px-4 py-2 bg-red-900/50 border-t border-red-700/50 backdrop-blur-sm z-10">
           <p className="text-sm text-red-300 text-center">{error}</p>
         </div>
       )}
 
       {/* 制限に達した時のみ表示 - 固定位置 */}
       {remainingMessageCount <= 0 && (
-        <div className="absolute bottom-[calc(120px+env(safe-area-inset-bottom))] left-0 right-0 px-4 py-2 bg-red-900/50 backdrop-blur-md border-t border-red-700/50 z-10">
+        <div className="absolute bottom-[calc(105px+env(safe-area-inset-bottom))] left-0 right-0 px-4 py-2 bg-red-900/50 backdrop-blur-md border-t border-red-700/50 z-10">
           <div className="max-w-3xl mx-auto">
             <p className="text-xs md:text-sm text-red-300 text-center font-semibold">
               本日の送信回数制限（3回）に達しました。鑑定結果を開封するか、明日再度お試しください。
@@ -676,7 +676,7 @@ export default function ChatContainer({
       <div className="fixed bottom-0 left-0 right-0 z-10 pb-[env(safe-area-inset-bottom)]">
         <div className="bg-spiritual-dark/95 backdrop-blur-lg border-t border-spiritual-purple/30 shadow-lg">
           {/* 占ってもらうボタン */}
-          <div className="px-4 pt-1 pb-0">
+          <div className="px-4 pt-0.5 pb-0">
             <div className="max-w-3xl mx-auto">
               <DivinationButton
                 fortuneTellerId={fortuneTellerId}
