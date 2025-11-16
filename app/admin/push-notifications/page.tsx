@@ -1,12 +1,8 @@
-import { Metadata } from 'next'
+'use client'
+
 import PushNotificationForm from '@/app/components/admin/PushNotificationForm'
 import PushNotificationHistory from '@/app/components/admin/PushNotificationHistory'
 import { Bell } from 'lucide-react'
-
-export const metadata: Metadata = {
-  title: 'プッシュ通知管理 - 管理画面',
-  description: 'プッシュ通知の送信と履歴管理',
-}
 
 export default function PushNotificationsPage() {
   return (
