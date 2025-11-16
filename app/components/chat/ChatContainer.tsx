@@ -532,7 +532,7 @@ export default function ChatContainer({
   return (
     <div className="flex-1 flex flex-col min-h-0 relative">
       {/* メッセージ一覧エリア */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden pb-[145px]">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden pb-[calc(145px+env(safe-area-inset-bottom))]">
         <div className="max-w-3xl mx-auto px-4 py-6">
           {combinedItems.length === 0 ? (
             <div className="space-y-6">
