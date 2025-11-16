@@ -16,7 +16,7 @@ function getStripeClient(): Stripe {
   console.log('Creating Stripe client with API version: 2024-11-20')
 
   return new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: '2024-11-20',
+    apiVersion: '2024-11-20' as any,
     typescript: true,
   })
 }
