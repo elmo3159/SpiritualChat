@@ -95,11 +95,18 @@ export async function updateLevelOnPointsUsed(userId: string, pointsUsed: number
       console.log(`[レベルアップ] ユーザーID: ${userId}, ${levelData.current_level} -> ${newLevel}`)
 
       // レベルアップ通知を作成
-      const levelTitle = getLevelTitle(newLevel)
-      const notificationCreated = await createLevelUpNotification(userId, levelData.current_level, newLevel, levelTitle)
+      const oldLevelTitle = getLevelTitle(levelData.current_level)
+      const newLevelTitle = getLevelTitle(newLevel)
+      const notificationCreated = await createLevelUpNotification(
+        userId,
+        levelData.current_level,
+        newLevel,
+        newLevelTitle,
+        oldLevelTitle
+      )
 
       if (notificationCreated) {
-        console.log(`[レベルアップ通知作成成功] ユーザーID: ${userId}, レベル: ${newLevel}`)
+        console.log(`[レベルアップ通知作成成功] ユーザーID: ${userId}, レベル: ${newLevel}, 称号: ${oldLevelTitle} -> ${newLevelTitle}`)
       } else {
         console.error(`[レベルアップ通知作成失敗] ユーザーID: ${userId}, レベル: ${newLevel}`)
       }

@@ -56,13 +56,21 @@ export async function createLevelUpNotification(
   userId: string,
   oldLevel: number,
   newLevel: number,
-  levelTitle: string
+  newLevelTitle: string,
+  oldLevelTitle: string
 ): Promise<boolean> {
+  // 称号が変わったかチェック
+  const titleChanged = oldLevelTitle !== newLevelTitle
+
+  const message = titleChanged
+    ? `おめでとうございます！レベル${oldLevel}から${newLevel}に上がりました。新しい称号「${newLevelTitle}」を獲得しました！`
+    : `おめでとうございます！レベル${oldLevel}から${newLevel}に上がりました。`
+
   return createNotification(
     userId,
     'level_up',
     `レベルアップ！ Lv.${newLevel}`,
-    `おめでとうございます！レベル${oldLevel}から${newLevel}に上がりました。称号「${levelTitle}」を獲得しました。`,
+    message,
     'level',
     newLevel.toString()
   )
