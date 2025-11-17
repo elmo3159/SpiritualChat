@@ -412,6 +412,9 @@ export default function ProfileEditPage() {
               <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
                 お悩みの内容 <span className="text-red-400">*</span>
               </label>
+              <p className="text-xs md:text-sm text-spiritual-gold/90 mb-2">
+                長文でもOK！状況を詳しく書くことをおすすめしております。
+              </p>
               <textarea
                 {...register('concernDescription')}
                 rows={6}

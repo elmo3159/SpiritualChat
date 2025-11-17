@@ -384,6 +384,9 @@ export default function ProfileCreatePage() {
                 <label htmlFor="concernDescription" className="block text-sm font-medium text-gray-200 mb-2">
                   お悩みの内容 <span className="text-red-400">*</span>
                 </label>
+                <p className="text-xs md:text-sm text-spiritual-gold/90 mb-2">
+                  長文でもOK！状況を詳しく書くことをおすすめしております。
+                </p>
                 <textarea
                   id="concernDescription"
                   {...register('concernDescription')}
