@@ -14,6 +14,7 @@ export default function BottomNavigation() {
 
   // ボトムナビゲーションを非表示にするページ
   const shouldHide =
+    pathname === '/' ||
     pathname?.startsWith('/chat/') ||
     pathname?.startsWith('/admin') ||
     pathname?.startsWith('/login') ||
@@ -27,7 +28,7 @@ export default function BottomNavigation() {
     return null
   }
 
-  const isFortuneActive = pathname === '/'
+  const isFortuneActive = pathname === '/fortune-tellers'
   const isPointsActive = pathname?.startsWith('/points')
   const isProfileActive = pathname?.startsWith('/profile')
   const isSettingsActive = pathname?.startsWith('/settings')
@@ -37,7 +38,7 @@ export default function BottomNavigation() {
       <div className="flex items-center justify-around min-h-16 px-4 pb-safe">
         {/* 占いタブ */}
         <Link
-          href="/"
+          href="/fortune-tellers"
           className={`
             flex flex-col items-center justify-center gap-1 flex-1 h-full
             transition-all duration-300
