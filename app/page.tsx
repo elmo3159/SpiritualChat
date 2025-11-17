@@ -190,12 +190,12 @@ export default function LandingPage() {
 
           <div className="text-center space-y-6">
             {/* メインキャッチコピー + LINE風吹き出し */}
-            <div className="max-w-2xl mx-auto px-4">
-              <div className="flex items-center gap-3 md:gap-6 mb-6">
+            <div className="max-w-3xl mx-auto px-4">
+              <div className="flex items-center gap-4 md:gap-8 mb-6">
                 {/* 左側：あなたの悩み、今すぐ占います */}
                 <div className="flex-shrink-0">
-                  <h2 className="text-xl md:text-3xl lg:text-4xl font-bold leading-tight text-left">
-                    <span className="block text-white mb-1">あなたの悩み、</span>
+                  <h2 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-left">
+                    <span className="block text-white mb-2">あなたの悩み、</span>
                     <span className="block bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-clip-text text-transparent whitespace-nowrap">
                       今すぐ占います
                     </span>
@@ -203,19 +203,22 @@ export default function LandingPage() {
                 </div>
 
                 {/* 右側：LINE風吹き出し */}
-                <div className="flex flex-col items-end gap-3 flex-1 min-w-0">
+                <div className="flex flex-col items-end gap-2.5 flex-1 min-w-0">
                   <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[85%]">
-                    <p className="text-xs md:text-base">恋愛復縁するには？</p>
+                    <p className="text-xs md:text-sm">復縁するには？</p>
                   </div>
                   <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[85%]">
-                    <p className="text-xs md:text-base">具体的な時期は？</p>
+                    <p className="text-xs md:text-sm">私の事どう思ってる？</p>
+                  </div>
+                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[85%]">
+                    <p className="text-xs md:text-sm">具体的な時期は？</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <p className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto px-4">
-              人気占い師監修のAI占いで24時間365日、いつでも本格鑑定
+              人気占い師監修のチャット占いで24時間365日、いつでも高精度な本格占い
             </p>
 
             {/* 占い師画像 */}
@@ -246,6 +249,28 @@ export default function LandingPage() {
               </div>
             </div>
 
+            {/* チャット占いメッセージ */}
+            <div className="relative mt-6 px-4">
+              <div className="absolute inset-0 bg-gradient-to-r from-spiritual-accent/10 via-spiritual-gold/10 to-spiritual-accent/10 blur-2xl"></div>
+              <div className="relative bg-white/5 backdrop-blur-sm border border-spiritual-gold/30 rounded-3xl p-6 md:p-8 max-w-2xl mx-auto shadow-2xl">
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-spiritual-accent to-spiritual-gold flex items-center justify-center shadow-lg">
+                    <MessageCircle className="w-5 h-5 text-spiritual-dark" />
+                  </div>
+                </div>
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-2">
+                  <span className="bg-gradient-to-r from-white via-spiritual-gold to-white bg-clip-text text-transparent">
+                    チャット占いだから
+                  </span>
+                </h3>
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">
+                  <span className="bg-gradient-to-r from-white via-spiritual-gold to-white bg-clip-text text-transparent">
+                    いつでも気軽に占える
+                  </span>
+                </h3>
+              </div>
+            </div>
+
             {/* CTAボタン */}
             <div className="pt-4">
               <button
@@ -258,9 +283,6 @@ export default function LandingPage() {
                   今すぐ無料で占う
                 </span>
               </button>
-              <p className="text-xs md:text-sm text-gray-400 mt-3">
-                ※ 新規登録で1000ポイントプレゼント
-              </p>
             </div>
           </div>
         </div>
