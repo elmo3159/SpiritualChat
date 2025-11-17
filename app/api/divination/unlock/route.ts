@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import type { UnlockDivinationResponse } from '@/lib/types/divination'
-import { resetMessageLimit, MAX_MESSAGES_PER_DAY } from '@/lib/supabase/message-limits'
-import { calculateAge, getCurrentJapanTime } from '@/lib/utils/datetime'
-import { generateContent } from '@/lib/gemini'
-import { buildRegenerateSuggestionPrompt } from '@/lib/gemini/prompts'
-import { cleanupMessageText } from '@/lib/utils/text-cleanup'
+import { resetMessageLimit } from '@/lib/supabase/message-limits'
 import { updateLevelOnPointsUsed } from '@/lib/services/level-service'
 
 /**
@@ -130,107 +126,7 @@ export async function POST(request: NextRequest) {
     // メッセージ送信回数制限をリセット
     await resetMessageLimit(supabase, user.id, divination.fortune_teller_id)
 
-    // 次の鑑定提案を同期的に生成・送信
-    try {
-      // 占い師情報を取得
-      const { data: fortuneTeller } = await supabase
-        .from('fortune_tellers')
-        .select('*')
-        .eq('id', divination.fortune_teller_id)
-        .single()
-
-      if (fortuneTeller) {
-        // ユーザープロフィールを取得
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single()
-
-        if (profile) {
-          // チャット履歴を取得
-          const { data: messages } = await supabase
-            .from('chat_messages')
-            .select('*')
-            .eq('user_id', user.id)
-            .eq('fortune_teller_id', divination.fortune_teller_id)
-            .order('created_at', { ascending: true })
-            .limit(10)
-
-          const chatHistory = messages?.map((msg) => ({
-            role: (msg.sender_type === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
-            content: msg.content,
-          })) || []
-
-          // 過去の鑑定結果を取得（開封済みのもののみ、今開封したものを除く）
-          const { data: previousDivinations } = await supabase
-            .from('divination_results')
-            .select('result_encrypted')
-            .eq('user_id', user.id)
-            .eq('fortune_teller_id', divination.fortune_teller_id)
-            .eq('is_unlocked', true)
-            .neq('id', divinationId) // 今開封したものを除く
-            .order('created_at', { ascending: false })
-            .limit(3)
-
-          const previousDivinationTexts = previousDivinations
-            ? previousDivinations.map((d) => d.result_encrypted)
-            : []
-
-          // ユーザーの年齢を計算
-          const userAge = calculateAge(profile.birth_date)
-
-          // 現在の日本時間を取得
-          const currentJapanTime = getCurrentJapanTime()
-
-          const context = {
-            userNickname: profile.nickname,
-            birthDate: profile.birth_date,
-            userAge,
-            gender: profile.gender,
-            concernCategory: profile.concern_category,
-            concernDescription: profile.concern_description,
-            birthTime: profile.birth_time || undefined,
-            birthPlace: profile.birth_place || undefined,
-            partnerName: profile.partner_name || undefined,
-            partnerGender: profile.partner_gender || undefined,
-            partnerBirthDate: profile.partner_birth_date || undefined,
-            partnerAge: profile.partner_age || undefined,
-            chatHistory: chatHistory,
-            previousDivinations: previousDivinationTexts.length > 0 ? previousDivinationTexts : undefined,
-            currentJapanTime,
-          }
-
-          // 今開封した鑑定結果を最新コンテンツとして使用
-          const prompt = buildRegenerateSuggestionPrompt(
-            fortuneTeller.suggestion_prompt,
-            context,
-            divination.result_encrypted, // 開封された鑑定結果全文
-            true // 鑑定結果からの再生成
-          )
-
-          const rawSuggestion = await generateContent(prompt)
-          const suggestion = cleanupMessageText(rawSuggestion)
-
-          // Admin Clientを使用して提案をチャットメッセージとして保存
-          const adminSupabase = createAdminClient()
-          await adminSupabase
-            .from('chat_messages')
-            .insert({
-              user_id: user.id,
-              fortune_teller_id: divination.fortune_teller_id,
-              sender_type: 'fortune_teller',
-              content: suggestion,
-              is_divination_request: false,
-            })
-
-          console.log('次の鑑定提案を送信しました')
-        }
-      }
-    } catch (error) {
-      console.error('次の鑑定提案送信エラー:', error)
-      // エラーでもレスポンスは返す（提案生成失敗は致命的ではない）
-    }
+    // 注: 次の鑑定提案は1分後にクライアント側から /api/chat/post-unlock-suggestion を呼び出して生成されます
 
     // レスポンスを返却
     const response: UnlockDivinationResponse = {

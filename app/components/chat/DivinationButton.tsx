@@ -22,6 +22,11 @@ interface Props {
   onDivinationGenerated?: (divinationId: string) => void
 
   /**
+   * 鑑定生成状態変更時のコールバック
+   */
+  onGeneratingChange?: (isGenerating: boolean) => void
+
+  /**
    * カスタムクラス名
    */
   className?: string
@@ -36,6 +41,7 @@ export default function DivinationButton({
   fortuneTellerId,
   disabled = false,
   onDivinationGenerated,
+  onGeneratingChange,
   className = '',
 }: Props) {
   const [isGenerating, setIsGenerating] = useState(false)
@@ -44,6 +50,7 @@ export default function DivinationButton({
 
   const handleDivinationRequest = async () => {
     setIsGenerating(true)
+    onGeneratingChange?.(true)
     setError(null)
 
     try {
@@ -62,6 +69,7 @@ export default function DivinationButton({
       if (!result.success) {
         setError(result.message || '鑑定の生成に失敗しました')
         setIsGenerating(false)
+        onGeneratingChange?.(false)
         return
       }
 
@@ -72,10 +80,12 @@ export default function DivinationButton({
       }
 
       setIsGenerating(false)
+      onGeneratingChange?.(false)
     } catch (error) {
       console.error('鑑定生成エラー:', error)
       setError('予期しないエラーが発生しました')
       setIsGenerating(false)
+      onGeneratingChange?.(false)
     }
   }
 
