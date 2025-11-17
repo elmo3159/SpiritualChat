@@ -168,7 +168,7 @@ export default function LandingPage() {
       </header>
 
       {/* ヒーローセクション */}
-      <section className="relative pt-20 md:pt-24 pb-12 px-4 overflow-hidden">
+      <section className="relative pt-16 md:pt-24 pb-8 md:pb-12 px-4 overflow-hidden">
         {/* 背景エフェクト */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-10 left-5 w-48 h-48 md:w-72 md:h-72 bg-spiritual-accent/20 rounded-full blur-3xl animate-pulse"></div>
@@ -177,25 +177,25 @@ export default function LandingPage() {
 
         <div className="container mx-auto max-w-6xl relative z-10">
           {/* 無料バッジ */}
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-4 md:mb-6">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-spiritual-accent to-spiritual-gold blur-xl opacity-50 animate-pulse"></div>
-              <div className="relative px-8 py-3 bg-gradient-to-r from-spiritual-accent to-spiritual-gold rounded-full border-2 border-spiritual-dark/20">
-                <p className="text-spiritual-dark font-bold text-lg md:text-2xl whitespace-nowrap tracking-wide">
+              <div className="relative px-6 py-2 md:px-8 md:py-3 bg-gradient-to-r from-spiritual-accent to-spiritual-gold rounded-full border-2 border-spiritual-dark/20">
+                <p className="text-spiritual-dark font-bold text-base md:text-2xl whitespace-nowrap tracking-wide">
                   無料で占える
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="text-center space-y-6">
+          <div className="text-center space-y-4 md:space-y-6">
             {/* メインキャッチコピー + LINE風吹き出し */}
             <div className="max-w-3xl mx-auto px-4">
-              <div className="flex items-center gap-4 md:gap-8 mb-6">
+              <div className="flex items-center gap-4 md:gap-8 mb-4 md:mb-6">
                 {/* 左側：あなたの悩み、今すぐ占います */}
                 <div className="flex-shrink-0">
-                  <h2 className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-left">
-                    <span className="block text-white mb-2">あなたの悩み、</span>
+                  <h2 className="text-xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-left">
+                    <span className="block text-white mb-1 md:mb-2">あなたの悩み、</span>
                     <span className="block bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-clip-text text-transparent whitespace-nowrap">
                       今すぐ占います
                     </span>
@@ -204,13 +204,13 @@ export default function LandingPage() {
 
                 {/* 右側：LINE風吹き出し */}
                 <div className="flex flex-col items-end gap-2.5 flex-1 min-w-0">
-                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[85%]">
+                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[95%]">
                     <p className="text-xs md:text-sm">復縁するには？</p>
                   </div>
-                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[85%]">
+                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[95%]">
                     <p className="text-xs md:text-sm">私の事どう思ってる？</p>
                   </div>
-                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[85%]">
+                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[95%]">
                     <p className="text-xs md:text-sm">具体的な時期は？</p>
                   </div>
                 </div>
@@ -222,7 +222,7 @@ export default function LandingPage() {
             </p>
 
             {/* 占い師画像 */}
-            <div className="flex justify-center gap-3 md:gap-4 py-4 mt-4">
+            <div className="flex justify-center gap-3 md:gap-4 py-3 md:py-4 mt-2 md:mt-4">
               <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-3 border-spiritual-gold/50 shadow-lg shadow-spiritual-gold/30">
                 <Image
                   src="/images/Generated Image November 08, 2025 - 10_28AM.png"
@@ -250,20 +250,20 @@ export default function LandingPage() {
             </div>
 
             {/* チャット占いメッセージ */}
-            <div className="relative mt-6 px-4">
+            <div className="relative mt-3 md:mt-6 px-4">
               <div className="absolute inset-0 bg-gradient-to-r from-spiritual-accent/10 via-spiritual-gold/10 to-spiritual-accent/10 blur-2xl"></div>
-              <div className="relative bg-white/5 backdrop-blur-sm border border-spiritual-gold/30 rounded-3xl p-6 md:p-8 max-w-2xl mx-auto shadow-2xl">
-                <div className="flex items-center justify-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-spiritual-accent to-spiritual-gold flex items-center justify-center shadow-lg">
-                    <MessageCircle className="w-5 h-5 text-spiritual-dark" />
+              <div className="relative bg-white/5 backdrop-blur-sm border border-spiritual-gold/30 rounded-3xl p-4 md:p-8 max-w-2xl mx-auto shadow-2xl">
+                <div className="flex items-center justify-center gap-3 mb-2 md:mb-3">
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-spiritual-accent to-spiritual-gold flex items-center justify-center shadow-lg">
+                    <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-spiritual-dark" />
                   </div>
                 </div>
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-2">
+                <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-center mb-1 md:mb-2">
                   <span className="bg-gradient-to-r from-white via-spiritual-gold to-white bg-clip-text text-transparent">
                     チャット占いだから
                   </span>
                 </h3>
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center">
+                <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-center">
                   <span className="bg-gradient-to-r from-white via-spiritual-gold to-white bg-clip-text text-transparent">
                     いつでも気軽に占える
                   </span>
