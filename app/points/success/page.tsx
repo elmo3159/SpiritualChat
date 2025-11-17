@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getStripeClient } from '@/lib/stripe/client'
 import { CheckCircle, Sparkles } from 'lucide-react'
+import TikTokPurchaseTracker from './TikTokPurchaseTracker'
 
 interface PageProps {
   searchParams: {
@@ -58,7 +59,13 @@ export default async function PointsSuccessPage({
 
   const currentBalance = userPoints?.points_balance || 0
 
+  // 購入金額を取得（セントから円に変換）
+  const purchaseAmount = session.amount_total ? session.amount_total / 100 : 0
+
   return (
+    <>
+      {/* TikTok購入イベントトラッカー */}
+      <TikTokPurchaseTracker amount={purchaseAmount} />
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-purple-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         {/* 成功アニメーション */}
@@ -149,5 +156,6 @@ export default async function PointsSuccessPage({
         </div>
       </div>
     </div>
+    </>
   )
 }

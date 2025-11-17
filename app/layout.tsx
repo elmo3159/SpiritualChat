@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/contexts/AuthContext";
 import BottomNavigation from "@/app/components/navigation/BottomNavigation";
 import GoogleAnalytics from "@/lib/analytics/google-analytics";
+import TikTokPixel from "@/lib/analytics/tiktok-pixel";
 import RegisterServiceWorker from "@/lib/pwa/register-sw";
 import InstallPrompt from "@/app/components/pwa/InstallPrompt";
 import { Suspense } from "react";
@@ -77,6 +78,7 @@ export default function RootLayout({
           shadow="0 0 10px #d4af37,0 0 5px #d4af37"
         />
         {gaId && <GoogleAnalytics measurementId={gaId} />}
+        <TikTokPixel />
         <RegisterServiceWorker />
         <InstallPrompt />
         <AuthProvider>
