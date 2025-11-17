@@ -117,9 +117,9 @@ export default function LandingPage() {
           <div className="flex justify-center mb-6">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-spiritual-accent to-spiritual-gold blur-xl opacity-50 animate-pulse"></div>
-              <div className="relative px-8 py-3 bg-gradient-to-r from-spiritual-accent to-spiritual-gold rounded-full">
-                <p className="text-spiritual-dark font-bold text-lg md:text-2xl whitespace-nowrap">
-                  ✨ 1回無料で占える ✨
+              <div className="relative px-8 py-3 bg-gradient-to-r from-spiritual-accent to-spiritual-gold rounded-full border-2 border-spiritual-dark/20">
+                <p className="text-spiritual-dark font-bold text-lg md:text-2xl whitespace-nowrap tracking-wide">
+                  1回無料で占える
                 </p>
               </div>
             </div>
