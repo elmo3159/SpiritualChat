@@ -197,28 +197,22 @@ export default function LandingPage() {
               </span>
             </h2>
 
+            {/* LINE風吹き出し - ユーザーイメージ */}
+            <div className="flex flex-col items-end max-w-md mx-auto gap-3 mb-6 px-4">
+              <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-md max-w-[80%]">
+                <p className="text-sm md:text-base">恋愛復縁するには？</p>
+              </div>
+              <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-md max-w-[80%]">
+                <p className="text-sm md:text-base">具体的な時期は？</p>
+              </div>
+            </div>
+
             <p className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto px-4">
               人気占い師監修のAI占いで24時間365日、いつでも本格鑑定
             </p>
 
-            {/* 実績数字 */}
-            <div className="flex justify-center gap-6 md:gap-12 py-4">
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-spiritual-gold">10名+</div>
-                <div className="text-xs md:text-sm text-gray-400 mt-1">監修占い師</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-spiritual-gold">10,000+</div>
-                <div className="text-xs md:text-sm text-gray-400 mt-1">累計鑑定数</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-spiritual-gold">4.8</div>
-                <div className="text-xs md:text-sm text-gray-400 mt-1">満足度評価</div>
-              </div>
-            </div>
-
             {/* 占い師画像 */}
-            <div className="flex justify-center gap-3 md:gap-4 py-2">
+            <div className="flex justify-center gap-3 md:gap-4 py-4 mt-4">
               <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-3 border-spiritual-gold/50 shadow-lg shadow-spiritual-gold/30">
                 <Image
                   src="/images/Generated Image November 08, 2025 - 10_28AM.png"
