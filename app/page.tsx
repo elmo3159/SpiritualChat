@@ -182,28 +182,35 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-spiritual-accent to-spiritual-gold blur-xl opacity-50 animate-pulse"></div>
               <div className="relative px-8 py-3 bg-gradient-to-r from-spiritual-accent to-spiritual-gold rounded-full border-2 border-spiritual-dark/20">
                 <p className="text-spiritual-dark font-bold text-lg md:text-2xl whitespace-nowrap tracking-wide">
-                  1回無料で占える
+                  無料で占える
                 </p>
               </div>
             </div>
           </div>
 
           <div className="text-center space-y-6">
-            {/* メインキャッチコピー */}
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight px-4">
-              <span className="block text-white mb-2">あなたの悩み、</span>
-              <span className="block bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-clip-text text-transparent">
-                今すぐ占います
-              </span>
-            </h2>
+            {/* メインキャッチコピー + LINE風吹き出し */}
+            <div className="max-w-2xl mx-auto px-4">
+              <div className="flex items-center gap-3 md:gap-6 mb-6">
+                {/* 左側：あなたの悩み、今すぐ占います */}
+                <div className="flex-shrink-0">
+                  <h2 className="text-xl md:text-3xl lg:text-4xl font-bold leading-tight text-left">
+                    <span className="block text-white mb-1">あなたの悩み、</span>
+                    <span className="block bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-clip-text text-transparent whitespace-nowrap">
+                      今すぐ占います
+                    </span>
+                  </h2>
+                </div>
 
-            {/* LINE風吹き出し - ユーザーイメージ */}
-            <div className="flex flex-col items-end max-w-md mx-auto gap-3 mb-6 px-4">
-              <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-md max-w-[80%]">
-                <p className="text-sm md:text-base">恋愛復縁するには？</p>
-              </div>
-              <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-md max-w-[80%]">
-                <p className="text-sm md:text-base">具体的な時期は？</p>
+                {/* 右側：LINE風吹き出し */}
+                <div className="flex flex-col items-end gap-3 flex-1 min-w-0">
+                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[85%]">
+                    <p className="text-xs md:text-base">恋愛復縁するには？</p>
+                  </div>
+                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tr-sm px-3 md:px-4 py-2 md:py-2.5 shadow-md max-w-[85%]">
+                    <p className="text-xs md:text-base">具体的な時期は？</p>
+                  </div>
+                </div>
               </div>
             </div>
 
