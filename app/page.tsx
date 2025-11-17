@@ -251,21 +251,18 @@ export default function LandingPage() {
 
             {/* チャット占いメッセージ */}
             <div className="relative mt-3 md:mt-6 px-4">
-              <div className="absolute inset-0 bg-gradient-to-r from-spiritual-accent/10 via-spiritual-gold/10 to-spiritual-accent/10 blur-2xl"></div>
-              <div className="relative bg-white/5 backdrop-blur-sm border border-spiritual-gold/30 rounded-3xl p-4 md:p-8 max-w-2xl mx-auto shadow-2xl">
-                <div className="flex items-center justify-center gap-3 mb-2 md:mb-3">
-                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-spiritual-accent to-spiritual-gold flex items-center justify-center shadow-lg">
-                    <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-spiritual-dark" />
+              <div className="max-w-2xl mx-auto">
+                {/* LINE風吹き出し - チャット占い */}
+                <div className="flex justify-start mb-3 md:mb-4">
+                  <div className="bg-[#06c755] text-white rounded-2xl rounded-tl-sm px-4 md:px-5 py-2.5 md:py-3 shadow-lg max-w-[80%]">
+                    <p className="text-base md:text-xl font-bold">チャット占い</p>
                   </div>
                 </div>
-                <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-center mb-1 md:mb-2">
-                  <span className="bg-gradient-to-r from-white via-spiritual-gold to-white bg-clip-text text-transparent">
-                    チャット占いだから
-                  </span>
-                </h3>
+
+                {/* メインメッセージ */}
                 <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-center">
                   <span className="bg-gradient-to-r from-white via-spiritual-gold to-white bg-clip-text text-transparent">
-                    いつでも気軽に占える
+                    だからいつでも気軽に占える
                   </span>
                 </h3>
               </div>
