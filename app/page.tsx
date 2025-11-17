@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Sparkles, MessageCircle, Clock, Heart, Shield, Star, Zap } from 'lucide-react'
+import { Sparkles, MessageCircle, Clock, Heart, Shield, Star, Zap, Users, TrendingUp, Calendar, Award, Lock, CheckCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 export default function LandingPage() {
@@ -34,19 +34,44 @@ export default function LandingPage() {
 
   const features = [
     {
-      icon: <Star className="w-8 h-8" />,
-      title: '人気占い師監修',
-      description: '実績ある占い師が監修したAI占いで本格鑑定',
+      icon: <Zap className="w-7 h-7" />,
+      title: 'すぐに結果がわかる',
+      description: '待ち時間なし。質問したらすぐに本格鑑定結果をお届けします',
     },
     {
-      icon: <Clock className="w-8 h-8" />,
+      icon: <Clock className="w-7 h-7" />,
       title: '24時間365日対応',
-      description: 'いつでもあなたの悩みに寄り添います',
+      description: '深夜でも早朝でも、あなたの好きな時間にいつでも占えます',
     },
     {
-      icon: <Shield className="w-8 h-8" />,
-      title: '匿名で安心',
-      description: '人には言えない悩みも気軽に相談できます',
+      icon: <Shield className="w-7 h-7" />,
+      title: '人に言えない悩みもOK',
+      description: '誰にも知られず、匿名で安心して相談できます',
+    },
+    {
+      icon: <Heart className="w-7 h-7" />,
+      title: '優しく寄り添ってくれる',
+      description: 'いつでもあなたの味方。心が軽くなるまで何度でも',
+    },
+    {
+      icon: <TrendingUp className="w-7 h-7" />,
+      title: '時期や行動のアドバイス',
+      description: '具体的な時期や取るべき行動を丁寧にアドバイス',
+    },
+    {
+      icon: <Users className="w-7 h-7" />,
+      title: '多様な占い師',
+      description: '恋愛、仕事、人間関係。あなたに合った占い師が見つかります',
+    },
+    {
+      icon: <Calendar className="w-7 h-7" />,
+      title: '毎日の運勢も詳しく',
+      description: '今日の運勢を詳しく占って、最高の一日をスタート',
+    },
+    {
+      icon: <Star className="w-7 h-7" />,
+      title: '人気占い師監修',
+      description: '実績ある占い師が監修。本格的なAI鑑定を体験',
     },
   ]
 
@@ -68,9 +93,47 @@ export default function LandingPage() {
       category: '恋愛',
     },
     {
-      text: '本当に連絡が来た！占いで言われた通りの日に連絡があって、今は復縁できました。',
+      text: '本当に連絡が来た！占いで言われた通りの日に連絡があって、今は復縁できました。信じてよかったです。',
       name: 'A.S様（32歳）',
       category: '復縁',
+    },
+    {
+      text: '24時間いつでも相談できるのが本当に助かります。仕事で悩んでいた時、深夜に占ってもらって気持ちが楽になりました。',
+      name: 'T.Y様（35歳）',
+      category: '仕事',
+    },
+    {
+      text: '具体的な時期まで教えてくれたのが驚きでした。その通りになって、今は幸せです。',
+      name: 'R.N様（26歳）',
+      category: '恋愛',
+    },
+    {
+      text: '人には言えない悩みでしたが、匿名で相談できて本当に安心しました。優しく寄り添ってくれる言葉に救われました。',
+      name: 'H.M様（30歳）',
+      category: '不倫',
+    },
+    {
+      text: '毎朝その日の運勢を占うのが日課になりました。おかげで毎日ポジティブに過ごせています！',
+      name: 'S.K様（24歳）',
+      category: '日々の運勢',
+    },
+  ]
+
+  const securityFeatures = [
+    {
+      icon: <Lock className="w-6 h-6" />,
+      title: 'SSL暗号化通信',
+      description: '全ての通信を暗号化し、第三者からの盗聴を防止',
+    },
+    {
+      icon: <Shield className="w-6 h-6" />,
+      title: '個人情報の厳重管理',
+      description: 'お客様の情報は安全に保護され、悪用の心配はありません',
+    },
+    {
+      icon: <CheckCircle className="w-6 h-6" />,
+      title: '安全な決済システム',
+      description: 'Stripe社の決済システムで、お支払い情報も安全に保護',
     },
   ]
 
@@ -138,8 +201,24 @@ export default function LandingPage() {
               人気占い師監修のAI占いで24時間365日、いつでも本格鑑定
             </p>
 
+            {/* 実績数字 */}
+            <div className="flex justify-center gap-6 md:gap-12 py-4">
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-spiritual-gold">10名+</div>
+                <div className="text-xs md:text-sm text-gray-400 mt-1">監修占い師</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-spiritual-gold">10,000+</div>
+                <div className="text-xs md:text-sm text-gray-400 mt-1">累計鑑定数</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-bold text-spiritual-gold">4.8</div>
+                <div className="text-xs md:text-sm text-gray-400 mt-1">満足度評価</div>
+              </div>
+            </div>
+
             {/* 占い師画像 */}
-            <div className="flex justify-center gap-3 md:gap-4 py-4">
+            <div className="flex justify-center gap-3 md:gap-4 py-2">
               <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-3 border-spiritual-gold/50 shadow-lg shadow-spiritual-gold/30">
                 <Image
                   src="/images/Generated Image November 08, 2025 - 10_28AM.png"
@@ -188,24 +267,24 @@ export default function LandingPage() {
 
       {/* 特徴セクション */}
       <section className="py-12 md:py-16 px-4">
-        <div className="container mx-auto max-w-5xl">
+        <div className="container mx-auto max-w-6xl">
           <h3 className="text-2xl md:text-4xl font-bold text-center mb-8 md:mb-12">
             <span className="bg-gradient-to-r from-spiritual-accent to-spiritual-gold bg-clip-text text-transparent">
               スピチャが選ばれる理由
             </span>
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-6 md:p-8 text-center"
+                className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-4 md:p-6 text-center hover:border-spiritual-gold/30 transition-all duration-300"
               >
-                <div className="text-spiritual-gold mb-3 flex justify-center">
+                <div className="text-spiritual-gold mb-2 flex justify-center">
                   {feature.icon}
                 </div>
-                <h4 className="text-lg md:text-xl font-bold mb-2">{feature.title}</h4>
-                <p className="text-gray-300 text-sm leading-relaxed">
+                <h4 className="text-sm md:text-base font-bold mb-1 md:mb-2">{feature.title}</h4>
+                <p className="text-gray-300 text-xs leading-relaxed hidden md:block">
                   {feature.description}
                 </p>
               </div>
@@ -214,59 +293,103 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 相談事例とお客様の声を統合 */}
+      {/* 相談事例セクション */}
       <section className="py-12 md:py-16 px-4">
         <div className="container mx-auto max-w-5xl">
-          {/* 相談事例 */}
-          <h3 className="text-2xl md:text-4xl font-bold text-center mb-6">
+          <h3 className="text-2xl md:text-4xl font-bold text-center mb-4 md:mb-6">
             <span className="bg-gradient-to-r from-spiritual-accent to-spiritual-gold bg-clip-text text-transparent">
               こんなお悩み、ありませんか？
             </span>
           </h3>
-          <p className="text-center text-gray-300 mb-8 text-sm md:text-base">
+          <p className="text-center text-gray-300 mb-6 md:mb-8 text-sm md:text-base">
             人には言えない悩みも、スピチャなら安心して相談できます
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mb-12">
-            {consultationCases.slice(0, 8).map((caseText, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+            {consultationCases.map((caseText, index) => (
               <div
                 key={index}
-                className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-lg p-3 md:p-4 text-center"
+                className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-lg p-3 md:p-4 text-center hover:border-spiritual-gold/30 transition-all duration-300"
               >
                 <p className="text-white text-xs md:text-sm font-medium">{caseText}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* お客様の声 */}
-          <h3 className="text-2xl md:text-4xl font-bold text-center mb-6 mt-12 md:mt-16">
+      {/* お客様の声セクション */}
+      <section className="py-12 md:py-16 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <h3 className="text-2xl md:text-4xl font-bold text-center mb-6 md:mb-10">
             <span className="bg-gradient-to-r from-spiritual-accent to-spiritual-gold bg-clip-text text-transparent">
               お客様の声
             </span>
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-5 md:p-6"
+                className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-4 md:p-5 hover:border-spiritual-gold/30 transition-all duration-300"
               >
-                <div className="flex items-start gap-3 mb-3">
+                <div className="flex items-start gap-2 mb-3">
                   <div className="text-spiritual-gold flex-shrink-0">
-                    <Star className="w-5 h-5 fill-current" />
+                    <Star className="w-4 h-4 md:w-5 md:h-5 fill-current" />
                   </div>
-                  <p className="text-gray-200 text-sm md:text-base leading-relaxed">
+                  <p className="text-gray-200 text-xs md:text-sm leading-relaxed">
                     {'"'}{testimonial.text}{'"'}
                   </p>
                 </div>
-                <div className="flex justify-between items-center mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs md:text-sm text-gray-400">{testimonial.name}</p>
-                  <span className="px-2 md:px-3 py-1 bg-spiritual-gold/20 border border-spiritual-gold/30 rounded-full text-xs text-spiritual-gold">
+                <div className="flex justify-between items-center mt-3 pt-3 border-t border-white/10">
+                  <p className="text-xs text-gray-400">{testimonial.name}</p>
+                  <span className="px-2 py-1 bg-spiritual-gold/20 border border-spiritual-gold/30 rounded-full text-xs text-spiritual-gold">
                     {testimonial.category}
                   </span>
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* セキュリティ・信頼性セクション */}
+      <section className="py-12 md:py-16 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <h3 className="text-2xl md:text-4xl font-bold text-center mb-4 md:mb-6">
+            <span className="bg-gradient-to-r from-spiritual-accent to-spiritual-gold bg-clip-text text-transparent">
+              安心・安全のセキュリティ
+            </span>
+          </h3>
+          <p className="text-center text-gray-300 mb-6 md:mb-10 text-sm md:text-base">
+            お客様の大切な情報は厳重に保護されています
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {securityFeatures.map((feature, index) => (
+              <div
+                key={index}
+                className="backdrop-blur-lg bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-5 md:p-6 text-center"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-spiritual-gold/20 border border-spiritual-gold/30 mb-3 md:mb-4">
+                  <div className="text-spiritual-gold">
+                    {feature.icon}
+                  </div>
+                </div>
+                <h4 className="text-base md:text-lg font-bold mb-2">{feature.title}</h4>
+                <p className="text-gray-300 text-xs md:text-sm leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 md:mt-10 text-center">
+            <p className="text-xs md:text-sm text-gray-400 leading-relaxed">
+              スピチャは、お客様の個人情報およびお支払い情報を最高水準のセキュリティで保護しています。
+              <br className="hidden md:block" />
+              悪用や漏洩の心配はございません。安心してご利用ください。
+            </p>
           </div>
         </div>
       </section>
