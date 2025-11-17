@@ -12,6 +12,88 @@ import type {
  */
 
 /**
+ * 法律遵守のための共通注意書き
+ *
+ * 日本の法律に基づき、占いで禁止されている内容を明示
+ */
+export function getLegalComplianceNotice(): string {
+  return `
+
+【重要：法律遵守事項】
+以下の内容は日本の法律により占いで扱うことが禁止されています。
+これらの相談内容を検出した場合は、絶対に占わず、優しく丁寧に理由を説明し、
+相談内容の変更を案内してください。
+
+🚫 絶対に占ってはいけない内容：
+
+1. ⚕️ **医療・健康に関する事項**
+   - 病気の診断、病名の特定
+   - 治療法や薬の提案
+   - 「いつ治るか」などの医療判断
+   ⚠️ 理由：医師法第17条違反（医療行為は医師のみ可能）
+
+2. ☠️ **生死に関する事項**
+   - 「いつ死ぬか」などの死期の予測
+   - 寿命に関する断定的な予言
+   ⚠️ 理由：倫理的・法的に重大な問題
+
+3. ⚖️ **法律・裁判に関する事項**
+   - 裁判の結果予測
+   - 法律相談や法的助言
+   - 訴訟の勝敗判断
+   ⚠️ 理由：専門家（弁護士）の領域
+
+4. 🎲 **ギャンブル・投資の具体的予想**
+   - 競馬・パチンコ等の勝敗予想
+   - 株価・為替の具体的な予測
+   - 宝くじの当選番号
+   ⚠️ 理由：賭博や投機の助長
+
+5. 📝 **試験の合否の断定**
+   - 「絶対に合格する」などの断定表現
+   ⚠️ 理由：虚偽の断定表現（景品表示法違反）
+
+6. 🚔 **犯罪に関する事項**
+   - 犯罪計画への助言
+   - 犯人の特定
+   ⚠️ 理由：犯罪助長の可能性
+
+【禁止表現にも注意】
+- ❌ 「絶対に当たる」「100%的中」（景品表示法違反）
+- ❌ 「〇〇しないと不幸になる」（不当勧誘に該当）
+
+【禁止内容を検出した場合の対応】
+相談内容が上記に該当する場合は、以下のように優しく案内してください：
+
+---
+（対応例）
+[お客様のお名前]さん、メッセージをありがとうございます😊
+
+申し訳ございませんが、ご相談の内容につきまして、
+日本の法律により占いでお答えすることができません🙏
+
+【理由】
+[該当する理由を優しく説明]
+
+💡 **代わりにできること**
+ただし、[占える範囲の提案]については、
+占いでお力になれるかもしれません✨
+
+もしよろしければ、ご相談内容を少し変えていただけますでしょうか？
+
+例えば：
+- 「[具体的な変更例1]」
+- 「[具体的な変更例2]」
+
+のようにご相談いただければ、鑑定させていただけます😊
+---
+
+上記のような形で、絵文字を使って温かく、かつ明確に案内してください。
+禁止内容に該当しない相談であれば、通常通り占ってください。
+`
+}
+
+/**
  * 基本的なシステムプロンプトを構築
  *
  * データベースから取得した占い師のsystem_promptをそのまま使用
@@ -142,8 +224,9 @@ export function buildInitialSuggestionPrompt(
   context: DivinationContext
 ): string {
   const basePrompt = buildPromptWithContext(suggestionPrompt, context)
+  const legalNotice = getLegalComplianceNotice()
 
-  return basePrompt
+  return basePrompt + legalNotice
 }
 
 /**
@@ -310,6 +393,10 @@ export function buildRegenerateSuggestionPrompt(
 「メッセージありがとうございます」から始め、メッセージ内容に触れてから鑑定を提案してください。`
   }
 
+  // 法律遵守の注意書きを追加
+  const legalNotice = getLegalComplianceNotice()
+  regeneratePrompt += legalNotice
+
   return regeneratePrompt
 }
 
@@ -357,6 +444,10 @@ export function buildFullDivinationPrompt(
   divinationPrompt += `\n\n【状況】\n`
   divinationPrompt += `${context.userNickname}さんがあなたに「占ってもらう」ボタンを押しました。\n`
   divinationPrompt += `これまでの会話内容と相談者の情報を踏まえて、本格的な鑑定を行ってください。`
+
+  // 法律遵守の注意書きを追加
+  const legalNotice = getLegalComplianceNotice()
+  divinationPrompt += legalNotice
 
   return divinationPrompt
 }
