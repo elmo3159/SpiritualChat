@@ -113,7 +113,7 @@ export default async function ChatPage({ params }: Props) {
         <div className="flex items-center gap-4 px-4 py-2 pt-safe-top max-w-3xl mx-auto">
           {/* 戻るボタン */}
           <Link
-            href="/"
+            href="/fortune-tellers"
             className="flex-shrink-0 p-2 hover:bg-white/10 rounded-full transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-white" />
