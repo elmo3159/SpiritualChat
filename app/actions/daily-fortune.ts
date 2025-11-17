@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { updateLevelOnPointsUsed } from '@/lib/services/level-service'
 import { checkAndAwardBadges } from '@/lib/services/badge-service'
+import { getLegalComplianceNotice } from '@/lib/gemini/prompts'
 
 const DAILY_FORTUNE_COST = 1000 // ポイント
 
@@ -349,7 +350,9 @@ async function generateFortuneWithGemini(userContext: string): Promise<DailyFort
   const genAI = new GoogleGenerativeAI(apiKey)
   const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' })
 
-  const prompt = SYSTEM_PROMPT + '\n\n' + userContext
+  // 法律遵守の注意書きを追加
+  const legalNotice = getLegalComplianceNotice()
+  const prompt = SYSTEM_PROMPT + '\n\n' + legalNotice + '\n\n' + userContext
 
   const result = await model.generateContent(prompt)
   const response = result.response.text()
