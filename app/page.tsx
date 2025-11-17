@@ -291,7 +291,7 @@ export default function LandingPage() {
                     <Star className="w-6 h-6 fill-current" />
                   </div>
                   <p className="text-gray-200 leading-relaxed italic">
-                    "{testimonial.text}"
+                    {'"'}{testimonial.text}{'"'}
                   </p>
                 </div>
                 <div className="flex justify-between items-center mt-6 pt-4 border-t border-white/10">
