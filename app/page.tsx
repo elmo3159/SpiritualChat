@@ -188,13 +188,13 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="text-center space-y-4 md:space-y-6">
+          <div className="text-center space-y-5 md:space-y-7">
             {/* メインキャッチコピー + LINE風吹き出し */}
             <div className="max-w-3xl mx-auto px-4">
-              <div className="flex items-center gap-4 md:gap-8 mb-4 md:mb-6">
+              <div className="flex items-center gap-4 md:gap-8 mb-5 md:mb-7">
                 {/* 左側：あなたの悩み、今すぐ占います */}
                 <div className="flex-shrink-0">
-                  <h2 className="text-xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-left">
+                  <h2 className="text-2xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight text-left">
                     <span className="block text-white mb-1 md:mb-2">あなたの悩み、</span>
                     <span className="block bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-clip-text text-transparent whitespace-nowrap">
                       今すぐ占います
@@ -222,7 +222,7 @@ export default function LandingPage() {
             </p>
 
             {/* 占い師画像 */}
-            <div className="flex justify-center gap-3 md:gap-4 py-3 md:py-4 mt-2 md:mt-4">
+            <div className="flex justify-center gap-3 md:gap-4 py-3 md:py-4 mt-3 md:mt-5">
               <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-3 border-spiritual-gold/50 shadow-lg shadow-spiritual-gold/30">
                 <Image
                   src="/images/Generated Image November 08, 2025 - 10_28AM.png"
@@ -250,7 +250,7 @@ export default function LandingPage() {
             </div>
 
             {/* チャット占いメッセージ */}
-            <div className="relative mt-3 md:mt-6 px-4">
+            <div className="relative mt-4 md:mt-7 px-4">
               {/* グラデーション背景 */}
               <div className="absolute inset-0 bg-gradient-to-r from-spiritual-accent/10 via-spiritual-gold/10 to-spiritual-accent/10 blur-xl"></div>
 
