@@ -1,11 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useAuth } from '@/lib/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { trackCompleteRegistration } from '@/lib/analytics/tiktok-pixel'
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('')
@@ -16,13 +15,6 @@ export default function SignUpPage() {
   const [success, setSuccess] = useState(false)
   const { signUp, signInWithGoogle } = useAuth()
   const router = useRouter()
-
-  // 登録成功時にTikTokイベントをトラッキング
-  useEffect(() => {
-    if (success) {
-      trackCompleteRegistration()
-    }
-  }, [success])
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
