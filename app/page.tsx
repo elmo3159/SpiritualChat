@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/client'
 export default function LandingPage() {
   const router = useRouter()
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +28,8 @@ export default function LandingPage() {
       } = await supabase.auth.getUser()
       if (user) {
         router.replace('/fortune-tellers')
+      } else {
+        setIsCheckingAuth(false)
       }
     }
     checkAuth()
@@ -136,6 +139,18 @@ export default function LandingPage() {
       description: 'Stripe社の決済システムで、お支払い情報も安全に保護',
     },
   ]
+
+  // 認証チェック中はローディング画面を表示
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-spiritual-dark via-[#1a1a2e] to-spiritual-dark">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-spiritual-gold mb-4"></div>
+          <p className="text-spiritual-gold">読み込み中...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-spiritual-dark via-[#1a1a2e] to-spiritual-dark text-white">
