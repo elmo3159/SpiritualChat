@@ -46,14 +46,12 @@ export const profileSchema = z.object({
 
   // 任意項目
   birthTime: z
-    .string()
-    .optional()
-    .transform((val) => (val === '' ? undefined : val))
-    .refine((time) => {
-      if (!time) return true
-      const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/
-      return timeRegex.test(time)
-    }, '正しい時刻を入力してください（例：14:30）'),
+    .union([
+      z.string().regex(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, '正しい時刻を入力してください（例：14:30）'),
+      z.literal(''),
+      z.undefined(),
+    ])
+    .optional(),
 
   birthPlace: z
     .string()
