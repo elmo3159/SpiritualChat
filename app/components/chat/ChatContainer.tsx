@@ -508,7 +508,7 @@ export default function ChatContainer({
         // メッセージ送信回数制限をリセットしたのでUIを更新
         await refetchMessageLimit()
 
-        // 1分後に次の提案文を送信
+        // 30秒後に次の提案文を送信
         setIsWaitingForSuggestion(true)
         setTimeout(async () => {
           try {
@@ -534,7 +534,7 @@ export default function ChatContainer({
           } finally {
             setIsWaitingForSuggestion(false)
           }
-        }, 60000) // 60秒 = 1分
+        }, 30000) // 30秒
       }
 
       setIsUnlocking(false)
