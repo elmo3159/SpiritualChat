@@ -176,6 +176,32 @@ function LoginForm() {
             </div>
           </div>
 
+          {/* Terms Agreement */}
+          <p className="mt-4 text-xs text-gray-500 text-center">
+            ログイン・登録することで、
+            <Link
+              href="/terms"
+              className="text-purple-600 hover:text-purple-700 underline transition-colors"
+            >
+              利用規約
+            </Link>
+            、
+            <Link
+              href="/privacy"
+              className="text-purple-600 hover:text-purple-700 underline transition-colors"
+            >
+              プライバシーポリシー
+            </Link>
+            、
+            <Link
+              href="/legal/tokusho"
+              className="text-purple-600 hover:text-purple-700 underline transition-colors"
+            >
+              特定商取引法に基づく表記
+            </Link>
+            に同意したものとみなされます
+          </p>
+
           {/* Sign up link */}
           <div className="mt-6 text-center text-sm text-gray-600">
             アカウントをお持ちでないですか？{' '}
