@@ -47,7 +47,7 @@ export const profileSchema = z.object({
   // 任意項目
   birthTime: z
     .union([
-      z.string().regex(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, '正しい時刻を入力してください（例：14:30）'),
+      z.string().regex(/^([0-1][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/, '正しい時刻を入力してください（例：14:30）'),
       z.literal(''),
       z.undefined(),
     ])

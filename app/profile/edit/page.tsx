@@ -55,7 +55,9 @@ export default function ProfileEditPage() {
         const profile = result.data
         setValue('nickname', profile.nickname || '')
         setValue('birthDate', profile.birth_date || '')
-        setValue('birthTime', profile.birth_time || '')
+        // birth_timeがHH:MM:SS形式の場合、HH:MM形式に変換
+        const birthTime = profile.birth_time || ''
+        setValue('birthTime', birthTime ? birthTime.substring(0, 5) : '')
         setValue('birthPlace', profile.birth_place || '')
         setValue('gender', profile.gender || 'other')
         setValue('concernCategory', profile.concern_category || '恋愛')
