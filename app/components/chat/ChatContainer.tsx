@@ -559,6 +559,15 @@ export default function ChatContainer({
     })),
   ].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
 
+  // 最後のメッセージが占い師からの提案文かどうかをチェック
+  const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null
+  const hasSuggestion =
+    (messages.length === 0 && (initialSuggestion !== null || regeneratedSuggestion !== null)) ||
+    (lastMessage !== null && lastMessage.sender_type === 'fortune_teller')
+
+  // 提案文がない場合は占ってもらうボタンを無効化
+  const isDivinationButtonDisabled = !hasSuggestion
+
   return (
     <div className="flex-1 flex flex-col min-h-0 relative">
       {/* メッセージ一覧エリア */}
@@ -710,6 +719,7 @@ export default function ChatContainer({
             <div className="max-w-3xl mx-auto">
               <DivinationButton
                 fortuneTellerId={fortuneTellerId}
+                disabled={isDivinationButtonDisabled}
                 onDivinationGenerated={handleDivinationGenerated}
                 onGeneratingChange={setIsDivinating}
               />
