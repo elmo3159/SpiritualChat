@@ -97,8 +97,8 @@ export default function ProfileEditPage() {
         return
       }
 
-      // 更新成功
-      router.push('/')
+      // 更新成功：占い師一覧ページに直接遷移
+      router.push('/fortune-tellers')
       router.refresh()
     } catch (err) {
       console.error('プロフィール更新エラー:', err)

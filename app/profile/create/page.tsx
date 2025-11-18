@@ -55,8 +55,8 @@ export default function ProfileCreatePage() {
         setError(result.error)
         setLoading(false)
       } else if (result && result.success) {
-        // 成功時はクライアント側でリダイレクト
-        router.push('/')
+        // 成功時は占い師一覧ページに直接遷移
+        router.push('/fortune-tellers')
       }
     } catch (err) {
       setError('予期しないエラーが発生しました')

@@ -48,8 +48,9 @@ export const profileSchema = z.object({
   birthTime: z
     .string()
     .optional()
+    .transform((val) => (val === '' ? undefined : val))
     .refine((time) => {
-      if (!time || time === '') return true
+      if (!time) return true
       const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/
       return timeRegex.test(time)
     }, '正しい時刻を入力してください（例：14:30）'),
