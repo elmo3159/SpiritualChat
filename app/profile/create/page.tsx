@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { profileSchema, concernCategories, type ProfileFormData } from '@/lib/validations/profile'
 import { createProfile } from '@/app/actions/profile'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { trackCompleteRegistration } from '@/lib/analytics/tiktok-pixel'
 
 // 日本の都道府県リスト
 const PREFECTURES = [
@@ -55,6 +56,9 @@ export default function ProfileCreatePage() {
         setError(result.error)
         setLoading(false)
       } else if (result && result.success) {
+        // プロフィール登録完了イベントをトラッキング
+        trackCompleteRegistration()
+
         // 成功時は占い師一覧ページに直接遷移
         router.push('/fortune-tellers')
       }
