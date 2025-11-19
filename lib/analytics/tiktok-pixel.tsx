@@ -32,6 +32,18 @@ export default function TikTokPixel() {
 }
 
 /**
+ * SHA-256ハッシュを生成（TikTok Pixel用）
+ * メールアドレスや外部IDをハッシュ化してプライバシーを保護します
+ */
+const sha256 = async (message: string): Promise<string> => {
+  const msgBuffer = new TextEncoder().encode(message)
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+  return hashHex
+}
+
+/**
  * TikTokイベントをトラッキングするヘルパー関数
  */
 export const trackTikTokEvent = (
@@ -40,6 +52,37 @@ export const trackTikTokEvent = (
 ) => {
   if (typeof window !== 'undefined' && (window as any).ttq) {
     ;(window as any).ttq.track(eventName, eventProperties)
+  }
+}
+
+/**
+ * TikTok Pixel identify - ユーザー識別情報を送信
+ * @param email ユーザーのメールアドレス（SHA-256でハッシュ化されます）
+ * @param externalId 外部ID（SupabaseのユーザーIDなど、SHA-256でハッシュ化されます）
+ */
+export const trackTikTokIdentify = async (
+  email: string,
+  externalId?: string
+) => {
+  if (typeof window !== 'undefined' && (window as any).ttq) {
+    try {
+      // メールアドレスを小文字に変換してトリムしてからハッシュ化
+      const hashedEmail = await sha256(email.toLowerCase().trim())
+      const identifyData: Record<string, string> = {
+        email: hashedEmail,
+      }
+
+      // 外部IDが提供されている場合はハッシュ化して追加
+      if (externalId) {
+        const hashedExternalId = await sha256(externalId)
+        identifyData.external_id = hashedExternalId
+      }
+
+      // TikTok Pixelにユーザー識別情報を送信
+      ;(window as any).ttq.identify(identifyData)
+    } catch (error) {
+      console.error('TikTok identify error:', error)
+    }
   }
 }
 

@@ -7,7 +7,8 @@ import { profileSchema, concernCategories, type ProfileFormData } from '@/lib/va
 import { createProfile } from '@/app/actions/profile'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { trackCompleteRegistration } from '@/lib/analytics/tiktok-pixel'
+import { trackCompleteRegistration, trackTikTokIdentify } from '@/lib/analytics/tiktok-pixel'
+import { useAuth } from '@/lib/contexts/AuthContext'
 
 // 日本の都道府県リスト
 const PREFECTURES = [
@@ -30,6 +31,7 @@ export default function ProfileCreatePage() {
   const [error, setError] = useState<string | null>(null)
   const [usePartnerAge, setUsePartnerAge] = useState(false)
   const router = useRouter()
+  const { user } = useAuth()
 
   const {
     register,
@@ -56,6 +58,11 @@ export default function ProfileCreatePage() {
         setError(result.error)
         setLoading(false)
       } else if (result && result.success) {
+        // TikTok Pixel: ユーザー識別情報を送信
+        if (user?.email) {
+          await trackTikTokIdentify(user.email, user.id)
+        }
+
         // プロフィール登録完了イベントをトラッキング
         trackCompleteRegistration()
 
