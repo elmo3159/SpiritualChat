@@ -15,6 +15,7 @@ import {
   Ticket,
   Megaphone,
   Bell,
+  Settings,
 } from 'lucide-react'
 // import { motion, AnimatePresence } from 'framer-motion'
 import type { AdminTokenPayload } from '@/lib/auth/admin'
@@ -60,6 +61,11 @@ const navItems: NavItem[] = [
     href: '/admin/push-notifications',
     label: 'プッシュ通知',
     icon: <Bell className="w-5 h-5" />,
+  },
+  {
+    href: '/admin/settings',
+    label: '設定',
+    icon: <Settings className="w-5 h-5" />,
   },
 ]
 

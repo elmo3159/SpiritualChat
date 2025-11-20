@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Check } from 'lucide-react'
-import { POINT_PLANS, getBadgeLabel } from '@/lib/data/point-plans'
+import { POINT_PLANS, getBadgeLabel, PointPlan } from '@/lib/data/point-plans'
 import PurchaseButton from '@/app/components/points/PurchaseButton'
 import CouponInput from '@/app/components/points/CouponInput'
 
@@ -15,6 +15,32 @@ interface CouponData {
 
 export default function PointsPurchaseClient() {
   const [appliedCoupon, setAppliedCoupon] = useState<CouponData | null>(null)
+  const [visiblePlans, setVisiblePlans] = useState<PointPlan[]>(POINT_PLANS)
+
+  // 設定を取得してプランをフィルタリング
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch('/api/settings')
+        const data = await res.json()
+
+        // テストプランの表示/非表示を制御
+        if (data.enable_test_plan === false) {
+          setVisiblePlans(
+            POINT_PLANS.filter((plan) => plan.id !== 'plan-test-100')
+          )
+        } else {
+          setVisiblePlans(POINT_PLANS)
+        }
+      } catch (error) {
+        console.error('設定取得エラー:', error)
+        // エラー時は全プランを表示
+        setVisiblePlans(POINT_PLANS)
+      }
+    }
+
+    fetchSettings()
+  }, [])
 
   const calculateDiscountedPrice = (originalPrice: number) => {
     if (!appliedCoupon) return originalPrice
@@ -41,7 +67,7 @@ export default function PointsPurchaseClient() {
     <>
       {/* プラン一覧 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {POINT_PLANS.map((plan) => {
+        {visiblePlans.map((plan) => {
           const badgeLabel = getBadgeLabel(plan.badge)
           const savings = plan.regularPrice - plan.price
           const discountedPrice = calculateDiscountedPrice(plan.price)
