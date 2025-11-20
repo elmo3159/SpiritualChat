@@ -570,21 +570,26 @@ export default function ChatContainer({
     .filter((d) => !d.isUnlocked)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
 
-  // 最後の占い師メッセージ（提案文）を取得
-  const lastFortuneTellerMessage = messages
-    .filter((m) => m.sender_type === 'fortune_teller')
+  // 最後のユーザーメッセージを取得
+  const lastUserMessage = messages
+    .filter((m) => m.sender_type === 'user')
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]
 
-  // 未開封鑑定結果があり、かつそれよりも新しい提案文がない場合のみブロック
-  const hasUnlockedDivinationWithoutNewSuggestion =
+  // 未開封鑑定結果の後に、ユーザーがメッセージを送信したかチェック
+  // 送信していれば、それに対する新しい提案文が来ている可能性が高い
+  const hasUserMessageAfterDivination =
     lastUnlockedDivination &&
-    (!lastFortuneTellerMessage ||
-      new Date(lastUnlockedDivination.createdAt).getTime() >
-        new Date(lastFortuneTellerMessage.created_at).getTime())
+    lastUserMessage &&
+    new Date(lastUserMessage.created_at).getTime() >
+      new Date(lastUnlockedDivination.createdAt).getTime()
+
+  // 未開封鑑定結果があり、かつその後にユーザーがメッセージを送っていない場合のみブロック
+  const hasUnlockedDivinationWithoutNewSuggestion =
+    lastUnlockedDivination && !hasUserMessageAfterDivination
 
   // 占ってもらうボタンを無効化する条件：
   // 1. 提案文がない
-  // 2. 未開封の鑑定結果があり、かつそれよりも新しい提案文がない
+  // 2. 未開封の鑑定結果があり、かつその後にユーザーがメッセージを送信していない
   // 3. 鑑定結果開封後、次の提案文を待っている状態
   // 4. 提案文を再生成中
   const isDivinationButtonDisabled =
