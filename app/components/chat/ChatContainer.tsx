@@ -565,16 +565,33 @@ export default function ChatContainer({
     (messages.length === 0 && (initialSuggestion !== null || regeneratedSuggestion !== null)) ||
     (lastMessage !== null && lastMessage.sender_type === 'fortune_teller')
 
-  // 未開封の鑑定結果があるかチェック
-  const hasUnlockedDivination = divinations.some((d) => !d.isUnlocked)
+  // 最後の未開封鑑定結果を取得
+  const lastUnlockedDivination = divinations
+    .filter((d) => !d.isUnlocked)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0]
+
+  // 最後の占い師メッセージ（提案文）を取得
+  const lastFortuneTellerMessage = messages
+    .filter((m) => m.sender_type === 'fortune_teller')
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]
+
+  // 未開封鑑定結果があり、かつそれよりも新しい提案文がない場合のみブロック
+  const hasUnlockedDivinationWithoutNewSuggestion =
+    lastUnlockedDivination &&
+    (!lastFortuneTellerMessage ||
+      new Date(lastUnlockedDivination.createdAt).getTime() >
+        new Date(lastFortuneTellerMessage.created_at).getTime())
 
   // 占ってもらうボタンを無効化する条件：
   // 1. 提案文がない
-  // 2. 未開封の鑑定結果がある
+  // 2. 未開封の鑑定結果があり、かつそれよりも新しい提案文がない
   // 3. 鑑定結果開封後、次の提案文を待っている状態
   // 4. 提案文を再生成中
   const isDivinationButtonDisabled =
-    !hasSuggestion || hasUnlockedDivination || isWaitingForSuggestion || isRegeneratingSuggestion
+    !hasSuggestion ||
+    hasUnlockedDivinationWithoutNewSuggestion ||
+    isWaitingForSuggestion ||
+    isRegeneratingSuggestion
 
   return (
     <div className="flex-1 flex flex-col min-h-0 relative">
@@ -735,8 +752,8 @@ export default function ChatContainer({
               {isDivinationButtonDisabled && !isDivinating && (
                 <div className="mt-1 px-2">
                   <p className="text-xs text-center text-gray-400">
-                    {hasUnlockedDivination
-                      ? '💫 鑑定結果を開封してください'
+                    {hasUnlockedDivinationWithoutNewSuggestion
+                      ? '💫 鑑定結果を開封するか、メッセージを送信してください'
                       : isWaitingForSuggestion
                       ? '⏳ 次の提案を準備中...'
                       : isRegeneratingSuggestion
