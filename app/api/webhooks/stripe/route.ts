@@ -45,6 +45,11 @@ export async function POST(request: NextRequest) {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session
 
+      console.log('=== Stripe Webhook受信 ===')
+      console.log('イベントID:', event.id)
+      console.log('セッションID:', session.id)
+      console.log('メタデータ:', session.metadata)
+
       // メタデータから必要な情報を取得
       const userId = session.metadata?.userId
       const planId = session.metadata?.planId
@@ -62,6 +67,8 @@ export async function POST(request: NextRequest) {
         )
       }
 
+      console.log(`ユーザー: ${userId}, ポイント: ${points}, ボーナス: ${bonusPoints}`)
+
       // 合計ポイント（基本ポイント + ボーナスポイント）
       const totalPoints = points + bonusPoints
 
@@ -78,15 +85,14 @@ export async function POST(request: NextRequest) {
       )
 
       // べき等性チェック: 同じstripe_session_idのトランザクションが既に存在するか確認
-      const { data: existingTransaction } = await supabase
+      const { data: existingTransactions } = await supabase
         .from('points_transactions')
         .select('id')
         .eq('stripe_session_id', session.id)
-        .single()
 
-      if (existingTransaction) {
+      if (existingTransactions && existingTransactions.length > 0) {
         console.log(
-          `既に処理済みのセッションです: ${session.id}, トランザクションID: ${existingTransaction.id}`
+          `既に処理済みのセッションです: ${session.id}, トランザクションID: ${existingTransactions[0].id}`
         )
         return NextResponse.json(
           { message: '既に処理済みです' },
@@ -190,8 +196,9 @@ export async function POST(request: NextRequest) {
       }
 
       console.log(
-        `ポイント付与完了: ユーザー ${userId}, +${points}pt ${bonusPoints > 0 ? `(+${bonusPoints}pt ボーナス) ` : ''}(${currentBalance} → ${newBalance})`
+        `✅ ポイント付与完了: ユーザー ${userId}, +${points}pt ${bonusPoints > 0 ? `(+${bonusPoints}pt ボーナス) ` : ''}(${currentBalance} → ${newBalance})`
       )
+      console.log('=== Webhook処理完了 ===')
     }
 
     // 正常終了
