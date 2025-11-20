@@ -56,6 +56,9 @@ const SYSTEM_PROMPT = `
 【出力形式】
 以下の形式で、合計400文字程度で出力してください。
 
+[OVERALL_STARS]
+(総合運の星評価: 1〜5の整数。1=大凶、2=凶、3=普通、4=吉、5=大吉)
+
 [OVERALL]
 (総合運: 今日一日の全体的なエネルギーの流れ。100文字程度)
 
@@ -72,6 +75,7 @@ const SYSTEM_PROMPT = `
 `
 
 interface DailyFortuneResult {
+  overall_stars: number
   overall: string
   focus_area: string
   advice: string
@@ -187,6 +191,7 @@ export async function purchaseDailyFortune() {
       .insert({
         user_id: user.id,
         fortune_date: today,
+        overall_stars: fortune.overall_stars,
         overall: fortune.overall,
         focus_area: fortune.focus_area,
         advice: fortune.advice,
@@ -398,10 +403,21 @@ function cleanText(text: string): string {
  * Geminiのレスポンスをパース
  */
 function parseFortuneResponse(response: string): DailyFortuneResult {
+  const starsMatch = response.match(/\[OVERALL_STARS\]\s*([\s\S]*?)(?=\[OVERALL\]|$)/)
   const overallMatch = response.match(/\[OVERALL\]\s*([\s\S]*?)(?=\[FOCUS_AREA\]|$)/)
   const focusMatch = response.match(/\[FOCUS_AREA\]\s*([\s\S]*?)(?=\[ADVICE\]|$)/)
   const adviceMatch = response.match(/\[ADVICE\]\s*([\s\S]*?)(?=\[LUCKY\]|$)/)
   const luckyMatch = response.match(/\[LUCKY\]\s*([\s\S]*?)$/)
+
+  // 星評価をパース（1-5の整数）
+  let overallStars = 3 // デフォルトは3つ星
+  if (starsMatch) {
+    const starsText = cleanText(starsMatch[1])
+    const starsNumber = parseInt(starsText, 10)
+    if (starsNumber >= 1 && starsNumber <= 5) {
+      overallStars = starsNumber
+    }
+  }
 
   let luckyColor = ''
   let luckyItem = ''
@@ -419,6 +435,7 @@ function parseFortuneResponse(response: string): DailyFortuneResult {
   }
 
   return {
+    overall_stars: overallStars,
     overall: overallMatch ? cleanText(overallMatch[1]) : '',
     focus_area: focusMatch ? cleanText(focusMatch[1]) : '',
     advice: adviceMatch ? cleanText(adviceMatch[1]) : '',

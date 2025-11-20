@@ -8,6 +8,7 @@ import Link from 'next/link'
 
 interface Fortune {
   id: string
+  overall_stars: number | null
   overall: string
   focus_area: string
   advice: string
@@ -88,7 +89,9 @@ export default function DailyFortuneView({ fortune, currentPoints, today }: Dail
                   <Star
                     key={star}
                     className={`w-6 h-6 ${
-                      star <= 4 ? 'fill-spiritual-gold text-spiritual-gold' : 'text-spiritual-lavender/30'
+                      star <= (fortune.overall_stars || 3)
+                        ? 'fill-spiritual-gold text-spiritual-gold'
+                        : 'text-spiritual-lavender/30'
                     }`}
                   />
                 ))}
