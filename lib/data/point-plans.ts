@@ -64,6 +64,15 @@ export interface PointPlan {
  */
 export const POINT_PLANS: PointPlan[] = [
   {
+    id: 'plan-test-100',
+    name: '🧪 テストプラン',
+    points: 100,
+    price: 100,
+    discountRate: 0,
+    regularPrice: 100,
+    description: 'システムテスト用（テスト完了後削除予定）',
+  },
+  {
     id: 'plan-1000',
     name: 'お試しプラン',
     points: 1000,
