@@ -78,11 +78,15 @@ export const trackTikTokIdentify = async (
         identifyData.external_id = hashedExternalId
       }
 
+      console.log('TikTok Pixel: identify イベント送信 (email & external_id hashed)')
+
       // TikTok Pixelにユーザー識別情報を送信
       ;(window as any).ttq.identify(identifyData)
     } catch (error) {
       console.error('TikTok identify error:', error)
     }
+  } else {
+    console.warn('TikTok Pixel: ttqオブジェクトが見つかりません (identify)')
   }
 }
 
@@ -90,7 +94,12 @@ export const trackTikTokIdentify = async (
  * 会員登録完了イベント
  */
 export const trackCompleteRegistration = () => {
-  trackTikTokEvent('CompleteRegistration')
+  if (typeof window !== 'undefined' && (window as any).ttq) {
+    console.log('TikTok Pixel: CompleteRegistration イベント送信')
+    trackTikTokEvent('CompleteRegistration')
+  } else {
+    console.warn('TikTok Pixel: ttqオブジェクトが見つかりません')
+  }
 }
 
 /**
@@ -99,8 +108,13 @@ export const trackCompleteRegistration = () => {
  * @param currency 通貨コード（デフォルト: JPY）
  */
 export const trackPurchase = (value: number, currency: string = 'JPY') => {
-  trackTikTokEvent('Purchase', {
-    value,
-    currency,
-  })
+  if (typeof window !== 'undefined' && (window as any).ttq) {
+    console.log(`TikTok Pixel: Purchase イベント送信 (金額: ${value} ${currency})`)
+    trackTikTokEvent('Purchase', {
+      value,
+      currency,
+    })
+  } else {
+    console.warn('TikTok Pixel: ttqオブジェクトが見つかりません')
+  }
 }

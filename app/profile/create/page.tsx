@@ -66,6 +66,9 @@ export default function ProfileCreatePage() {
         // プロフィール登録完了イベントをトラッキング
         trackCompleteRegistration()
 
+        // イベント送信完了を待つ（300ms）
+        await new Promise(resolve => setTimeout(resolve, 300))
+
         // 成功時は占い師一覧ページに直接遷移
         router.push('/fortune-tellers')
       }
