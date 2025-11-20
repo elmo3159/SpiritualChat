@@ -565,8 +565,16 @@ export default function ChatContainer({
     (messages.length === 0 && (initialSuggestion !== null || regeneratedSuggestion !== null)) ||
     (lastMessage !== null && lastMessage.sender_type === 'fortune_teller')
 
-  // 提案文がない場合は占ってもらうボタンを無効化
-  const isDivinationButtonDisabled = !hasSuggestion
+  // 未開封の鑑定結果があるかチェック
+  const hasUnlockedDivination = divinations.some((d) => !d.isUnlocked)
+
+  // 占ってもらうボタンを無効化する条件：
+  // 1. 提案文がない
+  // 2. 未開封の鑑定結果がある
+  // 3. 鑑定結果開封後、次の提案文を待っている状態
+  // 4. 提案文を再生成中
+  const isDivinationButtonDisabled =
+    !hasSuggestion || hasUnlockedDivination || isWaitingForSuggestion || isRegeneratingSuggestion
 
   return (
     <div className="flex-1 flex flex-col min-h-0 relative">
@@ -723,6 +731,20 @@ export default function ChatContainer({
                 onDivinationGenerated={handleDivinationGenerated}
                 onGeneratingChange={setIsDivinating}
               />
+              {/* 無効化理由のヒント表示 */}
+              {isDivinationButtonDisabled && !isDivinating && (
+                <div className="mt-1 px-2">
+                  <p className="text-xs text-center text-gray-400">
+                    {hasUnlockedDivination
+                      ? '💫 鑑定結果を開封してください'
+                      : isWaitingForSuggestion
+                      ? '⏳ 次の提案を準備中...'
+                      : isRegeneratingSuggestion
+                      ? '✨ 新しい提案を生成中...'
+                      : '💬 メッセージを送信して提案を受け取りましょう'}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
