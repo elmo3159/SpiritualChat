@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyAdminToken } from '@/lib/auth/admin'
+import { getCurrentAdmin } from '@/lib/auth/admin'
 import { createAdminClient } from '@/lib/supabase/server'
 
 /**
@@ -8,7 +8,7 @@ import { createAdminClient } from '@/lib/supabase/server'
 export async function GET(request: NextRequest) {
   try {
     // 管理者認証チェック
-    const admin = await verifyAdminToken(request)
+    const admin = await getCurrentAdmin()
     if (!admin) {
       return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
     }
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     // 管理者認証チェック
-    const admin = await verifyAdminToken(request)
+    const admin = await getCurrentAdmin()
     if (!admin) {
       return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
     }
