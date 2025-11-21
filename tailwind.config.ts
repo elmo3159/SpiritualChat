@@ -10,17 +10,34 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // スピリチュアルなカラーパレット
+        // スピリチュアルなピンク系カラーパレット
         spiritual: {
+          // 背景系
           dark: '#1a1a2e',
-          darker: '#16213e',
+          darker: '#2a1a3e',
+          navy: '#1e1e3f',
+
+          // ピンク系
+          pink: '#e88ca5',
+          'pink-light': '#f5c8d4',
+          'pink-lighter': '#ffd4e5',
+          'pink-dark': '#c75c7c',
+          'pink-deep': '#a14563',
+
+          // アクセント
+          green: '#4ade80',
+          'green-light': '#86efac',
+          'green-dark': '#22c55e',
+
+          // ゴールド（星など）
+          gold: '#ffd700',
+          'gold-light': '#ffe44d',
+
+          // 従来のカラーも残す（互換性のため）
           purple: '#2d2d44',
-          light: '#3a3a52',
-          accent: '#d4af37',
-          gold: '#c9a961',
-          rose: '#b76e79',
-          lavender: '#b8a6d9',
-          'lavender-light': '#c8b8db',
+          accent: '#e88ca5',
+          rose: '#e88ca5',
+          lavender: '#f5c8d4',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
