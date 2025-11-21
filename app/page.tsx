@@ -64,13 +64,13 @@ export default function LandingPage() {
       </div>
 
       {/* トップバナー */}
-      <div className="relative z-10 bg-white/95 backdrop-blur-sm py-3 px-4 text-center border-b-2 border-spiritual-pink/30">
-        <p className="text-sm md:text-lg font-extrabold flex items-center justify-center gap-2 flex-wrap">
-          <Gift className="w-5 h-5 md:w-6 md:h-6 text-spiritual-pink" />
-          <span className="text-spiritual-pink-dark">＼ 登録ですぐ1000pt付与 → </span>
-          <span className="text-2xl md:text-3xl text-spiritual-green bg-spiritual-green/10 px-3 py-1 rounded-lg">初回の占いは無料</span>
-          <span className="text-spiritual-pink-dark"> ／</span>
-          <Gift className="w-5 h-5 md:w-6 md:h-6 text-spiritual-pink" />
+      <div className="relative z-10 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark backdrop-blur-sm py-3 px-4 text-center border-b-2 border-white/20 shadow-lg">
+        <p className="text-sm md:text-lg font-extrabold flex items-center justify-center gap-2 flex-wrap text-white">
+          <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
+          <span>＼ 登録ですぐ1000pt付与 → </span>
+          <span className="text-2xl md:text-3xl bg-white/20 px-3 py-1 rounded-lg">初回の占いは無料</span>
+          <span> ／</span>
+          <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
         </p>
       </div>
 
@@ -83,8 +83,8 @@ export default function LandingPage() {
         }`}
       >
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          {/* ロゴ + マスコット */}
-          <div className="flex items-center gap-2">
+          {/* ロゴ */}
+          <div className="flex items-center">
             <Image
               src="/images/logo.png?v=2"
               alt="スピチャ"
@@ -92,13 +92,6 @@ export default function LandingPage() {
               height={56}
               className="w-auto h-8 md:h-10"
               priority
-            />
-            <Image
-              src="/images/mascot2.png"
-              alt="マスコット"
-              width={40}
-              height={40}
-              className="w-8 h-8 md:w-10 md:h-10"
             />
           </div>
 
