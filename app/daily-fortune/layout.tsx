@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function DailyFortuneLayout({
   children,
 }: {
-  children: React.NodeNode
+  children: React.ReactNode
 }) {
   return children
 }
