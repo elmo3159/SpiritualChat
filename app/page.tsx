@@ -165,14 +165,35 @@ export default function LandingPage() {
 
           {/* 占い師アバター */}
           <div className="flex justify-center items-center gap-4 mb-8">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center overflow-hidden shadow-lg">
-              <div className="w-full h-full bg-gradient-to-br from-purple-300 to-pink-300"></div>
+            {/* 天音そう */}
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 overflow-hidden shadow-lg">
+              <Image
+                src="/images/AmaneSou.jpeg"
+                alt="天音そう"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center overflow-hidden shadow-lg">
-              <div className="w-full h-full bg-gradient-to-br from-blue-300 to-purple-300"></div>
+            {/* 紫雲沙羅 */}
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 overflow-hidden shadow-lg">
+              <Image
+                src="/images/ShiunSara.jpeg"
+                alt="紫雲沙羅"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center overflow-hidden shadow-lg">
-              <div className="w-full h-full bg-gradient-to-br from-green-300 to-teal-300"></div>
+            {/* ゆら */}
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 overflow-hidden shadow-lg">
+              <Image
+                src="/images/Yura.jpeg"
+                alt="ゆら"
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
