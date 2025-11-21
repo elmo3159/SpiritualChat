@@ -69,13 +69,28 @@ export default function SignUpPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-200/50 p-8 text-center">
+      <div className="min-h-screen bg-gradient-to-b from-spiritual-dark via-spiritual-darker to-spiritual-navy flex items-center justify-center p-4 relative overflow-hidden">
+        {/* Background stars decoration */}
+        <div className="absolute inset-0 opacity-30">
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-spiritual-gold rounded-full animate-twinkle"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="w-full max-w-md relative z-10">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl border-2 border-spiritual-pink/30 p-8 text-center">
             <div className="mb-6">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-spiritual-green-light/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg
-                  className="w-8 h-8 text-green-600"
+                  className="w-8 h-8 text-spiritual-green"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -93,7 +108,7 @@ export default function SignUpPage() {
             </div>
             <Link
               href="/login"
-              className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl font-medium hover:from-purple-700 hover:to-purple-600 transition-all duration-200 shadow-lg"
+              className="inline-block px-6 py-3 bg-gradient-to-r from-spiritual-pink via-spiritual-pink-dark to-spiritual-pink text-white rounded-xl font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-spiritual-pink/50"
             >
               ログインページへ
             </Link>
@@ -104,12 +119,27 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-200/50 p-8">
-          {/* Logo/Title */}
+    <div className="min-h-screen bg-gradient-to-b from-spiritual-dark via-spiritual-darker to-spiritual-navy flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background stars decoration */}
+      <div className="absolute inset-0 opacity-30">
+        {[...Array(50)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-spiritual-gold rounded-full animate-twinkle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
+        <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl border-2 border-spiritual-pink/30 p-8">
+          {/* Logo/Title with mascot */}
           <div className="text-center mb-8">
-            <div className="mb-3 flex justify-center">
+            <div className="mb-3 flex justify-center items-center gap-2">
               <Image
                 src="/images/logo.png?v=2"
                 alt="スピチャ"
@@ -117,6 +147,13 @@ export default function SignUpPage() {
                 height={100}
                 className="w-auto h-20"
                 priority
+              />
+              <Image
+                src="/images/mascot2.png"
+                alt=""
+                width={48}
+                height={48}
+                className="w-12 h-12"
               />
             </div>
           </div>
@@ -177,7 +214,7 @@ export default function SignUpPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-spiritual-pink focus:border-transparent transition-all text-gray-900"
                 placeholder="example@email.com"
               />
             </div>
@@ -193,7 +230,7 @@ export default function SignUpPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-spiritual-pink focus:border-transparent transition-all text-gray-900"
                 placeholder="••••••••"
               />
             </div>
@@ -209,7 +246,7 @@ export default function SignUpPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-gray-900"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-spiritual-pink focus:border-transparent transition-all text-gray-900"
                 placeholder="••••••••"
               />
             </div>
@@ -217,16 +254,16 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl font-medium hover:from-purple-700 hover:to-purple-600 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 px-4 bg-gradient-to-r from-spiritual-pink via-spiritual-pink-dark to-spiritual-pink text-white rounded-xl font-medium hover:scale-105 transition-all duration-200 shadow-lg shadow-spiritual-pink/50 hover:shadow-xl hover:shadow-spiritual-pink/60 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'アカウント作成中...' : 'アカウントを作成'}
             </button>
           </form>
 
           {/* Security Message */}
-          <div className="mt-6 p-4 bg-purple-50/50 border border-purple-100 rounded-xl">
+          <div className="mt-6 p-4 bg-spiritual-pink-lighter/30 border border-spiritual-pink/30 rounded-xl">
             <div className="flex items-start gap-2">
-              <svg className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-spiritual-pink-dark flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
               <div className="flex-1">
@@ -243,21 +280,21 @@ export default function SignUpPage() {
             登録することで、
             <Link
               href="/terms"
-              className="text-purple-600 hover:text-purple-700 underline transition-colors"
+              className="text-spiritual-pink-dark hover:text-spiritual-pink-deep underline transition-colors"
             >
               利用規約
             </Link>
             、
             <Link
               href="/privacy"
-              className="text-purple-600 hover:text-purple-700 underline transition-colors"
+              className="text-spiritual-pink-dark hover:text-spiritual-pink-deep underline transition-colors"
             >
               プライバシーポリシー
             </Link>
             、
             <Link
               href="/legal/tokusho"
-              className="text-purple-600 hover:text-purple-700 underline transition-colors"
+              className="text-spiritual-pink-dark hover:text-spiritual-pink-deep underline transition-colors"
             >
               特定商取引法に基づく表記
             </Link>
@@ -269,7 +306,7 @@ export default function SignUpPage() {
             すでにアカウントをお持ちですか？{' '}
             <Link
               href="/login"
-              className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
+              className="text-spiritual-pink-dark hover:text-spiritual-pink-deep font-medium transition-colors"
             >
               ログイン
             </Link>

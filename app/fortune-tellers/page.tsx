@@ -73,12 +73,12 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-spiritual-dark via-spiritual-darker to-spiritual-purple pb-16">
+    <main className="min-h-screen bg-gradient-to-br from-spiritual-dark via-spiritual-darker to-spiritual-navy pb-16">
       {/* ヘッダー */}
-      <header className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg shadow-lg border-b border-spiritual-lavender/30">
+      <header className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg shadow-lg border-b border-spiritual-pink/30">
         <div className="container mx-auto px-4 py-3 md:py-5 pt-safe-top">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               <Image
                 src="/images/logo.png?v=2"
                 alt="スピチャ"
@@ -87,6 +87,13 @@ export default async function Home() {
                 className="w-auto h-10 md:h-12"
                 priority
               />
+              <Image
+                src="/images/mascot2.png"
+                alt=""
+                width={40}
+                height={40}
+                className="w-8 h-8 md:w-10 md:h-10"
+              />
             </div>
             <div className="flex items-center gap-1 md:gap-3">
               {/* 通知パネル */}
@@ -94,7 +101,7 @@ export default async function Home() {
               {/* ポイント表示（クリック可能） */}
               <Link
                 href="/points/purchase"
-                className="px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-spiritual-accent to-spiritual-gold text-spiritual-dark rounded-full text-xs md:text-base font-bold shadow-lg flex items-center gap-1.5 md:gap-2 hover:shadow-xl hover:scale-105 transition-all duration-200 active:scale-95"
+                className="px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark text-white rounded-full text-xs md:text-base font-bold shadow-lg shadow-spiritual-pink/30 flex items-center gap-1.5 md:gap-2 hover:shadow-xl hover:scale-105 transition-all duration-200 active:scale-95"
               >
                 <span>{currentPoints.toLocaleString()} pt</span>
               </Link>
@@ -102,10 +109,10 @@ export default async function Home() {
               {/* ポイント追加ボタン */}
               <Link
                 href="/points/purchase"
-                className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-spiritual-gold to-spiritual-accent flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200 active:scale-95"
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-spiritual-green to-spiritual-green-dark flex items-center justify-center shadow-lg shadow-spiritual-green/30 hover:shadow-xl hover:scale-110 transition-all duration-200 active:scale-95"
                 aria-label="ポイントを追加"
               >
-                <span className="text-spiritual-dark text-lg md:text-xl font-bold">+</span>
+                <span className="text-white text-lg md:text-xl font-bold">+</span>
               </Link>
             </div>
           </div>
