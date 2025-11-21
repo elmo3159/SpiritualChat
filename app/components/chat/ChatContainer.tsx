@@ -608,7 +608,7 @@ export default function ChatContainer({
               {/* 初回提案ローディング */}
               {isLoadingSuggestion && (
                 <div className="flex flex-col items-center justify-center py-16 space-y-4">
-                  <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                  <Loader2 className="w-8 h-8 animate-spin text-spiritual-pink" />
                   <p className="text-gray-500 text-sm">
                     {fortuneTellerName}があなたのための提案を考えています...
                   </p>
@@ -621,7 +621,7 @@ export default function ChatContainer({
                   {/* 占い師からの提案メッセージ */}
                   <div className="flex gap-3">
                     <div className="flex-shrink-0">
-                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden ring-2 ring-spiritual-lavender/50 shadow-lg bg-spiritual-purple/20">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden ring-2 ring-spiritual-pink/30 shadow-lg bg-spiritual-pink/20">
                         <img
                           src={fortuneTellerAvatar}
                           alt={fortuneTellerName}
@@ -633,7 +633,7 @@ export default function ChatContainer({
                       </div>
                     </div>
                     <div className="flex-1">
-                      <div className="bg-gradient-to-br from-spiritual-lavender/90 to-spiritual-lavender-light/90 backdrop-blur-sm rounded-2xl rounded-tl-none px-4 py-3 shadow-lg border border-spiritual-lavender/30 hover:shadow-xl transition-all duration-200">
+                      <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 backdrop-blur-sm rounded-2xl rounded-tl-none px-4 py-3 shadow-lg border border-spiritual-pink/30 hover:shadow-xl transition-all duration-200">
                         <p className="text-sm md:text-base text-gray-900 whitespace-pre-wrap leading-relaxed">
                           {initialSuggestion.greeting}
                         </p>
@@ -683,7 +683,7 @@ export default function ChatContainer({
               {/* 提案再生成ローディング */}
               {isRegeneratingSuggestion && (
                 <div className="flex flex-col items-center justify-center py-8 space-y-4">
-                  <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+                  <Loader2 className="w-8 h-8 animate-spin text-spiritual-pink" />
                   <p className="text-gray-500 text-sm">
                     {fortuneTellerName}が新しい提案を考えています...
                   </p>
@@ -696,7 +696,7 @@ export default function ChatContainer({
                   {/* 占い師からの提案メッセージ */}
                   <div className="flex gap-3">
                     <div className="flex-shrink-0">
-                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden ring-2 ring-spiritual-lavender/50 shadow-lg bg-spiritual-purple/20">
+                      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden ring-2 ring-spiritual-pink/30 shadow-lg bg-spiritual-pink/20">
                         <img
                           src={fortuneTellerAvatar}
                           alt={fortuneTellerName}
@@ -708,7 +708,7 @@ export default function ChatContainer({
                       </div>
                     </div>
                     <div className="flex-1">
-                      <div className="bg-gradient-to-br from-spiritual-lavender/90 to-spiritual-lavender-light/90 backdrop-blur-sm rounded-2xl rounded-tl-none px-4 py-3 shadow-lg border border-spiritual-lavender/30 hover:shadow-xl transition-all duration-200">
+                      <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 backdrop-blur-sm rounded-2xl rounded-tl-none px-4 py-3 shadow-lg border border-spiritual-pink/30 hover:shadow-xl transition-all duration-200">
                         <p className="text-sm md:text-base text-gray-900 whitespace-pre-wrap leading-relaxed">
                           {regeneratedSuggestion.greeting}
                         </p>
@@ -743,7 +743,7 @@ export default function ChatContainer({
 
       {/* 占ってもらうボタン + メッセージ入力エリア - 固定位置（Safariの下部バーを考慮） */}
       <div className="fixed bottom-0 left-0 right-0 z-10">
-        <div className="bg-spiritual-dark/95 backdrop-blur-lg border-t border-spiritual-purple/30 shadow-lg pb-safe">
+        <div className="bg-spiritual-dark/95 backdrop-blur-lg border-t border-spiritual-pink/30 shadow-lg pb-safe">
           {/* 占ってもらうボタン */}
           <div className="px-4 pt-0.5 pb-0">
             <div className="max-w-3xl mx-auto">

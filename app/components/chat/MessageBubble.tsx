@@ -27,7 +27,7 @@ export default function MessageBubble({ message }: Props) {
       {/* アバター */}
       {!isUser && (
         <div className="flex-shrink-0">
-          <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-purple-200 bg-spiritual-purple/20 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-spiritual-pink/30 bg-spiritual-pink/20 flex items-center justify-center">
             {!imageError && message.sender_avatar ? (
               <Image
                 src={message.sender_avatar}
@@ -39,7 +39,7 @@ export default function MessageBubble({ message }: Props) {
                 unoptimized
               />
             ) : (
-              <span className="text-lg font-bold text-spiritual-purple">
+              <span className="text-lg font-bold text-spiritual-pink">
                 {(message.sender_name || '占')[0]}
               </span>
             )}
@@ -61,8 +61,8 @@ export default function MessageBubble({ message }: Props) {
           className={`
             px-4 py-3 rounded-2xl shadow-lg transition-all duration-200
             ${isUser
-              ? 'bg-gradient-to-br from-spiritual-accent to-spiritual-gold text-spiritual-dark rounded-tr-sm hover:shadow-xl hover:scale-[1.02]'
-              : 'bg-gradient-to-br from-spiritual-lavender/90 to-spiritual-lavender-light/90 backdrop-blur-sm text-gray-900 rounded-tl-sm border border-spiritual-lavender/30 hover:shadow-xl'
+              ? 'bg-gray-600/80 text-white rounded-tr-sm hover:shadow-xl hover:scale-[1.02]'
+              : 'bg-gradient-to-br from-spiritual-pink-light to-white/90 backdrop-blur-sm text-gray-900 rounded-tl-sm border border-spiritual-pink/30 hover:shadow-xl'
             }
           `}
         >
