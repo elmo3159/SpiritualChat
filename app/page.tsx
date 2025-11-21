@@ -107,7 +107,7 @@ export default function LandingPage() {
       </header>
 
       {/* メインビジュアル */}
-      <section className="relative pt-8 md:pt-16 pb-12 md:pb-20 px-4">
+      <section className="relative z-10 pt-8 md:pt-16 pb-12 md:pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
           {/* メインキャッチコピー */}
           <div className="text-center mb-8 md:mb-12 px-2">
@@ -302,7 +302,7 @@ export default function LandingPage() {
       </section>
 
       {/* 特徴セクション */}
-      <section className="relative py-16 px-4 bg-spiritual-darker/50">
+      <section className="relative z-10 py-16 px-4 bg-spiritual-darker/50">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
             スピチャが選ばれる<span className="text-spiritual-pink">理由</span>
@@ -352,7 +352,7 @@ export default function LandingPage() {
       </section>
 
       {/* 利用の流れ */}
-      <section className="relative py-16 px-4">
+      <section className="relative z-10 py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
             <span className="text-spiritual-pink">3ステップ</span>で簡単占い
@@ -412,7 +412,7 @@ export default function LandingPage() {
       </section>
 
       {/* よくある質問セクション */}
-      <section className="py-16 px-4 bg-spiritual-dark/60">
+      <section className="relative z-10 py-16 px-4 bg-spiritual-dark/60">
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
             よくある質問
@@ -507,7 +507,7 @@ export default function LandingPage() {
       </section>
 
       {/* フッター */}
-      <footer className="py-12 px-4 border-t border-white/10 bg-spiritual-dark/80 mb-20 md:mb-0">
+      <footer className="relative z-10 py-12 px-4 border-t border-white/10 bg-spiritual-dark/80 mb-20 md:mb-0">
         <div className="container mx-auto max-w-6xl">
           {/* 信頼性インジケーター */}
           <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 mb-8 pb-8 border-b border-white/10">
