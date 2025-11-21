@@ -43,7 +43,7 @@ export default function PWAGuideSection() {
           {/* アプリアイコンを背景に表示 */}
           <div className="absolute -top-6 -right-6 w-36 h-36 opacity-[0.08]">
             <Image
-              src="/icons/icon-192x192.png"
+              src="/icons/icon-192x192.png?v=2"
               alt="スピチャアイコン"
               width={144}
               height={144}
@@ -92,7 +92,7 @@ export default function PWAGuideSection() {
           <div className="flex items-center gap-3 mb-6">
             <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg border-2 border-spiritual-gold/30 flex-shrink-0">
               <Image
-                src="/icons/icon-192x192.png"
+                src="/icons/icon-192x192.png?v=2"
                 alt="スピチャアプリアイコン"
                 width={64}
                 height={64}
@@ -191,7 +191,7 @@ export default function PWAGuideSection() {
           <div className="flex items-center gap-3 mb-6">
             <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-lg border-2 border-spiritual-gold/30 flex-shrink-0">
               <Image
-                src="/icons/icon-192x192.png"
+                src="/icons/icon-192x192.png?v=2"
                 alt="スピチャアプリアイコン"
                 width={64}
                 height={64}

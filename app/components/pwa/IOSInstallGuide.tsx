@@ -42,7 +42,7 @@ export default function IOSInstallGuide({ onClose }: IOSInstallGuideProps) {
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-lg overflow-hidden shadow-md border-2 border-white/30">
               <Image
-                src="/icons/icon-192x192.png"
+                src="/icons/icon-192x192.png?v=2"
                 alt="スピチャ"
                 width={40}
                 height={40}
