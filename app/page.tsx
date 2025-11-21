@@ -64,14 +64,16 @@ export default function LandingPage() {
 
       {/* トップバナー */}
       <div className="relative z-10 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark backdrop-blur-sm py-3 px-4 text-center border-b-2 border-white/20 shadow-lg">
-        <p className="text-sm md:text-lg font-extrabold flex items-center justify-center gap-2 flex-wrap text-white">
-          <span>登録ですぐ1000pt付与 → </span>
-          <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
-          <span>＼ </span>
-          <span className="text-2xl md:text-3xl bg-white/20 px-3 py-1 rounded-lg">初回の占いは無料</span>
-          <span> ／</span>
-          <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
-        </p>
+        <div className="text-sm md:text-lg font-extrabold text-white">
+          <div className="mb-1">登録ですぐ1000pt付与 →</div>
+          <div className="flex items-center justify-center gap-2">
+            <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
+            <span>＼</span>
+            <span className="text-2xl md:text-3xl bg-white/20 px-3 py-1 rounded-lg">初回の占いは無料</span>
+            <span>／</span>
+            <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
+          </div>
+        </div>
       </div>
 
       {/* ヘッダー */}
