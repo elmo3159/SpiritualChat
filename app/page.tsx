@@ -47,20 +47,19 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-spiritual-dark via-spiritual-darker to-spiritual-navy overflow-hidden">
-      {/* 星空背景 */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(2px 2px at 20% 30%, white, transparent),
-                           radial-gradient(2px 2px at 60% 70%, white, transparent),
-                           radial-gradient(1px 1px at 50% 50%, white, transparent),
-                           radial-gradient(1px 1px at 80% 10%, white, transparent),
-                           radial-gradient(2px 2px at 90% 60%, white, transparent),
-                           radial-gradient(1px 1px at 33% 80%, white, transparent)`,
-          backgroundSize: '200% 200%',
-          backgroundPosition: '0% 0%',
-          opacity: 0.4
-        }} />
+    <div className="min-h-screen overflow-hidden relative">
+      {/* 背景画像 */}
+      <div className="fixed inset-0 z-0">
+        <Image
+          src="/images/BackGround.jpeg"
+          alt="背景"
+          fill
+          className="object-cover"
+          priority
+          quality={100}
+        />
+        {/* 暗めのオーバーレイでコンテンツを読みやすく */}
+        <div className="absolute inset-0 bg-spiritual-dark/60"></div>
       </div>
 
       {/* トップバナー */}
@@ -281,7 +280,7 @@ export default function LandingPage() {
             <div className="space-y-2">
               <button
                 onClick={() => router.push('/signup')}
-                className="w-full max-w-md mx-auto block px-8 py-5 bg-gradient-to-r from-spiritual-green via-spiritual-green-light to-spiritual-green text-white rounded-full font-bold text-xl md:text-2xl hover:scale-105 transition-transform duration-300 shadow-2xl shadow-spiritual-green/50 relative overflow-hidden"
+                className="w-full max-w-md mx-auto block px-8 py-5 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark text-white rounded-full font-bold text-xl md:text-2xl hover:scale-105 transition-transform duration-300 shadow-2xl shadow-spiritual-pink/50 relative overflow-hidden"
               >
                 <span className="relative z-10">今すぐ無料で占う</span>
                 <div className="absolute inset-0 bg-white/20 animate-shimmer"></div>
@@ -290,12 +289,6 @@ export default function LandingPage() {
                 ✨ 1回1000pt無料付与後、すぐに占いに使えます
               </p>
             </div>
-            <button
-              onClick={() => router.push('/daily-fortune')}
-              className="w-full max-w-md mx-auto block px-8 py-4 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark text-white rounded-full font-bold text-lg hover:scale-105 transition-transform duration-300 shadow-2xl shadow-spiritual-pink/50"
-            >
-              今日の運勢を見る
-            </button>
             <div className="mt-6 pt-4 border-t border-white/10">
               <p className="text-sm md:text-base text-gray-300 font-semibold mb-2">
                 💝 登録特典
@@ -410,7 +403,7 @@ export default function LandingPage() {
           <div className="text-center mt-12">
             <button
               onClick={() => router.push('/signup')}
-              className="px-12 py-4 bg-gradient-to-r from-spiritual-green to-spiritual-green-light text-white rounded-full font-bold text-xl hover:scale-105 transition-transform duration-300 shadow-2xl shadow-spiritual-green/50"
+              className="px-12 py-4 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark text-white rounded-full font-bold text-xl hover:scale-105 transition-transform duration-300 shadow-2xl shadow-spiritual-pink/50"
             >
               今すぐ無料で始める
             </button>
