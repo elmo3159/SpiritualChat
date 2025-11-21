@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: "スピチャ - AI占いアプリ",
   description: "人気占い師監修のAI占いで、あなたの悩みを解決します",
   manifest: "/manifest.json",
+  verification: {
+    google: "5e9ctUo8hxatMmni9GvRg0rf4eDd83j_lnEOxDsigR0",
+  },
   icons: {
     icon: [
       { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
