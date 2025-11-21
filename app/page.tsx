@@ -58,8 +58,8 @@ export default function LandingPage() {
           backgroundRepeat: 'no-repeat'
         }}
       >
-        {/* 暗めのオーバーレイでコンテンツを読みやすく */}
-        <div className="absolute inset-0 bg-spiritual-dark/60"></div>
+        {/* 軽めのオーバーレイでコンテンツを読みやすく */}
+        <div className="absolute inset-0 bg-spiritual-dark/20"></div>
       </div>
 
       {/* トップバナー */}
@@ -534,20 +534,13 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-6">
             {/* ブランド */}
             <div className="text-center md:text-left">
-              <div className="flex items-center gap-2 justify-center md:justify-start mb-2">
+              <div className="flex items-center justify-center md:justify-start mb-2">
                 <Image
                   src="/images/logo.png?v=2"
                   alt="スピチャ"
                   width={120}
                   height={42}
                   className="w-auto h-7"
-                />
-                <Image
-                  src="/images/mascot6.png"
-                  alt=""
-                  width={32}
-                  height={32}
-                  className="w-8 h-8"
                 />
               </div>
               <p className="text-xs text-gray-400">

@@ -78,7 +78,7 @@ export default async function Home() {
       <header className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg shadow-lg border-b border-spiritual-pink/30">
         <div className="container mx-auto px-4 py-3 md:py-5 pt-safe-top">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center">
               <Image
                 src="/images/logo.png?v=2"
                 alt="スピチャ"
@@ -86,13 +86,6 @@ export default async function Home() {
                 height={70}
                 className="w-auto h-10 md:h-12"
                 priority
-              />
-              <Image
-                src="/images/mascot2.png"
-                alt=""
-                width={40}
-                height={40}
-                className="w-8 h-8 md:w-10 md:h-10"
               />
             </div>
             <div className="flex items-center gap-1 md:gap-3">

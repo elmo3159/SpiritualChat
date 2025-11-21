@@ -77,9 +77,9 @@ function LoginForm() {
       <div className="w-full max-w-md relative z-10">
         {/* Card with spiritual design */}
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl border-2 border-spiritual-pink/30 p-8">
-          {/* Logo/Title with mascot */}
+          {/* Logo/Title */}
           <div className="text-center mb-8">
-            <div className="mb-3 flex justify-center items-center gap-2">
+            <div className="mb-3 flex justify-center items-center">
               <Image
                 src="/images/logo.png?v=2"
                 alt="スピチャ"
@@ -87,13 +87,6 @@ function LoginForm() {
                 height={100}
                 className="w-auto h-20"
                 priority
-              />
-              <Image
-                src="/images/mascot2.png"
-                alt=""
-                width={48}
-                height={48}
-                className="w-12 h-12"
               />
             </div>
           </div>
