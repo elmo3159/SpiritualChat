@@ -64,11 +64,13 @@ export default function LandingPage() {
       </div>
 
       {/* トップバナー */}
-      <div className="relative z-10 bg-gradient-to-r from-spiritual-pink via-spiritual-pink-dark to-spiritual-pink text-white py-3 px-4 text-center">
-        <p className="text-sm md:text-base font-bold flex items-center justify-center gap-2">
-          <Gift className="w-5 h-5" />
-          登録者すぐ1000pt付与 → 初回の占いは無料
-          <Gift className="w-5 h-5" />
+      <div className="relative z-10 bg-white/95 backdrop-blur-sm py-3 px-4 text-center border-b-2 border-spiritual-pink/30">
+        <p className="text-sm md:text-lg font-extrabold flex items-center justify-center gap-2 flex-wrap">
+          <Gift className="w-5 h-5 md:w-6 md:h-6 text-spiritual-pink" />
+          <span className="text-spiritual-pink-dark">＼ 登録ですぐ1000pt付与 → </span>
+          <span className="text-2xl md:text-3xl text-spiritual-green bg-spiritual-green/10 px-3 py-1 rounded-lg">初回の占いは無料</span>
+          <span className="text-spiritual-pink-dark"> ／</span>
+          <Gift className="w-5 h-5 md:w-6 md:h-6 text-spiritual-pink" />
         </p>
       </div>
 
@@ -122,17 +124,34 @@ export default function LandingPage() {
       <section className="relative pt-8 md:pt-16 pb-12 md:pb-20 px-4">
         <div className="container mx-auto max-w-6xl">
           {/* メインキャッチコピー */}
-          <div className="text-center mb-8 md:mb-12">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-              運絡こない理由、<br className="md:hidden" />
-              <span className="text-spiritual-pink-lighter">3分</span>でわかります
+          <div className="text-center mb-8 md:mb-12 px-2">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+              彼からの連絡が止まった理由、<br className="hidden md:block" />
+              <span className="text-spiritual-pink-lighter">今すぐ</span>見えます
             </h1>
-            <p className="text-lg md:text-xl text-gray-300 mb-2">
-              人気占い師監修 × AIチャット占い
-            </p>
-            <p className="text-base md:text-lg text-gray-400">
-              24時間いつでも、あなた専用の答えが返ってきます
-            </p>
+            <div className="space-y-3 mb-6">
+              <p className="text-lg md:text-2xl text-gray-200 font-semibold leading-relaxed">
+                人気占い師監修 × AIチャット占い
+              </p>
+              <p className="text-base md:text-xl text-gray-300 leading-relaxed">
+                24時間いつでも、あなた専用の答えが返ってきます
+              </p>
+            </div>
+            {/* 悩みカテゴリ */}
+            <div className="flex flex-wrap justify-center gap-2 mb-4">
+              <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
+                #片思い
+              </span>
+              <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
+                #復縁
+              </span>
+              <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
+                #相手の気持ち
+              </span>
+              <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
+                #不倫/浮気
+              </span>
+            </div>
           </div>
 
           {/* マスコット装飾（PC表示） */}
@@ -168,9 +187,18 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <p className="text-center text-sm md:text-base text-gray-400 mb-8">
-            監修者：スピリチュアル専門占い師チーム
-          </p>
+          {/* 監修者情報 */}
+          <div className="bg-spiritual-dark/60 backdrop-blur-sm border border-spiritual-pink/30 rounded-2xl p-4 md:p-6 mb-8 max-w-2xl mx-auto">
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <Shield className="w-5 h-5 text-spiritual-pink" />
+              <p className="text-sm md:text-base text-spiritual-pink-light font-semibold">
+                監修：スピリチュアル専門占い師チーム
+              </p>
+            </div>
+            <p className="text-xs md:text-sm text-gray-300 text-center leading-relaxed">
+              AIチャットがあなた専用の鑑定結果を作成。人気占い師監修のロジックで、本格的なスピリチュアル鑑定を24時間いつでも受けられます
+            </p>
+          </div>
 
           {/* チャットUIプレビュー */}
           <div className="max-w-2xl mx-auto mb-8">
@@ -201,15 +229,17 @@ export default function LandingPage() {
                     className="w-8 h-8 flex-shrink-0"
                   />
                   <div className="flex-1">
-                    <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 text-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-md">
+                    <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 text-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-md relative">
+                      {/* 吹き出しの矢印 */}
+                      <div className="absolute -left-2 top-3 w-0 h-0 border-t-[8px] border-t-transparent border-r-[12px] border-r-spiritual-pink-light border-b-[8px] border-b-transparent"></div>
                       <p className="text-sm md:text-base">
-                        あなたの状況を読み取ってみますね…
+                        あなたのエネルギーを読み取ってみますね…
                       </p>
                     </div>
                     <div className="flex items-center gap-1 mt-1 px-1">
-                      <Star className="w-3 h-3 text-spiritual-gold" />
-                      <Star className="w-3 h-3 text-spiritual-gold" />
-                      <Star className="w-3 h-3 text-spiritual-gold" />
+                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
+                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
+                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
                     </div>
                   </div>
                 </div>
@@ -224,14 +254,16 @@ export default function LandingPage() {
                     className="w-8 h-8 flex-shrink-0"
                   />
                   <div className="flex-1">
-                    <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 text-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-md">
-                      <p className="text-sm md:text-base">
-                        彼は今、運絡できない理由を抱えています。でもあなたへの気持ちはまだ残っていますよ。
+                    <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 text-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-md relative">
+                      {/* 吹き出しの矢印 */}
+                      <div className="absolute -left-2 top-3 w-0 h-0 border-t-[8px] border-t-transparent border-r-[12px] border-r-spiritual-pink-light border-b-[8px] border-b-transparent"></div>
+                      <p className="text-sm md:text-base font-medium">
+                        彼は今LINEを消せずに、あなたのアイコンを眺めています。連絡できない理由を抱えていますが、あなたへの気持ちは消えていません✨
                       </p>
                     </div>
                     <div className="flex items-center gap-1 mt-1 px-1">
-                      <Star className="w-3 h-3 text-spiritual-gold" />
-                      <Star className="w-3 h-3 text-spiritual-gold" />
+                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
+                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
                     </div>
                   </div>
                 </div>
@@ -246,9 +278,11 @@ export default function LandingPage() {
                     className="w-8 h-8 flex-shrink-0"
                   />
                   <div className="flex-1">
-                    <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 text-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-md">
+                    <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 text-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-md relative">
+                      {/* 吹き出しの矢印 */}
+                      <div className="absolute -left-2 top-3 w-0 h-0 border-t-[8px] border-t-transparent border-r-[12px] border-r-spiritual-pink-light border-b-[8px] border-b-transparent"></div>
                       <p className="text-sm md:text-base">
-                        このあとどう動くべきか、詳しくお伝えしますね。
+                        このあとどう動けば復縁の確率が上がるか、タイミングと具体的な行動をお伝えしますね💕
                       </p>
                     </div>
                   </div>
@@ -270,21 +304,32 @@ export default function LandingPage() {
 
           {/* CTAボタン */}
           <div className="text-center space-y-4">
-            <button
-              onClick={() => router.push('/signup')}
-              className="w-full max-w-md mx-auto block px-8 py-4 bg-gradient-to-r from-spiritual-green via-spiritual-green-light to-spiritual-green text-white rounded-full font-bold text-lg hover:scale-105 transition-transform duration-300 shadow-2xl shadow-spiritual-green/50"
-            >
-              無料で占える
-            </button>
+            <div className="space-y-2">
+              <button
+                onClick={() => router.push('/signup')}
+                className="w-full max-w-md mx-auto block px-8 py-5 bg-gradient-to-r from-spiritual-green via-spiritual-green-light to-spiritual-green text-white rounded-full font-bold text-xl md:text-2xl hover:scale-105 transition-transform duration-300 shadow-2xl shadow-spiritual-green/50 relative overflow-hidden"
+              >
+                <span className="relative z-10">今すぐ無料で占う</span>
+                <div className="absolute inset-0 bg-white/20 animate-shimmer"></div>
+              </button>
+              <p className="text-xs md:text-sm text-gray-300 bg-spiritual-dark/40 inline-block px-4 py-2 rounded-full">
+                ✨ 1回1000pt無料付与後、すぐに占いに使えます
+              </p>
+            </div>
             <button
               onClick={() => router.push('/daily-fortune')}
               className="w-full max-w-md mx-auto block px-8 py-4 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark text-white rounded-full font-bold text-lg hover:scale-105 transition-transform duration-300 shadow-2xl shadow-spiritual-pink/50"
             >
-              私のあなた違って？
+              今日の運勢を見る
             </button>
-            <p className="text-sm text-gray-400">
-              ※登録すると1000ptプレゼント
-            </p>
+            <div className="mt-6 pt-4 border-t border-white/10">
+              <p className="text-sm md:text-base text-gray-300 font-semibold mb-2">
+                💝 登録特典
+              </p>
+              <p className="text-xs md:text-sm text-gray-400">
+                1回目の鑑定は完全無料 ／ 24時間いつでも相談OK
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -399,9 +444,126 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* よくある質問セクション */}
+      <section className="py-16 px-4 bg-spiritual-dark/60">
+        <div className="container mx-auto max-w-4xl">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
+            よくある質問
+          </h2>
+          <p className="text-gray-300 text-center mb-12">
+            安心してご利用いただくための情報をまとめました
+          </p>
+
+          <div className="space-y-4">
+            {/* FAQ 1 */}
+            <details className="bg-spiritual-navy/40 backdrop-blur-sm rounded-xl border border-spiritual-pink/20 p-5 hover:border-spiritual-pink/40 transition-colors group">
+              <summary className="font-bold text-white cursor-pointer flex items-center justify-between">
+                <span>💰 本当に無料で占えますか？</span>
+                <span className="text-spiritual-pink group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-gray-300 mt-4 leading-relaxed">
+                はい、初回登録時に1000ポイントを無料でプレゼントしており、1回の鑑定（400文字程度）に必要な1000ポイントと同じです。つまり、1回目の鑑定は完全無料でお試しいただけます。
+              </p>
+            </details>
+
+            {/* FAQ 2 */}
+            <details className="bg-spiritual-navy/40 backdrop-blur-sm rounded-xl border border-spiritual-pink/20 p-5 hover:border-spiritual-pink/40 transition-colors group">
+              <summary className="font-bold text-white cursor-pointer flex items-center justify-between">
+                <span>🔒 個人情報は安全ですか？</span>
+                <span className="text-spiritual-pink group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-gray-300 mt-4 leading-relaxed">
+                SSL暗号化通信により、すべての情報は安全に保護されています。また、第三者に情報を開示・提供することは一切ございません。詳しくは
+                <button onClick={() => router.push('/privacy')} className="text-spiritual-pink-light hover:underline mx-1">プライバシーポリシー</button>
+                をご確認ください。
+              </p>
+            </details>
+
+            {/* FAQ 3 */}
+            <details className="bg-spiritual-navy/40 backdrop-blur-sm rounded-xl border border-spiritual-pink/20 p-5 hover:border-spiritual-pink/40 transition-colors group">
+              <summary className="font-bold text-white cursor-pointer flex items-center justify-between">
+                <span>⏰ いつでも占えますか？</span>
+                <span className="text-spiritual-pink group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-gray-300 mt-4 leading-relaxed">
+                24時間365日、いつでもご利用いただけます。深夜でも早朝でも、あなたのタイミングでAI占い師がすぐに鑑定結果をお届けします。
+              </p>
+            </details>
+
+            {/* FAQ 4 */}
+            <details className="bg-spiritual-navy/40 backdrop-blur-sm rounded-xl border border-spiritual-pink/20 p-5 hover:border-spiritual-pink/40 transition-colors group">
+              <summary className="font-bold text-white cursor-pointer flex items-center justify-between">
+                <span>💳 支払い方法は何がありますか？</span>
+                <span className="text-spiritual-pink group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-gray-300 mt-4 leading-relaxed">
+                クレジットカード（Visa / Mastercard / JCB / American Express）でのお支払いが可能です。決済はStripeの安全なシステムを使用しており、当サービス側でカード情報を保持することはありません。
+              </p>
+            </details>
+
+            {/* FAQ 5 */}
+            <details className="bg-spiritual-navy/40 backdrop-blur-sm rounded-xl border border-spiritual-pink/20 p-5 hover:border-spiritual-pink/40 transition-colors group">
+              <summary className="font-bold text-white cursor-pointer flex items-center justify-between">
+                <span>🎯 AIの占いは当たりますか？</span>
+                <span className="text-spiritual-pink group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-gray-300 mt-4 leading-relaxed">
+                人気スピリチュアル占い師チーム監修のロジックを使用しており、あなたのプロフィールや過去の相談履歴を基に、専門的な鑑定結果をお届けします。多くのユーザー様から「的中した」「心に響いた」とのお声をいただいております。
+              </p>
+            </details>
+
+            {/* FAQ 6 */}
+            <details className="bg-spiritual-navy/40 backdrop-blur-sm rounded-xl border border-spiritual-pink/20 p-5 hover:border-spiritual-pink/40 transition-colors group">
+              <summary className="font-bold text-white cursor-pointer flex items-center justify-between">
+                <span>🔄 退会・解約はできますか？</span>
+                <span className="text-spiritual-pink group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p className="text-gray-300 mt-4 leading-relaxed">
+                いつでもマイページから退会手続きが可能です。月額課金などのサブスクリプションではなく、ポイント購入制ですので、退会に伴う違約金等は一切発生しません。
+              </p>
+            </details>
+          </div>
+
+          {/* お問い合わせCTA */}
+          <div className="mt-12 text-center bg-spiritual-pink/10 border border-spiritual-pink/30 rounded-xl p-6">
+            <p className="text-gray-200 mb-4">
+              その他のご質問がございましたら、お気軽にお問い合わせください
+            </p>
+            <button
+              onClick={() => router.push('/feedback')}
+              className="px-6 py-3 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark text-white rounded-full font-bold hover:scale-105 transition-transform shadow-lg shadow-spiritual-pink/30"
+            >
+              お問い合わせ
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* フッター */}
       <footer className="py-12 px-4 border-t border-white/10 bg-spiritual-dark/80 mb-20 md:mb-0">
         <div className="container mx-auto max-w-6xl">
+          {/* 信頼性インジケーター */}
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 mb-8 pb-8 border-b border-white/10">
+            <div className="flex items-center gap-2 text-gray-300 text-sm">
+              <svg className="w-5 h-5 text-spiritual-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>SSL暗号化通信</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-300 text-sm">
+              <svg className="w-5 h-5 text-spiritual-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <span>プライバシー保護</span>
+            </div>
+            <div className="flex items-center gap-2 text-gray-300 text-sm">
+              <svg className="w-5 h-5 text-spiritual-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+              <span>安全な決済（Stripe）</span>
+            </div>
+          </div>
+
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-6">
             {/* ブランド */}
             <div className="text-center md:text-left">
@@ -430,25 +592,25 @@ export default function LandingPage() {
             <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm">
               <button
                 onClick={() => router.push('/terms')}
-                className="text-gray-400 hover:text-spiritual-pink transition-colors"
+                className="text-gray-300 hover:text-spiritual-pink-light transition-colors font-medium"
               >
                 利用規約
               </button>
               <button
                 onClick={() => router.push('/privacy')}
-                className="text-gray-400 hover:text-spiritual-pink transition-colors"
+                className="text-gray-300 hover:text-spiritual-pink-light transition-colors font-medium"
               >
                 プライバシーポリシー
               </button>
               <button
                 onClick={() => router.push('/legal/tokusho')}
-                className="text-gray-400 hover:text-spiritual-pink transition-colors"
+                className="text-gray-300 hover:text-spiritual-pink-light transition-colors font-medium"
               >
                 特定商取引法
               </button>
               <button
                 onClick={() => router.push('/feedback')}
-                className="text-gray-400 hover:text-spiritual-pink transition-colors"
+                className="text-gray-300 hover:text-spiritual-pink-light transition-colors font-medium"
               >
                 お問い合わせ
               </button>
