@@ -65,8 +65,9 @@ export default function LandingPage() {
       {/* トップバナー */}
       <div className="relative z-10 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark backdrop-blur-sm py-3 px-4 text-center border-b-2 border-white/20 shadow-lg">
         <p className="text-sm md:text-lg font-extrabold flex items-center justify-center gap-2 flex-wrap text-white">
+          <span>登録ですぐ1000pt付与 → </span>
           <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
-          <span>＼ 登録ですぐ1000pt付与 → </span>
+          <span>＼ </span>
           <span className="text-2xl md:text-3xl bg-white/20 px-3 py-1 rounded-lg">初回の占いは無料</span>
           <span> ／</span>
           <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -100,7 +101,7 @@ export default function LandingPage() {
               onClick={() => router.push('/login')}
               className="px-4 py-2 bg-spiritual-pink hover:bg-spiritual-pink-dark text-white rounded-full font-bold text-sm transition-colors duration-300"
             >
-              ログイン
+              ログイン/登録
             </button>
           </div>
         </div>
@@ -113,7 +114,7 @@ export default function LandingPage() {
           <div className="text-center mb-8 md:mb-12 px-2">
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
               彼からの連絡が止まった理由、<br className="hidden md:block" />
-              <span className="text-spiritual-pink-lighter">今すぐ</span>見えます
+              <span className="text-spiritual-pink-light">今すぐ</span>見えます
             </h1>
             <div className="space-y-3 mb-6">
               <p className="text-lg md:text-2xl text-gray-200 font-semibold leading-relaxed">
@@ -490,19 +491,6 @@ export default function LandingPage() {
               </p>
             </details>
           </div>
-
-          {/* お問い合わせCTA */}
-          <div className="mt-12 text-center bg-spiritual-pink/10 border border-spiritual-pink/30 rounded-xl p-6">
-            <p className="text-gray-200 mb-4">
-              その他のご質問がございましたら、お気軽にお問い合わせください
-            </p>
-            <button
-              onClick={() => router.push('/feedback')}
-              className="px-6 py-3 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark text-white rounded-full font-bold hover:scale-105 transition-transform shadow-lg shadow-spiritual-pink/30"
-            >
-              お問い合わせ
-            </button>
-          </div>
         </div>
       </section>
 
@@ -567,12 +555,6 @@ export default function LandingPage() {
                 className="text-gray-300 hover:text-spiritual-pink-light transition-colors font-medium"
               >
                 特定商取引法
-              </button>
-              <button
-                onClick={() => router.push('/feedback')}
-                className="text-gray-300 hover:text-spiritual-pink-light transition-colors font-medium"
-              >
-                お問い合わせ
               </button>
             </div>
           </div>
