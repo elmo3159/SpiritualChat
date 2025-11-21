@@ -49,15 +49,15 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen overflow-hidden relative">
       {/* 背景画像 */}
-      <div className="fixed inset-0 z-0">
-        <Image
-          src="/images/BackGround.jpeg"
-          alt="背景"
-          fill
-          className="object-cover"
-          priority
-          quality={100}
-        />
+      <div
+        className="fixed inset-0 z-0"
+        style={{
+          backgroundImage: 'url(/images/BackGround.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
         {/* 暗めのオーバーレイでコンテンツを読みやすく */}
         <div className="absolute inset-0 bg-spiritual-dark/60"></div>
       </div>
