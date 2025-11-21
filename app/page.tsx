@@ -98,12 +98,6 @@ export default function LandingPage() {
           {/* CTAボタン群 */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() => router.push('/signup')}
-              className="hidden md:block px-4 py-2 bg-gradient-to-r from-spiritual-green to-spiritual-green-light text-white rounded-full font-bold text-sm hover:scale-105 transition-transform duration-300 shadow-lg"
-            >
-              後続するには？
-            </button>
-            <button
               onClick={() => router.push('/login')}
               className="px-4 py-2 bg-spiritual-pink hover:bg-spiritual-pink-dark text-white rounded-full font-bold text-sm transition-colors duration-300"
             >
@@ -178,19 +172,6 @@ export default function LandingPage() {
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 bg-gradient-to-br from-green-400 to-teal-400 flex items-center justify-center overflow-hidden shadow-lg">
               <div className="w-full h-full bg-gradient-to-br from-green-300 to-teal-300"></div>
             </div>
-          </div>
-
-          {/* 監修者情報 */}
-          <div className="bg-spiritual-dark/60 backdrop-blur-sm border border-spiritual-pink/30 rounded-2xl p-4 md:p-6 mb-8 max-w-2xl mx-auto">
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <Shield className="w-5 h-5 text-spiritual-pink" />
-              <p className="text-sm md:text-base text-spiritual-pink-light font-semibold">
-                監修：スピリチュアル専門占い師チーム
-              </p>
-            </div>
-            <p className="text-xs md:text-sm text-gray-300 text-center leading-relaxed">
-              AIチャットがあなた専用の鑑定結果を作成。人気占い師監修のロジックで、本格的なスピリチュアル鑑定を24時間いつでも受けられます
-            </p>
           </div>
 
           {/* チャットUIプレビュー */}
