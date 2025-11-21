@@ -13,6 +13,7 @@ import NextTopLoader from "nextjs-toploader";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'),
   title: "スピチャ - AI占いアプリ",
   description: "人気占い師監修のAI占いで、あなたの悩みを解決します",
   manifest: "/manifest.json",
