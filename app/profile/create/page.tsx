@@ -87,7 +87,7 @@ export default function ProfileCreatePage() {
             <div className="inline-block">
               <div className="mb-4 flex justify-center">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo.png?v=2"
                   alt="スピチャ"
                   width={240}
                   height={84}

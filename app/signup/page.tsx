@@ -111,7 +111,7 @@ export default function SignUpPage() {
           <div className="text-center mb-8">
             <div className="mb-3 flex justify-center">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.png?v=2"
                 alt="スピチャ"
                 width={280}
                 height={100}

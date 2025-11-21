@@ -165,7 +165,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.png?v=2"
               alt="スピチャ"
               width={160}
               height={56}
@@ -481,7 +481,7 @@ export default function LandingPage() {
             {/* ブランド */}
             <div className="text-center md:text-left">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.png?v=2"
                 alt="スピチャ"
                 width={140}
                 height={49}

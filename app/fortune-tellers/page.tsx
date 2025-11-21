@@ -80,7 +80,7 @@ export default async function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.png?v=2"
                 alt="スピチャ"
                 width={200}
                 height={70}

@@ -45,7 +45,7 @@ export default async function PointsPurchasePage() {
 
           <div className="mb-4 flex justify-center md:justify-start">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.png?v=2"
               alt="スピチャ"
               width={240}
               height={84}
