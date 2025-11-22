@@ -107,15 +107,15 @@ export default function SettingsContent({
             className="w-auto h-9"
             priority
           />
-          <span className="text-lg font-semibold text-gray-800">設定</span>
+          <span className="text-lg font-semibold text-white">設定</span>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* ポイント管理セクション */}
-        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm flex items-center gap-2">
+        <section className="bg-spiritual-pink-lighter/80 backdrop-blur-sm rounded-xl border border-spiritual-pink/50 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/50">
+            <h2 className="text-lg font-semibold text-white drop-shadow-md flex items-center gap-2">
               <Coins className="w-5 h-5" />
               ポイント管理
             </h2>
@@ -124,7 +124,7 @@ export default function SettingsContent({
             {/* 現在のポイント残高 */}
             <div className="flex items-center justify-between p-4 bg-gradient-to-br from-spiritual-accent/10 to-spiritual-gold/10 rounded-lg border border-spiritual-gold/30">
               <div>
-                <p className="text-sm text-gray-400">現在の残高</p>
+                <p className="text-sm text-gray-200">現在の残高</p>
                 <p className="text-3xl font-bold text-spiritual-gold mt-1">
                   {pointsBalance.toLocaleString()}
                   <span className="text-lg ml-1">pt</span>
@@ -147,7 +147,7 @@ export default function SettingsContent({
             {recentTransactions.length > 0 && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-gray-400">最近の購入履歴</p>
+                  <p className="text-sm text-gray-200">最近の購入履歴</p>
                   <button
                     onClick={() => handleNavigate('/points/history')}
                     disabled={isNavigating}
@@ -161,11 +161,11 @@ export default function SettingsContent({
                   {recentTransactions.slice(0, 3).map((transaction) => (
                     <div
                       key={transaction.id}
-                      className="flex items-center justify-between p-3 bg-spiritual-dark/50 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-white/30 rounded-lg"
                     >
                       <div className="flex items-center gap-2">
-                        <Receipt className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-300">
+                        <Receipt className="w-4 h-4 text-gray-600" />
+                        <span className="text-sm text-gray-800">
                           {transaction.description || 'ポイント購入'}
                         </span>
                       </div>
@@ -181,19 +181,19 @@ export default function SettingsContent({
         </section>
 
         {/* プロフィール・統計セクション */}
-        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm flex items-center gap-2">
+        <section className="bg-spiritual-pink-lighter/80 backdrop-blur-sm rounded-xl border border-spiritual-pink/50 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/50">
+            <h2 className="text-lg font-semibold text-white drop-shadow-md flex items-center gap-2">
               <User className="w-5 h-5" />
               プロフィール・統計
             </h2>
           </div>
-          <div className="divide-y divide-spiritual-pink/10">
+          <div className="divide-y divide-spiritual-pink/30">
             {/* プロフィール編集 */}
             <button
               onClick={() => handleNavigate('/profile/edit')}
               disabled={isNavigating}
-              className="w-full px-5 py-4 hover:bg-spiritual-light/10 transition-colors flex items-center justify-between group disabled:opacity-50"
+              className="w-full px-5 py-4 hover:bg-spiritual-pink/30 transition-colors flex items-center justify-between group disabled:opacity-50"
             >
               <div className="flex items-center gap-3">
                 <User className="w-5 h-5 text-spiritual-lavender" />
@@ -201,19 +201,19 @@ export default function SettingsContent({
                   <p className="text-base text-gray-100 font-medium">
                     プロフィール編集
                   </p>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-200 mt-0.5">
                     名前や悩みカテゴリを変更
                   </p>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-spiritual-gold transition-colors" />
+              <ChevronRight className="w-5 h-5 text-gray-200 group-hover:text-spiritual-gold transition-colors" />
             </button>
 
             {/* 統計を見る */}
             <button
               onClick={() => handleNavigate('/profile/stats')}
               disabled={isNavigating}
-              className="w-full px-5 py-4 hover:bg-spiritual-light/10 transition-colors flex items-center justify-between group disabled:opacity-50"
+              className="w-full px-5 py-4 hover:bg-spiritual-pink/30 transition-colors flex items-center justify-between group disabled:opacity-50"
             >
               <div className="flex items-center gap-3">
                 <BarChart3 className="w-5 h-5 text-spiritual-lavender" />
@@ -221,20 +221,20 @@ export default function SettingsContent({
                   <p className="text-base text-gray-100 font-medium">
                     あなたの統計
                   </p>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-200 mt-0.5">
                     鑑定回数やバッジを確認
                   </p>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-spiritual-gold transition-colors" />
+              <ChevronRight className="w-5 h-5 text-gray-200 group-hover:text-spiritual-gold transition-colors" />
             </button>
           </div>
         </section>
 
         {/* アプリ化（PWA）セクション */}
-        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm flex items-center gap-2">
+        <section className="bg-spiritual-pink-lighter/80 backdrop-blur-sm rounded-xl border border-spiritual-pink/50 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/50">
+            <h2 className="text-lg font-semibold text-white drop-shadow-md flex items-center gap-2">
               <Smartphone className="w-5 h-5" />
               アプリとして使う
             </h2>
@@ -245,19 +245,19 @@ export default function SettingsContent({
         </section>
 
         {/* アカウント設定セクション */}
-        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm">
+        <section className="bg-spiritual-pink-lighter/80 backdrop-blur-sm rounded-xl border border-spiritual-pink/50 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/50">
+            <h2 className="text-lg font-semibold text-white drop-shadow-md">
               アカウント設定
             </h2>
           </div>
-          <div className="divide-y divide-spiritual-pink/10">
+          <div className="divide-y divide-spiritual-pink/30">
             {/* メールアドレス */}
             <div className="p-5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-gray-400" />
+                <Mail className="w-5 h-5 text-gray-200" />
                 <div>
-                  <p className="text-sm text-gray-400">メールアドレス</p>
+                  <p className="text-sm text-gray-200">メールアドレス</p>
                   <p className="text-white mt-1">{userEmail}</p>
                 </div>
               </div>
@@ -266,49 +266,49 @@ export default function SettingsContent({
             {/* パスワード変更 */}
             <button
               onClick={() => setIsPasswordModalOpen(true)}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors"
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-pink/30 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <Lock className="w-5 h-5 text-gray-400" />
+                <Lock className="w-5 h-5 text-gray-200" />
                 <span className="text-white">パスワード変更</span>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
+              <ChevronRight className="w-5 h-5 text-gray-200" />
             </button>
 
             {/* ログアウト */}
             <button
               onClick={handleLogout}
               disabled={isLoggingOut}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors disabled:opacity-50"
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-pink/30 transition-colors disabled:opacity-50"
             >
               <div className="flex items-center gap-3">
-                <LogOut className="w-5 h-5 text-gray-400" />
+                <LogOut className="w-5 h-5 text-gray-200" />
                 <span className="text-white">
                   {isLoggingOut ? 'ログアウト中...' : 'ログアウト'}
                 </span>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
+              <ChevronRight className="w-5 h-5 text-gray-200" />
             </button>
           </div>
         </section>
 
         {/* サポートセクション */}
-        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm">
+        <section className="bg-spiritual-pink-lighter/80 backdrop-blur-sm rounded-xl border border-spiritual-pink/50 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/50">
+            <h2 className="text-lg font-semibold text-white drop-shadow-md">
               サポート
             </h2>
           </div>
-          <div className="divide-y divide-spiritual-pink/10">
+          <div className="divide-y divide-spiritual-pink/30">
             {/* アクセシビリティ設定 */}
             <button
               onClick={() => handleNavigate('/settings/accessibility')}
               disabled={isNavigating}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors disabled:opacity-50"
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-pink/30 transition-colors disabled:opacity-50"
             >
               <div className="flex items-center gap-3">
                 <svg
-                  className="w-5 h-5 text-gray-400"
+                  className="w-5 h-5 text-gray-200"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -322,59 +322,59 @@ export default function SettingsContent({
                 </svg>
                 <div className="text-left">
                   <span className="text-white">アクセシビリティ</span>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-200 mt-0.5">
                     フォントサイズやコントラストの調整
                   </p>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
+              <ChevronRight className="w-5 h-5 text-gray-200" />
             </button>
 
             {/* お問い合わせ */}
             <button
               onClick={() => setIsContactFormOpen(true)}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors"
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-pink/30 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <MessageSquare className="w-5 h-5 text-gray-400" />
+                <MessageSquare className="w-5 h-5 text-gray-200" />
                 <div className="text-left">
                   <span className="text-white">お問い合わせ</span>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-200 mt-0.5">
                     バグ報告や機能要望を送信
                   </p>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
+              <ChevronRight className="w-5 h-5 text-gray-200" />
             </button>
 
             {/* 利用規約 */}
             <button
               onClick={() => handleNavigate('/terms')}
               disabled={isNavigating}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors disabled:opacity-50"
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-pink/30 transition-colors disabled:opacity-50"
             >
               <span className="text-white">利用規約</span>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
+              <ChevronRight className="w-5 h-5 text-gray-200" />
             </button>
 
             {/* プライバシーポリシー */}
             <button
               onClick={() => handleNavigate('/privacy')}
               disabled={isNavigating}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors disabled:opacity-50"
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-pink/30 transition-colors disabled:opacity-50"
             >
               <span className="text-white">プライバシーポリシー</span>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
+              <ChevronRight className="w-5 h-5 text-gray-200" />
             </button>
 
             {/* 特定商取引法に基づく表記 */}
             <button
               onClick={() => handleNavigate('/legal/tokusho')}
               disabled={isNavigating}
-              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-dark/50 transition-colors disabled:opacity-50"
+              className="w-full p-5 flex items-center justify-between hover:bg-spiritual-pink/30 transition-colors disabled:opacity-50"
             >
               <span className="text-white">特定商取引法に基づく表記</span>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
+              <ChevronRight className="w-5 h-5 text-gray-200" />
             </button>
           </div>
         </section>
@@ -400,7 +400,7 @@ export default function SettingsContent({
 
         {/* バージョン情報 */}
         <div className="text-center py-4">
-          <p className="text-xs text-gray-500">スピチャ v1.0.0</p>
+          <p className="text-xs text-gray-300">スピチャ v1.0.0</p>
         </div>
       </div>
 

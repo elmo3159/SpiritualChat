@@ -166,7 +166,7 @@ export default function ProfileEditPage() {
         {/* フォーム */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-spiritual-pink/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-spiritual-pink/30 p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8"
+          className="bg-spiritual-pink-lighter/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-spiritual-pink/50 p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8"
         >
           {/* エラーメッセージ */}
           {error && (
