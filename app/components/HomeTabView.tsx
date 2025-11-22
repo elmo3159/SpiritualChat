@@ -88,8 +88,8 @@ export default function HomeTabView({
           onClick={() => setActiveTab('chat')}
           className={`flex-1 py-3 px-4 rounded-xl font-bold transition-all duration-200 flex items-center justify-center gap-2 ${
             activeTab === 'chat'
-              ? 'bg-gradient-to-r from-spiritual-accent to-spiritual-gold text-spiritual-dark shadow-lg'
-              : 'bg-spiritual-dark/50 text-spiritual-lavender border border-spiritual-lavender/30 hover:bg-spiritual-dark/70'
+              ? 'bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark text-white shadow-lg'
+              : 'bg-white/70 text-gray-700 border border-spiritual-pink/30 hover:bg-white/90'
           }`}
         >
           <MessageCircle className="w-5 h-5" />
@@ -99,8 +99,8 @@ export default function HomeTabView({
           onClick={() => setActiveTab('fortune')}
           className={`flex-1 py-3 px-4 rounded-xl font-bold transition-all duration-200 flex items-center justify-center gap-2 ${
             activeTab === 'fortune'
-              ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-              : 'bg-spiritual-dark/50 text-spiritual-lavender border border-spiritual-lavender/30 hover:bg-spiritual-dark/70'
+              ? 'bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark text-white shadow-lg'
+              : 'bg-white/70 text-gray-700 border border-spiritual-pink/30 hover:bg-white/90'
           }`}
         >
           <Sparkles className="w-5 h-5" />
@@ -113,10 +113,10 @@ export default function HomeTabView({
         <div>
           {/* タイトルセクション */}
           <div className="text-center mb-6 md:mb-10 space-y-1 md:space-y-3">
-            <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-100">
+            <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-800">
               占い師を選ぶ
             </h2>
-            <p className="text-xs md:text-base text-spiritual-lavender">
+            <p className="text-xs md:text-base text-gray-600">
               あなたの悩みに寄り添う占い師とチャットしましょう
             </p>
           </div>
@@ -128,10 +128,10 @@ export default function HomeTabView({
         <div>
           {/* 今日の運勢セクション */}
           <div className="text-center mb-6 space-y-2">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-100">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
               今日の運勢
             </h2>
-            <p className="text-sm text-spiritual-lavender">
+            <p className="text-sm text-gray-600">
               {formattedDate}
             </p>
           </div>

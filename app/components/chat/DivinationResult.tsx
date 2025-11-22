@@ -50,19 +50,19 @@ export default function DivinationResult({
     <div className="space-y-4 my-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
 
       {/* 鑑定結果カード */}
-      <div className="bg-gradient-to-br from-spiritual-purple/90 to-spiritual-light/90 backdrop-blur-md rounded-2xl px-6 py-5 shadow-2xl border-2 border-spiritual-lavender/50 relative overflow-hidden animate-in fade-in zoom-in-95 duration-500 delay-300">
+      <div className="bg-[#ffd4e5] rounded-2xl px-6 py-5 shadow-2xl border-2 border-spiritual-pink/50 relative overflow-hidden animate-in fade-in zoom-in-95 duration-500 delay-300">
         {/* 装飾用の背景パターン */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-spiritual-gold/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-spiritual-lavender/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-spiritual-pink/20 rounded-full blur-3xl"></div>
 
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-spiritual-gold animate-pulse" />
-              <h3 className="font-bold text-base md:text-lg text-gray-100">鑑定結果</h3>
+              <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-spiritual-pink-dark animate-pulse" />
+              <h3 className="font-bold text-base md:text-lg text-gray-900">鑑定結果</h3>
             </div>
             {!divination.isUnlocked && divination.resultLength && (
-              <div className="text-xs md:text-sm text-spiritual-gold/90 font-medium">
+              <div className="text-xs md:text-sm text-spiritual-pink-dark font-medium">
                 {divination.resultLength}文字
               </div>
             )}
@@ -72,14 +72,14 @@ export default function DivinationResult({
           <div className="relative">
             {divination.isUnlocked && divination.resultFull ? (
               /* 開封済み: 全文を表示 */
-              <div className="text-sm md:text-base text-gray-100 whitespace-pre-wrap leading-relaxed animate-in fade-in duration-800">
+              <div className="text-sm md:text-base text-gray-900 whitespace-pre-wrap leading-relaxed animate-in fade-in duration-800">
                 {divination.resultFull}
               </div>
             ) : (
               /* 未開封: プレビュー + ぼかし効果 */
               <div className="space-y-4">
                 {/* プレビュー（最初の20文字） */}
-                <p className="text-sm md:text-base text-gray-100 whitespace-pre-wrap leading-relaxed">
+                <p className="text-sm md:text-base text-gray-900 whitespace-pre-wrap leading-relaxed">
                   {divination.resultPreview}
                 </p>
 
@@ -150,7 +150,7 @@ export default function DivinationResult({
 
           {/* 開封済みバッジ */}
           {divination.isUnlocked && (
-            <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-spiritual-gold/20 border border-spiritual-gold/40 backdrop-blur-sm text-spiritual-gold rounded-full text-sm font-semibold animate-in fade-in slide-in-from-left-4 duration-500 delay-500 shadow-lg"
+            <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-spiritual-pink-dark/20 border border-spiritual-pink-dark/40 backdrop-blur-sm text-spiritual-pink-dark rounded-full text-sm font-semibold animate-in fade-in slide-in-from-left-4 duration-500 delay-500 shadow-lg"
             style={{ animationDelay: '500ms' }}>
               <Sparkles className="w-4 h-4 animate-pulse" />
               <span>開封済み</span>

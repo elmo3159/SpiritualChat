@@ -62,7 +62,7 @@ export default function MessageBubble({ message }: Props) {
             px-4 py-3 rounded-2xl shadow-lg transition-all duration-200
             ${isUser
               ? 'bg-gray-600/80 text-white rounded-tr-sm hover:shadow-xl hover:scale-[1.02]'
-              : 'bg-gradient-to-br from-spiritual-pink-light to-white/90 backdrop-blur-sm text-gray-900 rounded-tl-sm border border-spiritual-pink/30 hover:shadow-xl'
+              : 'bg-[#ffd4e5] text-gray-900 rounded-tl-sm border border-spiritual-pink/30 hover:shadow-xl'
             }
           `}
         >

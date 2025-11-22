@@ -40,7 +40,7 @@ export default function MessageInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex-shrink-0 border-t border-spiritual-purple/30 bg-spiritual-dark/95 backdrop-blur-lg px-4 pt-2 pb-2 shadow-lg"
+      className="flex-shrink-0 border-t border-spiritual-pink-dark/30 bg-spiritual-pink/90 backdrop-blur-lg px-4 pt-2 pb-2 shadow-lg"
     >
       <div className="flex items-end gap-2 md:gap-3 max-w-3xl mx-auto">
         {/* テキストエリア */}
@@ -52,11 +52,11 @@ export default function MessageInput({
           disabled={disabled}
           rows={1}
           className="
-            flex-1 resize-none rounded-2xl border border-spiritual-lavender/40
-            px-4 py-1.5 text-base md:text-sm text-gray-100 bg-spiritual-purple/50 backdrop-blur-sm
-            focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 focus:border-spiritual-gold/60
-            disabled:bg-spiritual-purple/20 disabled:cursor-not-allowed disabled:text-gray-500
-            placeholder:text-xs md:placeholder:text-sm placeholder:text-gray-400 placeholder:leading-tight
+            flex-1 resize-none rounded-2xl border border-spiritual-pink-dark/40
+            px-4 py-1.5 text-base md:text-sm text-gray-900 bg-white/90 backdrop-blur-sm
+            focus:outline-none focus:ring-2 focus:ring-spiritual-pink-dark/60 focus:border-spiritual-pink-dark/60
+            disabled:bg-white/50 disabled:cursor-not-allowed disabled:text-gray-500
+            placeholder:text-xs md:placeholder:text-sm placeholder:text-gray-500 placeholder:leading-tight
             max-h-32 transition-all duration-200 leading-tight overflow-hidden
           "
           style={{
@@ -71,14 +71,14 @@ export default function MessageInput({
           disabled={!message.trim() || disabled}
           className="
             flex-shrink-0 w-11 h-11 md:w-12 md:h-12 rounded-full
-            bg-gradient-to-br from-spiritual-accent to-spiritual-gold
-            text-spiritual-dark
+            bg-gradient-to-br from-spiritual-pink to-spiritual-pink-dark
+            text-white
             flex items-center justify-center
             transition-all duration-200
-            hover:shadow-lg hover:shadow-spiritual-gold/30 hover:scale-105
+            hover:shadow-lg hover:shadow-spiritual-pink/50 hover:scale-105
             disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100
             active:scale-95
-            border border-spiritual-gold/30
+            border border-spiritual-pink-dark/30
           "
         >
           <Send className="w-5 h-5 md:w-6 md:h-6" />

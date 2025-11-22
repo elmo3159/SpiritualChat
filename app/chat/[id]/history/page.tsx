@@ -68,22 +68,22 @@ export default async function DivinationHistoryPage({ params }: Props) {
     })) || []
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-spiritual-pink-lighter/30 to-white">
       {/* ヘッダー */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-purple-100">
+      <header className="sticky top-0 z-50 bg-spiritual-pink/90 backdrop-blur-md shadow-sm border-b border-spiritual-pink-dark/30">
         <div className="flex items-center gap-4 px-4 py-3 max-w-3xl mx-auto">
           {/* 戻るボタン */}
           <Link
             href={`/chat/${params.id}`}
-            className="flex-shrink-0 p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="flex-shrink-0 p-2 hover:bg-white/20 rounded-full transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-gray-700" />
+            <ArrowLeft className="w-5 h-5 text-white" />
           </Link>
 
           {/* 占い師情報 */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <div className="relative flex-shrink-0">
-              <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-purple-200">
+              <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-white/50">
                 <Image
                   src={fortuneTeller.avatar_url || '/images/default-avatar.png'}
                   alt={fortuneTeller.name}
@@ -96,10 +96,10 @@ export default async function DivinationHistoryPage({ params }: Props) {
             </div>
 
             <div className="flex-1 min-w-0">
-              <h1 className="text-base font-bold text-gray-800 truncate">
+              <h1 className="text-base font-bold text-white truncate">
                 鑑定履歴
               </h1>
-              <p className="text-xs text-gray-600 truncate">
+              <p className="text-xs text-white/90 truncate">
                 {fortuneTeller.name}との鑑定結果
               </p>
             </div>

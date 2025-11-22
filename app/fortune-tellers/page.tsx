@@ -73,12 +73,12 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-spiritual-dark via-spiritual-darker to-spiritual-navy pb-16">
+    <main className="min-h-screen bg-gradient-to-br from-spiritual-pink-lighter/20 via-white to-spiritual-pink-lighter/30 pb-16">
       {/* ヘッダー */}
-      <header className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg shadow-lg border-b border-spiritual-pink/30">
+      <header className="sticky top-0 z-40 bg-spiritual-pink/90 backdrop-blur-lg shadow-lg border-b border-spiritual-pink-dark/30">
         <div className="container mx-auto px-4 py-3 md:py-5 pt-safe-top">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center bg-white/90 px-3 py-1 rounded-xl">
               <Image
                 src="/images/logo.png?v=2"
                 alt="スピチャ"
