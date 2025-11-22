@@ -31,7 +31,15 @@ export default async function PointsPurchasePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-spiritual-pink-lighter/30 to-white">
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundImage: 'url(/images/BackGround.jpeg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 pt-8 pb-28">
         {/* ヘッダー */}
         <div className="mb-8">

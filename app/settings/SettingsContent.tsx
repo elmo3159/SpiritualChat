@@ -77,7 +77,15 @@ export default function SettingsContent({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-spiritual-pink-lighter/30 via-white to-spiritual-pink-lighter/20 pb-20 relative">
+    <div
+      className="min-h-screen pb-20 relative"
+      style={{
+        backgroundImage: 'url(/images/BackGround.jpeg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
       {/* ローディングオーバーレイ */}
       {isNavigating && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center">
@@ -89,7 +97,7 @@ export default function SettingsContent({
       )}
 
       {/* ヘッダー */}
-      <div className="sticky top-0 z-40 bg-spiritual-dark/95 backdrop-blur-lg border-b border-spiritual-lavender/30">
+      <div className="sticky top-0 z-40 bg-gradient-to-r from-white via-spiritual-pink-lighter/50 to-spiritual-pink/90 backdrop-blur-lg border-b border-spiritual-pink-dark/30">
         <div className="max-w-2xl mx-auto px-4 py-4 pt-safe-top flex items-center justify-between">
           <Image
             src="/images/logo.png?v=2"
@@ -99,15 +107,15 @@ export default function SettingsContent({
             className="w-auto h-9"
             priority
           />
-          <span className="text-lg font-semibold text-spiritual-gold">設定</span>
+          <span className="text-lg font-semibold text-gray-800">設定</span>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* ポイント管理セクション */}
-        <section className="bg-spiritual-darker/50 backdrop-blur-sm rounded-xl border border-spiritual-lavender/20 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-lavender/20">
-            <h2 className="text-lg font-semibold text-spiritual-gold flex items-center gap-2">
+        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/30">
+            <h2 className="text-lg font-semibold text-spiritual-pink-dark flex items-center gap-2">
               <Coins className="w-5 h-5" />
               ポイント管理
             </h2>
@@ -173,14 +181,14 @@ export default function SettingsContent({
         </section>
 
         {/* プロフィール・統計セクション */}
-        <section className="bg-spiritual-darker/50 backdrop-blur-sm rounded-xl border border-spiritual-lavender/20 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-lavender/20">
-            <h2 className="text-lg font-semibold text-spiritual-gold flex items-center gap-2">
+        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/30">
+            <h2 className="text-lg font-semibold text-spiritual-pink-dark flex items-center gap-2">
               <User className="w-5 h-5" />
               プロフィール・統計
             </h2>
           </div>
-          <div className="divide-y divide-spiritual-lavender/10">
+          <div className="divide-y divide-spiritual-pink/10">
             {/* プロフィール編集 */}
             <button
               onClick={() => handleNavigate('/profile/edit')}
@@ -224,9 +232,9 @@ export default function SettingsContent({
         </section>
 
         {/* アプリ化（PWA）セクション */}
-        <section className="bg-spiritual-darker/50 backdrop-blur-sm rounded-xl border border-spiritual-lavender/20 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-lavender/20">
-            <h2 className="text-lg font-semibold text-spiritual-gold flex items-center gap-2">
+        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/30">
+            <h2 className="text-lg font-semibold text-spiritual-pink-dark flex items-center gap-2">
               <Smartphone className="w-5 h-5" />
               アプリとして使う
             </h2>
@@ -237,13 +245,13 @@ export default function SettingsContent({
         </section>
 
         {/* アカウント設定セクション */}
-        <section className="bg-spiritual-darker/50 backdrop-blur-sm rounded-xl border border-spiritual-lavender/20 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-lavender/20">
-            <h2 className="text-lg font-semibold text-spiritual-gold">
+        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/30">
+            <h2 className="text-lg font-semibold text-spiritual-pink-dark">
               アカウント設定
             </h2>
           </div>
-          <div className="divide-y divide-spiritual-lavender/10">
+          <div className="divide-y divide-spiritual-pink/10">
             {/* メールアドレス */}
             <div className="p-5 flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -285,13 +293,13 @@ export default function SettingsContent({
         </section>
 
         {/* サポートセクション */}
-        <section className="bg-spiritual-darker/50 backdrop-blur-sm rounded-xl border border-spiritual-lavender/20 overflow-hidden">
-          <div className="p-5 border-b border-spiritual-lavender/20">
-            <h2 className="text-lg font-semibold text-spiritual-gold">
+        <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
+          <div className="p-5 border-b border-spiritual-pink/30">
+            <h2 className="text-lg font-semibold text-spiritual-pink-dark">
               サポート
             </h2>
           </div>
-          <div className="divide-y divide-spiritual-lavender/10">
+          <div className="divide-y divide-spiritual-pink/10">
             {/* アクセシビリティ設定 */}
             <button
               onClick={() => handleNavigate('/settings/accessibility')}

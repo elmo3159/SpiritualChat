@@ -743,7 +743,7 @@ export default function ChatContainer({
 
       {/* 占ってもらうボタン + メッセージ入力エリア - 固定位置（Safariの下部バーを考慮） */}
       <div className="fixed bottom-0 left-0 right-0 z-10">
-        <div className="bg-spiritual-dark/95 backdrop-blur-lg border-t border-spiritual-pink/30 shadow-lg pb-safe">
+        <div className="bg-spiritual-pink/90 backdrop-blur-lg border-t border-spiritual-pink-dark/30 shadow-lg pb-safe">
           {/* 占ってもらうボタン */}
           <div className="px-4 pt-0.5 pb-0">
             <div className="max-w-3xl mx-auto">

@@ -94,7 +94,7 @@ export default function DivinationButton({
       <button
         onClick={handleDivinationRequest}
         disabled={disabled || isGenerating}
-        className="relative w-full px-6 py-2 bg-spiritual-pink/90 text-white rounded-xl font-bold text-sm md:text-base shadow-lg shadow-spiritual-pink/30 hover:shadow-xl hover:shadow-spiritual-pink/50 hover:scale-[1.02] disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-400 transition-all duration-300 flex items-center justify-center gap-2 border-2 border-spiritual-pink-dark/40 overflow-hidden group"
+        className="relative w-full px-6 py-2 bg-gradient-to-r from-spiritual-green to-spiritual-green-dark text-white rounded-xl font-bold text-sm md:text-base shadow-lg shadow-spiritual-green/30 hover:shadow-xl hover:shadow-spiritual-green/50 hover:scale-[1.02] disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-400 transition-all duration-300 flex items-center justify-center gap-2 border-2 border-spiritual-green-dark/40 overflow-hidden group"
       >
         {/* 輝きエフェクト */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
