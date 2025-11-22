@@ -27,10 +27,8 @@ export default function LevelGauge({
 }: LevelGaugeProps) {
   // レベルに応じた色グラデーション
   const getLevelGradient = (level: number) => {
-    if (level >= 100) return 'from-yellow-400 to-orange-500'
-    if (level >= 50) return 'from-purple-500 to-pink-500'
-    if (level >= 25) return 'from-blue-500 to-cyan-500'
-    return 'from-green-500 to-emerald-500'
+    // すべてのレベルでピンク色に統一
+    return 'from-spiritual-pink to-spiritual-pink-dark'
   }
 
   // レベルに応じた称号
