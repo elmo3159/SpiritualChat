@@ -201,7 +201,7 @@ export default function LandingPage() {
           {/* 占い師アバター */}
           <div className="mb-4">
             <p className="text-center text-sm md:text-base text-white font-semibold mb-2 drop-shadow-md">
-              ✨ 好みの先生を選んで相談！✨
+              ↓ 好みの先生を選んで相談！↓
             </p>
             <div className="flex justify-center items-center gap-4">
               {/* 天音そう */}
