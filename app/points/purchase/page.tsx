@@ -31,13 +31,13 @@ export default async function PointsPurchasePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-spiritual-pink-lighter/30 to-white">
       <div className="max-w-7xl mx-auto px-4 pt-8 pb-28">
         {/* ヘッダー */}
         <div className="mb-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-4"
+            className="inline-flex items-center gap-2 text-spiritual-pink-dark hover:text-spiritual-pink-deep mb-4"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>戻る</span>

@@ -60,16 +60,16 @@ export default function DailyFortuneView({ fortune, currentPoints, today }: Dail
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-spiritual-dark via-spiritual-darker to-spiritual-navy pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-spiritual-pink-lighter/30 via-white to-spiritual-pink-lighter/20 pb-20">
       {/* ヘッダー */}
-      <div className="bg-spiritual-dark/95 backdrop-blur-lg border-b border-spiritual-pink/30 sticky top-0 z-10">
+      <div className="bg-spiritual-pink/90 backdrop-blur-lg border-b border-spiritual-pink-dark/30 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Link href="/" className="p-2 hover:bg-spiritual-navy/50 rounded-full transition-colors">
-            <ArrowLeft className="w-6 h-6 text-spiritual-pink-light" />
+          <Link href="/" className="p-2 hover:bg-white/20 rounded-full transition-colors">
+            <ArrowLeft className="w-6 h-6 text-white" />
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-gray-100">今日の運勢</h1>
-            <p className="text-sm text-spiritual-pink-light">{formattedDate}</p>
+            <h1 className="text-xl font-bold text-white">今日の運勢</h1>
+            <p className="text-sm text-white/90">{formattedDate}</p>
           </div>
         </div>
       </div>

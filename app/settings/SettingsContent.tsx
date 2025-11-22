@@ -77,7 +77,7 @@ export default function SettingsContent({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-spiritual-dark via-spiritual-darker to-spiritual-dark pb-20 relative">
+    <div className="min-h-screen bg-gradient-to-b from-spiritual-pink-lighter/30 via-white to-spiritual-pink-lighter/20 pb-20 relative">
       {/* ローディングオーバーレイ */}
       {isNavigating && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center">

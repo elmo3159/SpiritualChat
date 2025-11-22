@@ -34,7 +34,7 @@ export default function BottomNavigation() {
   const isSettingsActive = pathname?.startsWith('/settings')
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-spiritual-dark/95 backdrop-blur-lg border-t border-spiritual-lavender/30 shadow-2xl">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-spiritual-pink/95 backdrop-blur-lg border-t border-spiritual-pink-dark/30 shadow-2xl">
       <div className="flex items-center justify-around min-h-16 px-4 pb-safe">
         {/* 占いタブ */}
         <Link
@@ -42,13 +42,13 @@ export default function BottomNavigation() {
           className={`
             flex flex-col items-center justify-center gap-1 flex-1 h-full
             transition-all duration-300
-            ${isFortuneActive ? 'text-spiritual-gold' : 'text-gray-400'}
+            ${isFortuneActive ? 'text-white' : 'text-white/60'}
           `}
         >
           <div className={`
             relative p-2 rounded-2xl transition-all duration-300
             ${isFortuneActive
-              ? 'bg-gradient-to-br from-spiritual-accent/20 to-spiritual-gold/20 shadow-lg shadow-spiritual-gold/30'
+              ? 'bg-white/30 shadow-lg shadow-white/30'
               : 'bg-transparent'
             }
           `}>
@@ -59,7 +59,7 @@ export default function BottomNavigation() {
               `}
             />
             {isFortuneActive && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-spiritual-gold rounded-full animate-ping" />
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping" />
             )}
           </div>
           <span className={`
@@ -76,13 +76,13 @@ export default function BottomNavigation() {
           className={`
             flex flex-col items-center justify-center gap-1 flex-1 h-full
             transition-all duration-300
-            ${isPointsActive ? 'text-spiritual-gold' : 'text-gray-400'}
+            ${isPointsActive ? 'text-white' : 'text-white/60'}
           `}
         >
           <div className={`
             relative p-2 rounded-2xl transition-all duration-300
             ${isPointsActive
-              ? 'bg-gradient-to-br from-spiritual-accent/20 to-spiritual-gold/20 shadow-lg shadow-spiritual-gold/30'
+              ? 'bg-white/30 shadow-lg shadow-white/30'
               : 'bg-transparent'
             }
           `}>
@@ -93,7 +93,7 @@ export default function BottomNavigation() {
               `}
             />
             {isPointsActive && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-spiritual-gold rounded-full animate-ping" />
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping" />
             )}
           </div>
           <span className={`
@@ -110,13 +110,13 @@ export default function BottomNavigation() {
           className={`
             flex flex-col items-center justify-center gap-1 flex-1 h-full
             transition-all duration-300
-            ${isProfileActive ? 'text-spiritual-gold' : 'text-gray-400'}
+            ${isProfileActive ? 'text-white' : 'text-white/60'}
           `}
         >
           <div className={`
             relative p-2 rounded-2xl transition-all duration-300
             ${isProfileActive
-              ? 'bg-gradient-to-br from-spiritual-accent/20 to-spiritual-gold/20 shadow-lg shadow-spiritual-gold/30'
+              ? 'bg-white/30 shadow-lg shadow-white/30'
               : 'bg-transparent'
             }
           `}>
@@ -127,7 +127,7 @@ export default function BottomNavigation() {
               `}
             />
             {isProfileActive && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-spiritual-gold rounded-full animate-ping" />
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping" />
             )}
           </div>
           <span className={`
@@ -144,13 +144,13 @@ export default function BottomNavigation() {
           className={`
             flex flex-col items-center justify-center gap-1 flex-1 h-full
             transition-all duration-300
-            ${isSettingsActive ? 'text-spiritual-gold' : 'text-gray-400'}
+            ${isSettingsActive ? 'text-white' : 'text-white/60'}
           `}
         >
           <div className={`
             relative p-2 rounded-2xl transition-all duration-300
             ${isSettingsActive
-              ? 'bg-gradient-to-br from-spiritual-accent/20 to-spiritual-gold/20 shadow-lg shadow-spiritual-gold/30'
+              ? 'bg-white/30 shadow-lg shadow-white/30'
               : 'bg-transparent'
             }
           `}>
@@ -161,7 +161,7 @@ export default function BottomNavigation() {
               `}
             />
             {isSettingsActive && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-spiritual-gold rounded-full animate-ping" />
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full animate-ping" />
             )}
           </div>
           <span className={`

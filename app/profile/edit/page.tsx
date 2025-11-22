@@ -112,7 +112,7 @@ export default function ProfileEditPage() {
 
   if (isFetching) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-spiritual-dark via-spiritual-darker to-spiritual-purple">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-spiritual-pink-lighter/30 via-white to-spiritual-pink-lighter/50">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-spiritual-gold/30 border-t-spiritual-gold rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-100 text-base md:text-lg">プロフィールを読み込み中...</p>
@@ -122,7 +122,7 @@ export default function ProfileEditPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-spiritual-dark via-spiritual-darker to-spiritual-purple py-6 md:py-8 px-4 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-spiritual-pink-lighter/30 via-white to-spiritual-pink-lighter/50 py-6 md:py-8 px-4 pb-20">
       {/* 背景装飾 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-spiritual-lavender/10 rounded-full blur-3xl" />
