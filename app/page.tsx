@@ -123,11 +123,11 @@ export default function LandingPage() {
                 人気占い師監修 × AIチャット占い
               </p>
               <p className="text-base md:text-xl text-gray-300 leading-relaxed">
-                24時間いつでも、あなた専用の答えが返ってきます
+                AIだから、誰にも言えない恥ずかしい悩みも相談できる
               </p>
             </div>
             {/* 悩みカテゴリ */}
-            <div className="flex flex-wrap justify-center gap-2 mb-4">
+            <div className="flex flex-wrap justify-center gap-2 mb-8">
               <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
                 #片思い
               </span>
@@ -140,6 +140,25 @@ export default function LandingPage() {
               <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
                 #不倫/浮気
               </span>
+            </div>
+
+            {/* メインCTAボタン（ファーストビュー） */}
+            <div className="mb-10">
+              <button
+                onClick={() => router.push('/signup')}
+                className="w-full max-w-lg mx-auto block px-10 py-6 bg-gradient-to-r from-spiritual-gold to-spiritual-accent text-gray-900 rounded-2xl font-black text-xl md:text-3xl hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl shadow-spiritual-gold/60 relative overflow-hidden border-4 border-white/30"
+              >
+                <span className="relative z-10 drop-shadow-md">今すぐ無料で鑑定する（登録）</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer"></div>
+              </button>
+              <div className="text-center mt-4 space-y-2">
+                <p className="text-sm md:text-base text-white font-bold bg-spiritual-pink/30 inline-block px-6 py-2 rounded-full border border-white/30 shadow-lg">
+                  ✨ 登録完了後すぐに1000pt付与！今すぐ占えます ✨
+                </p>
+                <p className="text-xs md:text-sm text-gray-300">
+                  メールアドレスまたはGoogleアカウントで簡単登録
+                </p>
+              </div>
             </div>
           </div>
 
