@@ -756,7 +756,7 @@ export default function ChatContainer({
               {/* 無効化理由のヒント表示 */}
               {isDivinationButtonDisabled && !isDivinating && (
                 <div className="mt-1 px-2">
-                  <p className="text-xs text-center text-gray-400">
+                  <p className="text-xs text-center text-amber-800">
                     {hasUnlockedDivinationWithoutNewSuggestion
                       ? '💫 鑑定結果を開封するか、メッセージを送信してください'
                       : isWaitingForSuggestion

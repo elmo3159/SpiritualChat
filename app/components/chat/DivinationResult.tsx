@@ -86,11 +86,12 @@ export default function DivinationResult({
                 {/* ぼかし効果のテキスト */}
                 <div className="relative min-h-[200px]">
                   <div
-                    className="text-sm md:text-base text-gray-300 whitespace-pre-wrap leading-relaxed"
+                    className="text-sm md:text-base text-gray-800 whitespace-pre-wrap leading-relaxed"
                     style={{
-                      filter: 'blur(10px)',
+                      filter: 'blur(20px)',
                       userSelect: 'none',
                       pointerEvents: 'none',
+                      opacity: 0.8,
                     }}
                   >
                     {/* ダミーテキスト（実際の内容ではなく、視覚効果のみ） */}
