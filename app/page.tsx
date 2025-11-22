@@ -161,11 +161,11 @@ export default function LandingPage() {
 
               {/* 完全秘密厳守バッジ */}
               <div className="text-center mt-2">
-                <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-spiritual-gold to-spiritual-accent px-4 py-1.5 rounded-full border-3 border-white/40 shadow-lg">
-                  <Shield className="w-4 h-4 text-gray-900" />
+                <div className="inline-flex items-center gap-1.5 bg-white/95 px-4 py-1.5 rounded-full border-2 border-spiritual-pink-dark/40 shadow-lg">
+                  <Shield className="w-4 h-4 text-spiritual-pink-dark" />
                   <div className="text-left">
-                    <p className="text-xs md:text-sm font-black text-gray-900 leading-tight">完全秘密厳守</p>
-                    <p className="text-[10px] md:text-xs text-gray-800">誰にもバレずに相談</p>
+                    <p className="text-xs md:text-sm font-black text-spiritual-pink-dark leading-tight">完全秘密厳守</p>
+                    <p className="text-[10px] md:text-xs text-spiritual-purple">誰にもバレずに相談</p>
                   </div>
                 </div>
               </div>
