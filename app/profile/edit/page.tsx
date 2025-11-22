@@ -430,13 +430,13 @@ export default function ProfileEditPage() {
               <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                 お悩みの内容 <span className="text-red-400">*</span>
               </label>
-              <p className="text-xs md:text-sm text-spiritual-gold/90 mb-2">
+              <p className="text-xs md:text-sm text-spiritual-pink-dark font-semibold mb-2">
                 長文でもOK！状況を詳しく書くことをおすすめしております。
               </p>
               <textarea
                 {...register('concernDescription')}
                 rows={6}
-                className="w-full px-4 py-3 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 focus:border-spiritual-gold/60 transition-all backdrop-blur-sm resize-none text-base"
+                className="w-full px-4 py-3 bg-white/80 border border-spiritual-pink/40 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-spiritual-pink/60 focus:border-spiritual-pink transition-all backdrop-blur-sm resize-none text-base"
                 placeholder="あなたのお悩みを詳しく教えてください..."
               />
               <div className="flex justify-between items-center mt-1 flex-wrap gap-2">
