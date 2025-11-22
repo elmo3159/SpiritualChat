@@ -110,49 +110,49 @@ export default function LandingPage() {
       </header>
 
       {/* メインビジュアル */}
-      <section className="relative z-10 pt-4 md:pt-8 pb-6 md:pb-10 px-4">
+      <section className="relative z-10 pt-2 md:pt-6 pb-4 md:pb-8 px-4">
         <div className="container mx-auto max-w-6xl">
           {/* メインキャッチコピー */}
-          <div className="text-center mb-4 md:mb-6 px-2">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+          <div className="text-center mb-3 md:mb-5 px-2">
+            <h1 className="text-2xl md:text-5xl lg:text-6xl font-bold text-white mb-2 leading-tight">
               彼からの連絡が止まった理由、<br className="hidden md:block" />
               <span className="text-spiritual-pink-light">今すぐ</span>見えます
             </h1>
-            <div className="space-y-2 mb-4">
-              <p className="text-lg md:text-2xl text-gray-200 font-semibold leading-relaxed">
+            <div className="space-y-1 mb-3">
+              <p className="text-base md:text-2xl text-gray-200 font-semibold leading-relaxed">
                 人気占い師監修 × AIチャット占い
               </p>
-              <p className="text-base md:text-xl text-gray-300 leading-relaxed">
+              <p className="text-sm md:text-xl text-gray-300 leading-relaxed">
                 AIだから、誰にも言えない恥ずかしい悩みも相談できる
               </p>
             </div>
             {/* 悩みカテゴリ */}
-            <div className="flex flex-wrap justify-center gap-2 mb-5">
-              <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
+            <div className="flex flex-wrap justify-center gap-1.5 mb-3">
+              <span className="px-2.5 py-1 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-xs md:text-sm text-spiritual-pink-lighter font-medium">
                 #片思い
               </span>
-              <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
+              <span className="px-2.5 py-1 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-xs md:text-sm text-spiritual-pink-lighter font-medium">
                 #復縁
               </span>
-              <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
+              <span className="px-2.5 py-1 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-xs md:text-sm text-spiritual-pink-lighter font-medium">
                 #相手の気持ち
               </span>
-              <span className="px-3 py-1.5 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-sm md:text-base text-spiritual-pink-lighter font-medium">
+              <span className="px-2.5 py-1 bg-spiritual-pink/20 border border-spiritual-pink/40 rounded-full text-xs md:text-sm text-spiritual-pink-lighter font-medium">
                 #不倫/浮気
               </span>
             </div>
 
             {/* メインCTAボタン（ファーストビュー） */}
-            <div className="mb-6">
+            <div className="mb-3">
               <button
                 onClick={() => router.push('/signup')}
-                className="w-full max-w-lg mx-auto block px-8 py-4 bg-gradient-to-r from-spiritual-gold to-spiritual-accent text-gray-900 rounded-2xl font-black hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl shadow-spiritual-gold/60 relative overflow-hidden border-4 border-white/30"
+                className="w-full max-w-lg mx-auto block px-6 py-3 bg-gradient-to-r from-spiritual-gold to-spiritual-accent text-gray-900 rounded-2xl font-black hover:scale-105 active:scale-95 transition-all duration-300 shadow-2xl shadow-spiritual-gold/60 relative overflow-hidden border-4 border-white/30"
               >
                 <div className="relative z-10">
-                  <div className="text-2xl md:text-3xl drop-shadow-md leading-tight">
+                  <div className="text-xl md:text-3xl drop-shadow-md leading-tight">
                     今すぐ無料で鑑定する
                   </div>
-                  <div className="text-xs md:text-sm font-normal mt-1 opacity-90">
+                  <div className="text-xs md:text-sm font-normal mt-0.5 opacity-90">
                     （登録後すぐに結果が見れます）
                   </div>
                 </div>
@@ -160,20 +160,14 @@ export default function LandingPage() {
               </button>
 
               {/* 完全秘密厳守バッジ */}
-              <div className="text-center mt-3">
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-spiritual-gold to-spiritual-accent px-6 py-2 rounded-full border-3 border-white/40 shadow-lg">
-                  <Shield className="w-5 h-5 text-gray-900" />
+              <div className="text-center mt-2">
+                <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-spiritual-gold to-spiritual-accent px-4 py-1.5 rounded-full border-3 border-white/40 shadow-lg">
+                  <Shield className="w-4 h-4 text-gray-900" />
                   <div className="text-left">
-                    <p className="text-sm md:text-base font-black text-gray-900 leading-tight">完全秘密厳守</p>
-                    <p className="text-xs text-gray-800">誰にもバレずに相談</p>
+                    <p className="text-xs md:text-sm font-black text-gray-900 leading-tight">完全秘密厳守</p>
+                    <p className="text-[10px] md:text-xs text-gray-800">誰にもバレずに相談</p>
                   </div>
                 </div>
-              </div>
-
-              <div className="text-center mt-3">
-                <p className="text-xs md:text-sm text-white font-bold bg-spiritual-pink/30 inline-block px-4 py-1.5 rounded-full border border-white/30">
-                  ✨ 登録完了後すぐに1000pt付与！
-                </p>
               </div>
             </div>
           </div>
@@ -199,15 +193,15 @@ export default function LandingPage() {
           </div>
 
           {/* 占い師アバター */}
-          <div className="mb-4">
-            <p className="text-center text-sm md:text-base text-white font-semibold mb-2 drop-shadow-md">
+          <div className="mb-3">
+            <p className="text-center text-xs md:text-base text-white font-semibold mb-1.5 drop-shadow-md">
               ↓ 好みの先生を選んで相談！↓
             </p>
-            <div className="flex justify-center items-center gap-4">
+            <div className="flex justify-center items-center gap-3">
               {/* 天音そう */}
               <button
                 onClick={() => router.push('/signup')}
-                className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 overflow-hidden shadow-lg hover:scale-110 hover:border-spiritual-gold active:scale-95 transition-all duration-300 cursor-pointer"
+                className="w-14 h-14 md:w-20 md:h-20 rounded-full border-3 border-spiritual-pink/50 overflow-hidden shadow-lg hover:scale-110 hover:border-spiritual-gold active:scale-95 transition-all duration-300 cursor-pointer"
               >
                 <Image
                   src="/images/AmaneSou.jpeg"
@@ -220,7 +214,7 @@ export default function LandingPage() {
               {/* 紫雲沙羅 */}
               <button
                 onClick={() => router.push('/signup')}
-                className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 overflow-hidden shadow-lg hover:scale-110 hover:border-spiritual-gold active:scale-95 transition-all duration-300 cursor-pointer"
+                className="w-14 h-14 md:w-20 md:h-20 rounded-full border-3 border-spiritual-pink/50 overflow-hidden shadow-lg hover:scale-110 hover:border-spiritual-gold active:scale-95 transition-all duration-300 cursor-pointer"
               >
                 <Image
                   src="/images/ShiunSara.jpeg"
@@ -233,7 +227,7 @@ export default function LandingPage() {
               {/* ゆら */}
               <button
                 onClick={() => router.push('/signup')}
-                className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-spiritual-pink/50 overflow-hidden shadow-lg hover:scale-110 hover:border-spiritual-gold active:scale-95 transition-all duration-300 cursor-pointer"
+                className="w-14 h-14 md:w-20 md:h-20 rounded-full border-3 border-spiritual-pink/50 overflow-hidden shadow-lg hover:scale-110 hover:border-spiritual-gold active:scale-95 transition-all duration-300 cursor-pointer"
               >
                 <Image
                   src="/images/Yura.jpeg"
