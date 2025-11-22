@@ -241,104 +241,26 @@ export default function LandingPage() {
           </div>
 
           {/* チャットUIプレビュー */}
-          <div className="max-w-2xl mx-auto mb-4">
-            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-3 md:p-4 border-2 border-spiritual-pink/30 shadow-2xl">
-              {/* チャットヘッダー */}
-              <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/10">
-                <Sparkles className="w-5 h-5 text-spiritual-pink" />
-                <div className="flex-1">
-                  <p className="text-white font-bold text-sm">AI占い師</p>
-                  <p className="text-xs text-gray-400">オンライン</p>
-                </div>
-                <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-spiritual-pink rounded-full"></div>
-                  <div className="w-2 h-2 bg-spiritual-pink rounded-full"></div>
-                  <div className="w-2 h-2 bg-spiritual-pink rounded-full"></div>
-                </div>
-              </div>
+          <div className="max-w-2xl mx-auto mb-4 relative">
+            <div className="rounded-3xl border-2 border-spiritual-pink/30 shadow-2xl overflow-hidden">
+              <Image
+                src="/images/Chatimage.png"
+                alt="チャット画面プレビュー"
+                width={800}
+                height={600}
+                className="w-full h-auto"
+              />
+            </div>
 
-              {/* チャットメッセージ */}
-              <div className="space-y-3">
-                {/* 占い師のメッセージ */}
-                <div className="flex items-start gap-2">
-                  <Image
-                    src="/images/mascot1.png"
-                    alt=""
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 flex-shrink-0"
-                  />
-                  <div className="flex-1">
-                    <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 text-gray-800 rounded-2xl rounded-tl-none px-3 py-2 shadow-md relative">
-                      {/* 吹き出しの矢印 */}
-                      <div className="absolute -left-2 top-3 w-0 h-0 border-t-[8px] border-t-transparent border-r-[12px] border-r-spiritual-pink-light border-b-[8px] border-b-transparent"></div>
-                      <p className="text-sm md:text-base">
-                        あなたのエネルギーを読み取ってみますね…
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-1 mt-1 px-1">
-                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
-                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
-                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* 占い師の回答 */}
-                <div className="flex items-start gap-2">
-                  <Image
-                    src="/images/mascot1.png"
-                    alt=""
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 flex-shrink-0"
-                  />
-                  <div className="flex-1">
-                    <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 text-gray-800 rounded-2xl rounded-tl-none px-3 py-2 shadow-md relative">
-                      {/* 吹き出しの矢印 */}
-                      <div className="absolute -left-2 top-3 w-0 h-0 border-t-[8px] border-t-transparent border-r-[12px] border-r-spiritual-pink-light border-b-[8px] border-b-transparent"></div>
-                      <p className="text-sm md:text-base font-medium">
-                        彼は今LINEを消せずに、あなたのアイコンを眺めています。連絡できない理由を抱えていますが、あなたへの気持ちは消えていません✨
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-1 mt-1 px-1">
-                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
-                      <Star className="w-3 h-3 text-spiritual-gold fill-spiritual-gold" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* さらに詳しく */}
-                <div className="flex items-start gap-2">
-                  <Image
-                    src="/images/mascot1.png"
-                    alt=""
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 flex-shrink-0"
-                  />
-                  <div className="flex-1">
-                    <div className="bg-gradient-to-br from-spiritual-pink-light to-white/90 text-gray-800 rounded-2xl rounded-tl-none px-3 py-2 shadow-md relative">
-                      {/* 吹き出しの矢印 */}
-                      <div className="absolute -left-2 top-3 w-0 h-0 border-t-[8px] border-t-transparent border-r-[12px] border-r-spiritual-pink-light border-b-[8px] border-b-transparent"></div>
-                      <p className="text-sm md:text-base">
-                        このあとどう動けば復縁の確率が上がるか、タイミングと具体的な行動をお伝えしますね💕
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* マスコット装飾（スマホ表示） */}
-              <div className="md:hidden absolute -bottom-4 -right-2">
-                <Image
-                  src="/images/mascot5.png"
-                  alt=""
-                  width={80}
-                  height={80}
-                  className="w-16 h-16"
-                />
-              </div>
+            {/* マスコット装飾（スマホ表示） */}
+            <div className="md:hidden absolute -bottom-4 -right-2">
+              <Image
+                src="/images/mascot5.png"
+                alt=""
+                width={80}
+                height={80}
+                className="w-16 h-16"
+              />
             </div>
           </div>
 
