@@ -112,7 +112,15 @@ export default function ProfileEditPage() {
 
   if (isFetching) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-spiritual-pink-lighter/30 via-white to-spiritual-pink-lighter/50">
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{
+          backgroundImage: 'url(/images/BackGround.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-spiritual-gold/30 border-t-spiritual-gold rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-100 text-base md:text-lg">プロフィールを読み込み中...</p>
@@ -122,7 +130,15 @@ export default function ProfileEditPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-spiritual-pink-lighter/30 via-white to-spiritual-pink-lighter/50 py-6 md:py-8 px-4 pb-20">
+    <div
+      className="min-h-screen py-6 md:py-8 px-4 pb-20"
+      style={{
+        backgroundImage: 'url(/images/BackGround.jpeg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
       {/* 背景装飾 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-spiritual-lavender/10 rounded-full blur-3xl" />
@@ -134,15 +150,15 @@ export default function ProfileEditPage() {
         <div className="mb-6 md:mb-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-spiritual-pink-dark hover:text-spiritual-pink transition-colors mb-3 md:mb-4 active:scale-95 transition-transform min-h-[44px]"
+            className="inline-flex items-center gap-2 text-white hover:text-spiritual-pink-lighter transition-colors mb-3 md:mb-4 active:scale-95 transition-transform min-h-[44px] drop-shadow-md"
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="text-sm md:text-base">占い師選択に戻る</span>
           </Link>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-spiritual-pink-dark mb-2">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-lg mb-2">
             プロフィール編集
           </h1>
-          <p className="text-sm md:text-base text-spiritual-pink-dark">
+          <p className="text-sm md:text-base text-white drop-shadow-md">
             あなたの情報を更新してください
           </p>
         </div>
@@ -167,7 +183,7 @@ export default function ProfileEditPage() {
 
             {/* ニックネーム */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
+              <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                 ニックネーム <span className="text-red-400">*</span>
               </label>
               <input
@@ -185,7 +201,7 @@ export default function ProfileEditPage() {
 
             {/* 生年月日 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
+              <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                 生年月日 <span className="text-red-400">*</span>
               </label>
               <input
@@ -202,7 +218,7 @@ export default function ProfileEditPage() {
 
             {/* 性別 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
+              <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                 性別 <span className="text-red-400">*</span>
               </label>
               <select
@@ -235,7 +251,7 @@ export default function ProfileEditPage() {
 
             {/* 出生時刻 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
+              <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                 出生時刻
               </label>
               <input
@@ -255,7 +271,7 @@ export default function ProfileEditPage() {
 
             {/* 現在住んでいる都道府県 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
+              <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                 現在住んでいる都道府県
               </label>
               <input
@@ -280,7 +296,7 @@ export default function ProfileEditPage() {
 
               {/* お相手の名前 */}
               <div>
-                <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
+                <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                   お相手の名前
                 </label>
                 <input
@@ -298,7 +314,7 @@ export default function ProfileEditPage() {
 
               {/* お相手の性別 */}
               <div>
-                <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
+                <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                   お相手の性別
                 </label>
                 <select
@@ -389,7 +405,7 @@ export default function ProfileEditPage() {
 
             {/* お悩みのカテゴリ */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
+              <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                 お悩みのカテゴリ <span className="text-red-400">*</span>
               </label>
               <select
@@ -411,7 +427,7 @@ export default function ProfileEditPage() {
 
             {/* お悩みの内容 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
+              <label className="block text-sm md:text-base font-semibold text-gray-800 drop-shadow-sm mb-2">
                 お悩みの内容 <span className="text-red-400">*</span>
               </label>
               <p className="text-xs md:text-sm text-spiritual-gold/90 mb-2">

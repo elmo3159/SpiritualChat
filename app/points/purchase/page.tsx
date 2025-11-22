@@ -62,10 +62,10 @@ export default async function PointsPurchasePage() {
             />
           </div>
 
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg mb-2">
             ポイント購入
           </h1>
-          <p className="text-gray-600">
+          <p className="text-white drop-shadow-md">
             まとめて購入するほどお得になります
           </p>
 

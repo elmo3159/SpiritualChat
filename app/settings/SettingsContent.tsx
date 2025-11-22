@@ -115,7 +115,7 @@ export default function SettingsContent({
         {/* ポイント管理セクション */}
         <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
           <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-spiritual-pink-dark flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm flex items-center gap-2">
               <Coins className="w-5 h-5" />
               ポイント管理
             </h2>
@@ -183,7 +183,7 @@ export default function SettingsContent({
         {/* プロフィール・統計セクション */}
         <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
           <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-spiritual-pink-dark flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm flex items-center gap-2">
               <User className="w-5 h-5" />
               プロフィール・統計
             </h2>
@@ -234,7 +234,7 @@ export default function SettingsContent({
         {/* アプリ化（PWA）セクション */}
         <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
           <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-spiritual-pink-dark flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm flex items-center gap-2">
               <Smartphone className="w-5 h-5" />
               アプリとして使う
             </h2>
@@ -247,7 +247,7 @@ export default function SettingsContent({
         {/* アカウント設定セクション */}
         <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
           <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-spiritual-pink-dark">
+            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm">
               アカウント設定
             </h2>
           </div>
@@ -295,7 +295,7 @@ export default function SettingsContent({
         {/* サポートセクション */}
         <section className="bg-spiritual-pink/10 backdrop-blur-sm rounded-xl border border-spiritual-pink/30 overflow-hidden">
           <div className="p-5 border-b border-spiritual-pink/30">
-            <h2 className="text-lg font-semibold text-spiritual-pink-dark">
+            <h2 className="text-lg font-semibold text-gray-800 drop-shadow-sm">
               サポート
             </h2>
           </div>

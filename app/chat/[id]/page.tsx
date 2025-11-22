@@ -70,8 +70,16 @@ export default async function ChatPage({ params }: Props) {
 
   return (
     <div className="h-[100vh] h-[100dvh] flex flex-col relative">
-      {/* ピンク基調の背景 */}
-      <div className="absolute inset-0 bg-gradient-to-b from-spiritual-pink-lighter/30 to-white -z-10" />
+      {/* 背景画像 */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          backgroundImage: 'url(/images/BackGround.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      />
 
       {/* マスコット装飾 */}
       <div className="absolute inset-0 -z-10 pointer-events-none">

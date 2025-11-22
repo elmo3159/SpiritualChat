@@ -113,10 +113,10 @@ export default function HomeTabView({
         <div>
           {/* タイトルセクション */}
           <div className="text-center mb-6 md:mb-10 space-y-1 md:space-y-3">
-            <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-800">
+            <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-lg">
               占い師を選ぶ
             </h2>
-            <p className="text-xs md:text-base text-gray-600">
+            <p className="text-xs md:text-base text-white drop-shadow-md">
               あなたの悩みに寄り添う占い師とチャットしましょう
             </p>
           </div>
@@ -128,10 +128,10 @@ export default function HomeTabView({
         <div>
           {/* 今日の運勢セクション */}
           <div className="text-center mb-6 space-y-2">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+            <h2 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
               今日の運勢
             </h2>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-white drop-shadow-md">
               {formattedDate}
             </p>
           </div>
