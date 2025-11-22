@@ -134,15 +134,15 @@ export default function ProfileEditPage() {
         <div className="mb-6 md:mb-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-spiritual-lavender hover:text-spiritual-gold transition-colors mb-3 md:mb-4 active:scale-95 transition-transform min-h-[44px]"
+            className="inline-flex items-center gap-2 text-spiritual-pink-dark hover:text-spiritual-pink transition-colors mb-3 md:mb-4 active:scale-95 transition-transform min-h-[44px]"
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="text-sm md:text-base">占い師選択に戻る</span>
           </Link>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-100 mb-2">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-spiritual-pink-dark mb-2">
             プロフィール編集
           </h1>
-          <p className="text-sm md:text-base text-spiritual-lavender">
+          <p className="text-sm md:text-base text-spiritual-pink-dark">
             あなたの情報を更新してください
           </p>
         </div>
@@ -150,7 +150,7 @@ export default function ProfileEditPage() {
         {/* フォーム */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-spiritual-purple/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-spiritual-lavender/30 p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8"
+          className="bg-spiritual-pink/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-spiritual-pink/30 p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8"
         >
           {/* エラーメッセージ */}
           {error && (
@@ -161,19 +161,19 @@ export default function ProfileEditPage() {
 
           {/* 基本情報 */}
           <div className="space-y-4 md:space-y-6">
-            <h2 className="text-lg md:text-xl font-bold text-gray-900 bg-gradient-to-r from-spiritual-lavender/90 to-spiritual-lavender-light/90 rounded-lg px-4 py-3 border-b-2 border-spiritual-gold/50 shadow-lg">
+            <h2 className="text-lg md:text-xl font-bold text-white bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark rounded-lg px-4 py-3 border-b-2 border-spiritual-pink-dark/50 shadow-lg">
               基本情報
             </h2>
 
             {/* ニックネーム */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
+              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
                 ニックネーム <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
                 {...register('nickname')}
-                className="w-full px-4 py-3 md:py-3.5 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 focus:border-spiritual-gold/60 transition-all backdrop-blur-sm text-base min-h-[44px]"
+                className="w-full px-4 py-3 md:py-3.5 bg-white/80 border border-spiritual-pink/40 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-spiritual-pink/60 focus:border-spiritual-pink transition-all backdrop-blur-sm text-base min-h-[44px]"
                 placeholder="例：さくら"
               />
               {errors.nickname && (
@@ -185,7 +185,7 @@ export default function ProfileEditPage() {
 
             {/* 生年月日 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
+              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
                 生年月日 <span className="text-red-400">*</span>
               </label>
               <input
@@ -202,7 +202,7 @@ export default function ProfileEditPage() {
 
             {/* 性別 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
+              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
                 性別 <span className="text-red-400">*</span>
               </label>
               <select
@@ -229,13 +229,13 @@ export default function ProfileEditPage() {
 
           {/* 出生情報（任意） */}
           <div className="space-y-4 md:space-y-6">
-            <h2 className="text-lg md:text-xl font-bold text-gray-900 bg-gradient-to-r from-spiritual-lavender/90 to-spiritual-lavender-light/90 rounded-lg px-4 py-3 border-b-2 border-spiritual-gold/50 shadow-lg">
+            <h2 className="text-lg md:text-xl font-bold text-white bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark rounded-lg px-4 py-3 border-b-2 border-spiritual-pink-dark/50 shadow-lg">
               出生情報（任意）
             </h2>
 
             {/* 出生時刻 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
+              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
                 出生時刻
               </label>
               <input
@@ -255,13 +255,13 @@ export default function ProfileEditPage() {
 
             {/* 現在住んでいる都道府県 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
+              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
                 現在住んでいる都道府県
               </label>
               <input
                 type="text"
                 {...register('birthPlace')}
-                className="w-full px-4 py-3 md:py-3.5 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 focus:border-spiritual-gold/60 transition-all backdrop-blur-sm text-base min-h-[44px]"
+                className="w-full px-4 py-3 md:py-3.5 bg-white/80 border border-spiritual-pink/40 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-spiritual-pink/60 focus:border-spiritual-pink transition-all backdrop-blur-sm text-base min-h-[44px]"
                 placeholder="例：東京都"
               />
               {errors.birthPlace && (
@@ -274,19 +274,19 @@ export default function ProfileEditPage() {
 
           {/* お相手の情報（任意） */}
           <div className="space-y-4 md:space-y-6">
-              <h2 className="text-lg md:text-xl font-bold text-gray-900 bg-gradient-to-r from-spiritual-lavender/90 to-spiritual-lavender-light/90 rounded-lg px-4 py-3 border-b-2 border-spiritual-gold/50 shadow-lg">
+              <h2 className="text-lg md:text-xl font-bold text-white bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark rounded-lg px-4 py-3 border-b-2 border-spiritual-pink-dark/50 shadow-lg">
                 お相手の情報（任意）
               </h2>
 
               {/* お相手の名前 */}
               <div>
-                <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
+                <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
                   お相手の名前
                 </label>
                 <input
                   type="text"
                   {...register('partnerName')}
-                  className="w-full px-4 py-3 md:py-3.5 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 focus:border-spiritual-gold/60 transition-all backdrop-blur-sm text-base min-h-[44px]"
+                  className="w-full px-4 py-3 md:py-3.5 bg-white/80 border border-spiritual-pink/40 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-spiritual-pink/60 focus:border-spiritual-pink transition-all backdrop-blur-sm text-base min-h-[44px]"
                   placeholder="例：太郎"
                 />
                 {errors.partnerName && (
@@ -298,7 +298,7 @@ export default function ProfileEditPage() {
 
               {/* お相手の性別 */}
               <div>
-                <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
+                <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
                   お相手の性別
                 </label>
                 <select
@@ -383,13 +383,13 @@ export default function ProfileEditPage() {
 
           {/* お悩み情報 */}
           <div className="space-y-4 md:space-y-6">
-            <h2 className="text-lg md:text-xl font-bold text-gray-900 bg-gradient-to-r from-spiritual-lavender/90 to-spiritual-lavender-light/90 rounded-lg px-4 py-3 border-b-2 border-spiritual-gold/50 shadow-lg">
+            <h2 className="text-lg md:text-xl font-bold text-white bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark rounded-lg px-4 py-3 border-b-2 border-spiritual-pink-dark/50 shadow-lg">
               お悩み情報
             </h2>
 
             {/* お悩みのカテゴリ */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
+              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
                 お悩みのカテゴリ <span className="text-red-400">*</span>
               </label>
               <select
@@ -411,7 +411,7 @@ export default function ProfileEditPage() {
 
             {/* お悩みの内容 */}
             <div>
-              <label className="block text-sm md:text-base font-semibold text-gray-100 mb-2">
+              <label className="block text-sm md:text-base font-semibold text-spiritual-pink-dark mb-2">
                 お悩みの内容 <span className="text-red-400">*</span>
               </label>
               <p className="text-xs md:text-sm text-spiritual-gold/90 mb-2">
