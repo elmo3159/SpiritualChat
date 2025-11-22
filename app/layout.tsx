@@ -56,7 +56,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  themeColor: "#d4af37",
+  themeColor: "#e88ca5",
   viewportFit: "cover", // PWA用: iOSの安全領域を適切に処理
 };
 
