@@ -110,7 +110,7 @@ export default async function Home() {
               {/* ポイント追加ボタン */}
               <Link
                 href="/points/purchase"
-                className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-spiritual-green to-spiritual-green-dark flex items-center justify-center shadow-lg shadow-spiritual-green/30 hover:shadow-xl hover:scale-110 transition-all duration-200 active:scale-95"
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-spiritual-pink to-spiritual-pink-dark flex items-center justify-center shadow-lg shadow-spiritual-pink/30 hover:shadow-xl hover:scale-110 transition-all duration-200 active:scale-95"
                 aria-label="ポイントを追加"
               >
                 <span className="text-white text-lg md:text-xl font-bold">+</span>

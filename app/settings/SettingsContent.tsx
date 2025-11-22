@@ -124,13 +124,13 @@ export default function SettingsContent({
             {/* 現在のポイント残高 */}
             <div className="flex items-center justify-between p-4 bg-gradient-to-br from-spiritual-accent/10 to-spiritual-gold/10 rounded-lg border border-spiritual-gold/30">
               <div>
-                <p className="text-sm text-amber-800">現在の残高</p>
-                <p className="text-3xl font-bold text-spiritual-gold mt-1">
+                <p className="text-sm text-white drop-shadow-md">現在の残高</p>
+                <p className="text-3xl font-bold text-white drop-shadow-lg mt-1">
                   {pointsBalance.toLocaleString()}
                   <span className="text-lg ml-1">pt</span>
                 </p>
               </div>
-              <Coins className="w-12 h-12 text-spiritual-gold/50" />
+              <Coins className="w-12 h-12 text-white drop-shadow-lg" />
             </div>
 
             {/* ポイント追加ボタン */}
@@ -184,7 +184,7 @@ export default function SettingsContent({
         <section className="bg-spiritual-pink-lighter/80 backdrop-blur-sm rounded-xl border border-spiritual-pink/50 overflow-hidden">
           <div className="p-5 border-b border-spiritual-pink/50">
             <h2 className="text-lg font-semibold text-amber-900 drop-shadow-sm flex items-center gap-2">
-              <User className="w-5 h-5" />
+              <User className="w-5 h-5 text-amber-900" />
               プロフィール・統計
             </h2>
           </div>
@@ -196,7 +196,7 @@ export default function SettingsContent({
               className="w-full px-5 py-4 hover:bg-spiritual-pink/30 transition-colors flex items-center justify-between group disabled:opacity-50"
             >
               <div className="flex items-center gap-3">
-                <User className="w-5 h-5 text-spiritual-lavender" />
+                <User className="w-5 h-5 text-amber-800" />
                 <div className="text-left">
                   <p className="text-base text-amber-900 font-medium">
                     プロフィール編集
@@ -216,7 +216,7 @@ export default function SettingsContent({
               className="w-full px-5 py-4 hover:bg-spiritual-pink/30 transition-colors flex items-center justify-between group disabled:opacity-50"
             >
               <div className="flex items-center gap-3">
-                <BarChart3 className="w-5 h-5 text-spiritual-lavender" />
+                <BarChart3 className="w-5 h-5 text-amber-800" />
                 <div className="text-left">
                   <p className="text-base text-amber-900 font-medium">
                     あなたの統計
