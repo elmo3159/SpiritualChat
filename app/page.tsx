@@ -244,7 +244,7 @@ export default function LandingPage() {
           <div className="max-w-2xl mx-auto mb-4 relative">
             <div className="rounded-3xl border-2 border-spiritual-pink/30 shadow-2xl overflow-hidden">
               <Image
-                src="/images/Chatimage.png?v=2"
+                src="/images/Chatimage2.png"
                 alt="チャット画面プレビュー"
                 width={800}
                 height={600}
