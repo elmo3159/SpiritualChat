@@ -81,9 +81,9 @@ export default function SettingsContent({
       className="min-h-screen pb-20 relative"
       style={{
         backgroundImage: 'url(/images/BackGround.jpeg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundSize: 'auto',
+        backgroundPosition: 'center top',
+        backgroundRepeat: 'repeat'
       }}
     >
       {/* ローディングオーバーレイ */}

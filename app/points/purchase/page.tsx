@@ -35,9 +35,9 @@ export default async function PointsPurchasePage() {
       className="min-h-screen"
       style={{
         backgroundImage: 'url(/images/BackGround.jpeg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundSize: 'auto',
+        backgroundPosition: 'center top',
+        backgroundRepeat: 'repeat'
       }}
     >
       <div className="max-w-7xl mx-auto px-4 pt-8 pb-28">

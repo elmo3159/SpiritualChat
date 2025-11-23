@@ -116,9 +116,9 @@ export default function ProfileEditPage() {
         className="min-h-screen flex items-center justify-center"
         style={{
           backgroundImage: 'url(/images/BackGround.jpeg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
+          backgroundSize: 'auto',
+          backgroundPosition: 'center top',
+          backgroundRepeat: 'repeat'
         }}
       >
         <div className="text-center">
@@ -134,9 +134,9 @@ export default function ProfileEditPage() {
       className="min-h-screen py-6 md:py-8 px-4 pb-20"
       style={{
         backgroundImage: 'url(/images/BackGround.jpeg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundSize: 'auto',
+        backgroundPosition: 'center top',
+        backgroundRepeat: 'repeat'
       }}
     >
       {/* 背景装飾 */}
