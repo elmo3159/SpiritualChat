@@ -1,2 +1,5 @@
-# Supabase Edge Functions (Vercelのビルド対象から除外)
-supabase/
+# Supabase Edge Functions and Migrations (Vercelのビルド対象から除外)
+# lib/supabase/ は除外しない（アプリケーションで必要）
+supabase/functions/
+supabase/migrations/
+supabase/.temp/
