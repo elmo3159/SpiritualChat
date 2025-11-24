@@ -15,7 +15,8 @@ interface CouponData {
 
 export default function PointsPurchaseClient() {
   const [appliedCoupon, setAppliedCoupon] = useState<CouponData | null>(null)
-  const [visiblePlans, setVisiblePlans] = useState<PointPlan[]>(POINT_PLANS)
+  const [visiblePlans, setVisiblePlans] = useState<PointPlan[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   // 設定を取得してプランをフィルタリング
   useEffect(() => {
@@ -36,6 +37,8 @@ export default function PointsPurchaseClient() {
         console.error('設定取得エラー:', error)
         // エラー時は全プランを表示
         setVisiblePlans(POINT_PLANS)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -61,6 +64,17 @@ export default function PointsPurchaseClient() {
     } else {
       return appliedCoupon.discount_value
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-spiritual-gold/30 border-t-spiritual-gold rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-white text-base md:text-lg drop-shadow-md">プランを読み込み中...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
