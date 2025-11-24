@@ -14,17 +14,24 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'http://localhost:3000'),
-  title: "スピチャ - AI占いアプリ",
-  description: "人気占い師監修のAI占いで、あなたの悩みを解決します",
+  title: {
+    default: "人気占い師監修のAIチャット占い【スピチャ】",
+    template: "%s | スピチャ"
+  },
+  description: "24時間365日いつでも相談できる本格AI占い。恋愛・復縁・仕事の悩みを人気占い師監修のAIが解決。初回1000pt無料",
   manifest: "/manifest.json?v=2",
   verification: {
     google: "5e9ctUo8hxatMmni9GvRg0rf4eDd83j_lnEOxDsigR0",
   },
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-16x16.png?v=2", sizes: "16x16", type: "image/png" },
+      { url: "/icons/icon-32x32.png?v=2", sizes: "32x32", type: "image/png" },
       { url: "/icons/icon-192x192.png?v=2", sizes: "192x192", type: "image/png" },
       { url: "/icons/icon-512x512.png?v=2", sizes: "512x512", type: "image/png" },
     ],
+    shortcut: [{ url: "/favicon.ico" }],
     apple: [
       { url: "/icons/icon-152x152.png?v=2", sizes: "152x152", type: "image/png" },
       { url: "/icons/icon-192x192.png?v=2", sizes: "192x192", type: "image/png" },
@@ -41,13 +48,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "スピチャ",
-    title: "スピチャ - AI占いアプリ",
-    description: "人気占い師監修のAI占いで、あなたの悩みを解決します",
+    title: "人気占い師監修のAIチャット占い【スピチャ】",
+    description: "24時間365日いつでも相談できる本格AI占い。恋愛・復縁・仕事の悩みを人気占い師監修のAIが解決。初回1000pt無料",
   },
   twitter: {
     card: "summary_large_image",
-    title: "スピチャ - AI占いアプリ",
-    description: "人気占い師監修のAI占いで、あなたの悩みを解決します",
+    title: "人気占い師監修のAIチャット占い【スピチャ】",
+    description: "24時間365日いつでも相談できる本格AI占い。恋愛・復縁・仕事の悩みを人気占い師監修のAIが解決。初回1000pt無料",
   },
 };
 
