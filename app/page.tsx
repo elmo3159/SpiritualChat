@@ -290,6 +290,64 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* こんな悩みセクション */}
+      <section className="relative z-10 py-12 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <div className="bg-gradient-to-br from-spiritual-pink/10 to-spiritual-purple/10 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-spiritual-pink/30 shadow-2xl">
+            <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-8 flex items-center justify-center gap-2">
+              <Heart className="w-8 h-8 text-spiritual-pink" />
+              こんな悩みを抱えていませんか？
+            </h2>
+
+            <ul className="space-y-4 mb-8">
+              <li className="flex items-start gap-3 text-gray-200 bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-colors">
+                <CheckCircle className="w-6 h-6 text-spiritual-pink flex-shrink-0 mt-0.5" />
+                <span className="text-base md:text-lg leading-relaxed">
+                  <strong className="text-spiritual-pink-light">元彼と復縁できる可能性</strong>を知りたい
+                </span>
+              </li>
+              <li className="flex items-start gap-3 text-gray-200 bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-colors">
+                <CheckCircle className="w-6 h-6 text-spiritual-pink flex-shrink-0 mt-0.5" />
+                <span className="text-base md:text-lg leading-relaxed">
+                  <strong className="text-spiritual-pink-light">片思いの相手に告白すべきタイミング</strong>を知りたい
+                </span>
+              </li>
+              <li className="flex items-start gap-3 text-gray-200 bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-colors">
+                <CheckCircle className="w-6 h-6 text-spiritual-pink flex-shrink-0 mt-0.5" />
+                <span className="text-base md:text-lg leading-relaxed">
+                  <strong className="text-spiritual-pink-light">今の仕事を続けるべきか転職すべきか</strong>迷っている
+                </span>
+              </li>
+              <li className="flex items-start gap-3 text-gray-200 bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-colors">
+                <CheckCircle className="w-6 h-6 text-spiritual-pink flex-shrink-0 mt-0.5" />
+                <span className="text-base md:text-lg leading-relaxed">
+                  彼からの<strong className="text-spiritual-pink-light">連絡が止まった理由</strong>が知りたい
+                </span>
+              </li>
+              <li className="flex items-start gap-3 text-gray-200 bg-white/5 rounded-xl p-4 hover:bg-white/10 transition-colors">
+                <CheckCircle className="w-6 h-6 text-spiritual-pink flex-shrink-0 mt-0.5" />
+                <span className="text-base md:text-lg leading-relaxed">
+                  <strong className="text-spiritual-pink-light">相手の本当の気持ち</strong>を確かめたい
+                </span>
+              </li>
+            </ul>
+
+            <div className="text-center">
+              <p className="text-lg md:text-xl text-white font-semibold mb-4">
+                そんなあなたの悩みに、<br className="md:hidden" />
+                <span className="text-spiritual-gold">人気占い師監修のAI</span>が寄り添います
+              </p>
+              <button
+                onClick={() => router.push('/signup')}
+                className="px-8 py-4 bg-gradient-to-r from-spiritual-gold to-spiritual-accent text-gray-900 rounded-full font-bold text-lg hover:scale-105 transition-transform duration-300 shadow-xl shadow-spiritual-gold/50"
+              >
+                今すぐ無料で相談する
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 特徴セクション */}
       <section className="relative z-10 py-16 px-4 bg-spiritual-darker/50">
         <div className="container mx-auto max-w-6xl">
