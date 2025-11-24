@@ -49,6 +49,7 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith('/privacy') &&
     !request.nextUrl.pathname.startsWith('/legal') &&
     !request.nextUrl.pathname.startsWith('/points') &&
+    !request.nextUrl.pathname.startsWith('/horoscope') &&
     !request.nextUrl.pathname.startsWith('/api/webhooks')
   ) {
     // no user, potentially respond by redirecting the user to the login page
@@ -69,6 +70,7 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith('/privacy') &&
     !request.nextUrl.pathname.startsWith('/legal') &&
     !request.nextUrl.pathname.startsWith('/points') &&
+    !request.nextUrl.pathname.startsWith('/horoscope') &&
     !request.nextUrl.pathname.startsWith('/api/webhooks')
   ) {
     const { data: profile } = await supabase
