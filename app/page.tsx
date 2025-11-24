@@ -362,24 +362,31 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-              {/* 星座アイコン（抜粋） */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer" onClick={() => router.push('/horoscope')}>
-                <div className="text-3xl mb-2">♈</div>
-                <div className="text-xs font-semibold text-gray-700">牡羊座</div>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer" onClick={() => router.push('/horoscope')}>
-                <div className="text-3xl mb-2">♉</div>
-                <div className="text-xs font-semibold text-gray-700">牡牛座</div>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer" onClick={() => router.push('/horoscope')}>
-                <div className="text-3xl mb-2">♊</div>
-                <div className="text-xs font-semibold text-gray-700">双子座</div>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer" onClick={() => router.push('/horoscope')}>
-                <div className="text-3xl mb-2">♋</div>
-                <div className="text-xs font-semibold text-gray-700">蟹座</div>
-              </div>
+            <div className="grid grid-cols-3 md:grid-cols-4 gap-3 mb-6">
+              {/* 12星座すべて表示 */}
+              {[
+                { symbol: '♈', name: '牡羊座' },
+                { symbol: '♉', name: '牡牛座' },
+                { symbol: '♊', name: '双子座' },
+                { symbol: '♋', name: '蟹座' },
+                { symbol: '♌', name: '獅子座' },
+                { symbol: '♍', name: '乙女座' },
+                { symbol: '♎', name: '天秤座' },
+                { symbol: '♏', name: '蠍座' },
+                { symbol: '♐', name: '射手座' },
+                { symbol: '♑', name: '山羊座' },
+                { symbol: '♒', name: '水瓶座' },
+                { symbol: '♓', name: '魚座' },
+              ].map((zodiac) => (
+                <div
+                  key={zodiac.name}
+                  className="bg-white/80 backdrop-blur-sm rounded-xl p-3 text-center hover:scale-105 transition-transform cursor-pointer"
+                  onClick={() => router.push('/horoscope')}
+                >
+                  <div className="text-3xl mb-1">{zodiac.symbol}</div>
+                  <div className="text-xs font-semibold text-gray-700">{zodiac.name}</div>
+                </div>
+              ))}
             </div>
 
             <button
