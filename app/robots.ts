@@ -15,12 +15,14 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: '/',
         disallow: [
-          '/admin/*',      // 管理画面は非公開
-          '/chat/*',       // ユーザー個別のチャットは非公開
-          '/api/*',        // APIエンドポイントは非公開
-          '/onboarding',   // オンボーディングは非公開
-          '/profile',      // プロフィール編集は非公開
-          '/notifications',// 通知ページは非公開
+          '/admin/*',         // 管理画面は非公開
+          '/chat/*',          // ユーザー個別のチャットは非公開
+          '/api/*',           // APIエンドポイントは非公開
+          '/onboarding',      // オンボーディングは非公開
+          '/profile',         // プロフィール編集は非公開
+          '/notifications',   // 通知ページは非公開
+          '/fortune-tellers', // 占い師一覧（ログイン必須）
+          '/points',          // ポイント関連ページ（ログイン必須）
         ],
       },
     ],
