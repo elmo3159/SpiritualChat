@@ -348,6 +348,54 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* 今日の運勢セクション */}
+      <section className="relative z-10 py-12 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <div className="bg-gradient-to-br from-amber-50/95 to-pink-50/95 backdrop-blur-sm rounded-3xl p-8 md:p-12 border-2 border-amber-300/50 shadow-2xl">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 flex items-center justify-center gap-2">
+                <Star className="w-8 h-8 text-spiritual-gold" />
+                今日の運勢をチェック
+              </h2>
+              <p className="text-gray-700 text-base md:text-lg">
+                12星座ランキングで今日のあなたの運勢を確認！
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+              {/* 星座アイコン（抜粋） */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer" onClick={() => router.push('/horoscope')}>
+                <div className="text-3xl mb-2">♈</div>
+                <div className="text-xs font-semibold text-gray-700">牡羊座</div>
+              </div>
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer" onClick={() => router.push('/horoscope')}>
+                <div className="text-3xl mb-2">♉</div>
+                <div className="text-xs font-semibold text-gray-700">牡牛座</div>
+              </div>
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer" onClick={() => router.push('/horoscope')}>
+                <div className="text-3xl mb-2">♊</div>
+                <div className="text-xs font-semibold text-gray-700">双子座</div>
+              </div>
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 text-center hover:scale-105 transition-transform cursor-pointer" onClick={() => router.push('/horoscope')}>
+                <div className="text-3xl mb-2">♋</div>
+                <div className="text-xs font-semibold text-gray-700">蟹座</div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => router.push('/horoscope')}
+              className="w-full max-w-md mx-auto block px-6 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-full font-bold text-lg hover:scale-105 transition-transform duration-300 shadow-xl"
+            >
+              今日の運勢ランキングを見る
+            </button>
+
+            <p className="text-center text-xs text-gray-600 mt-4">
+              ✨ 毎日更新！恋愛運・仕事運・金運すべてチェック
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* 特徴セクション */}
       <section className="relative z-10 py-16 px-4 bg-spiritual-darker/50">
         <div className="container mx-auto max-w-6xl">
