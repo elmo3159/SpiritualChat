@@ -21,7 +21,8 @@ export default function BottomNavigation() {
     pathname?.startsWith('/signup') ||
     pathname === '/profile/create' ||
     pathname?.startsWith('/terms') ||
-    pathname?.startsWith('/privacy')
+    pathname?.startsWith('/privacy') ||
+    pathname?.startsWith('/horoscope')
 
   // 非表示の場合は何もレンダリングしない
   if (shouldHide) {
