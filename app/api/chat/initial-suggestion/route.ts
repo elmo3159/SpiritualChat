@@ -41,6 +41,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // 既存のメッセージがあるかチェック（重複防止）
+    const { data: existingMessages, error: existingError } = await supabase
+      .from('chat_messages')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('fortune_teller_id', fortuneTellerId)
+      .limit(1)
+
+    if (!existingError && existingMessages && existingMessages.length > 0) {
+      // 既にメッセージが存在する場合は、初回提案を生成しない
+      console.log('既存のメッセージがあるため、初回提案をスキップ')
+      return NextResponse.json({
+        success: true,
+        data: null, // 既存メッセージがある場合はnullを返す
+        message: '既存のチャット履歴があります',
+      })
+    }
+
     // 占い師情報を取得
     const { data: fortuneTeller, error: fortuneTellerError } = await supabase
       .from('fortune_tellers')

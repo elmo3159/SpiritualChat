@@ -126,8 +126,8 @@ export default function DivinationResult({
                       </button>
                     ) : (
                       <div className="flex flex-col items-center gap-3">
-                        <div className="px-4 py-2 bg-red-500/20 border border-red-500/40 rounded-lg text-red-300 text-sm font-medium">
-                          ポイントが不足しています（残高: {userPoints}pt）
+                        <div className="px-4 py-3 bg-white/95 border-2 border-red-500 rounded-lg text-red-600 text-sm font-bold shadow-lg">
+                          ⚠️ ポイントが不足しています（残高: {userPoints}pt）
                         </div>
                         <Link
                           href="/points/purchase"
