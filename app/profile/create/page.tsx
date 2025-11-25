@@ -1028,6 +1028,18 @@ function ProfileCreatePageContent() {
                     </div>
                   </button>
                 </div>
+
+                {/* ローディング中のメッセージ */}
+                {loading && (
+                  <div className="mt-4 text-center animate-in fade-in duration-500">
+                    <p className="text-spiritual-accent text-sm">
+                      少々お待ちください...
+                    </p>
+                    <p className="text-gray-400 text-xs mt-1">
+                      あなたにぴったりの占い師を準備しています ✨
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </form>
