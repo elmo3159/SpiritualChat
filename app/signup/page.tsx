@@ -7,19 +7,120 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { trackSignup } from '@/lib/analytics/tiktok-pixel'
 
+// よくあるドメインのタイポを検出するマップ
+const COMMON_EMAIL_TYPOS: Record<string, string> = {
+  'gamil.com': 'gmail.com',
+  'gmial.com': 'gmail.com',
+  'gmai.com': 'gmail.com',
+  'gmail.co': 'gmail.com',
+  'gmail.con': 'gmail.com',
+  'gmal.com': 'gmail.com',
+  'gmali.com': 'gmail.com',
+  'gnail.com': 'gmail.com',
+  'yaho.co.jp': 'yahoo.co.jp',
+  'yahooo.co.jp': 'yahoo.co.jp',
+  'yahoo.co.jpp': 'yahoo.co.jp',
+  'yahoo.cojp': 'yahoo.co.jp',
+  'icloud.con': 'icloud.com',
+  'iclould.com': 'icloud.com',
+  'iclud.com': 'icloud.com',
+  'icoud.com': 'icloud.com',
+  'docomo.ne.jpp': 'docomo.ne.jp',
+  'docomo.nejp': 'docomo.ne.jp',
+  'softbank.ne.jpp': 'softbank.ne.jp',
+  'ezweb.ne.jpp': 'ezweb.ne.jp',
+  'au.con': 'au.com',
+  'hotmail.con': 'hotmail.com',
+  'outlook.con': 'outlook.com',
+}
+
+// メールアドレスの詳細バリデーション
+function validateEmail(email: string): { valid: boolean; error?: string; suggestion?: string } {
+  const trimmedEmail = email.trim().toLowerCase()
+
+  // 基本的な形式チェック
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(trimmedEmail)) {
+    return { valid: false, error: '有効なメールアドレスの形式で入力してください' }
+  }
+
+  // ドメイン部分を取得
+  const domain = trimmedEmail.split('@')[1]
+
+  // ランダム文字列のような無効なローカルパートを検出
+  const localPart = trimmedEmail.split('@')[0]
+  if (localPart.length > 20 && /^[a-z0-9]{20,}$/.test(localPart)) {
+    return { valid: false, error: '有効なメールアドレスを入力してください' }
+  }
+
+  // よくあるタイポをチェック
+  if (COMMON_EMAIL_TYPOS[domain]) {
+    return {
+      valid: false,
+      error: `メールアドレスに誤りがあるようです`,
+      suggestion: `${localPart}@${COMMON_EMAIL_TYPOS[domain]}`,
+    }
+  }
+
+  // 有効なドメイン拡張子をチェック
+  const validTLDs = ['.com', '.co.jp', '.ne.jp', '.jp', '.net', '.org', '.io', '.me', '.info', '.biz', '.co', '.ac.jp', '.or.jp', '.ed.jp']
+  const hasValidTLD = validTLDs.some(tld => domain.endsWith(tld))
+  if (!hasValidTLD) {
+    // ドメインが明らかにおかしい場合のみ警告
+    if (!domain.includes('.') || domain.endsWith('.')) {
+      return { valid: false, error: 'メールアドレスのドメインが正しくありません' }
+    }
+  }
+
+  return { valid: true }
+}
+
 export default function SignUpPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [emailSuggestion, setEmailSuggestion] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const { signUp, signInWithGoogle } = useAuth()
   const router = useRouter()
 
+  // メールアドレス変更時にリアルタイムでバリデーション
+  const handleEmailChange = (value: string) => {
+    setEmail(value)
+    setEmailSuggestion(null)
+
+    if (value.includes('@')) {
+      const validation = validateEmail(value)
+      if (validation.suggestion) {
+        setEmailSuggestion(validation.suggestion)
+      }
+    }
+  }
+
+  // 提案されたメールアドレスを適用
+  const applySuggestion = () => {
+    if (emailSuggestion) {
+      setEmail(emailSuggestion)
+      setEmailSuggestion(null)
+      setError(null)
+    }
+  }
+
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+
+    // メールアドレスの詳細バリデーション
+    const emailValidation = validateEmail(email)
+    if (!emailValidation.valid) {
+      setError(emailValidation.error || '有効なメールアドレスを入力してください')
+      if (emailValidation.suggestion) {
+        setEmailSuggestion(emailValidation.suggestion)
+      }
+      return
+    }
 
     // Validate passwords match
     if (password !== confirmPassword) {
@@ -208,11 +309,26 @@ export default function SignUpPage() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => handleEmailChange(e.target.value)}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-spiritual-pink focus:border-transparent transition-all text-gray-900"
                 placeholder="example@email.com"
               />
+              {/* メールアドレスのタイポ修正提案 */}
+              {emailSuggestion && (
+                <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                  <p className="text-sm text-amber-800">
+                    もしかして: <button
+                      type="button"
+                      onClick={applySuggestion}
+                      className="font-semibold text-spiritual-pink-dark hover:text-spiritual-pink-deep underline"
+                    >
+                      {emailSuggestion}
+                    </button>
+                    ?
+                  </p>
+                </div>
+              )}
             </div>
 
             <div>
