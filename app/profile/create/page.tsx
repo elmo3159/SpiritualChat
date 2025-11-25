@@ -332,6 +332,21 @@ function ProfileCreatePageContent() {
     }
   }
 
+  // バリデーションエラー時のハンドラー
+  const onInvalid = (errors: any) => {
+    console.log('フォームバリデーションエラー:', errors)
+    // エラーがあるステップに戻る
+    if (errors.nickname || errors.birthDate || errors.gender) {
+      setCurrentStep(1)
+      setError('基本情報に入力漏れがあります')
+    } else if (errors.concernCategory || errors.concernDescription) {
+      setCurrentStep(2)
+      setError('お悩み情報に入力漏れがあります')
+    } else {
+      setError('入力内容を確認してください')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-spiritual-dark via-spiritual-darker to-spiritual-purple flex items-center justify-center p-4 py-8">
       <div className="w-full max-w-2xl">
@@ -361,7 +376,7 @@ function ProfileCreatePageContent() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
             {/* ============ Step 1: 基本情報 ============ */}
             {currentStep === 1 && (
               <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
@@ -666,8 +681,8 @@ function ProfileCreatePageContent() {
                                 </div>
                               </div>
                             </div>
-                            <span className="mt-3 text-sm font-bold text-white">{ft.name}</span>
-                            <span className="text-xs text-spiritual-gold">{ft.specialties?.[0] || '総合占い'}</span>
+                            <span className="mt-3 text-sm font-bold text-white whitespace-nowrap">{ft.name}</span>
+                            <span className="text-xs text-spiritual-gold whitespace-nowrap">{ft.specialties?.[0] || '総合占い'}</span>
                           </div>
                         ))}
                       </div>
