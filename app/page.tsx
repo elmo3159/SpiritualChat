@@ -363,28 +363,29 @@ export default function LandingPage() {
             </div>
 
             <div className="grid grid-cols-3 md:grid-cols-4 gap-3 mb-6">
-              {/* 12星座すべて表示 */}
+              {/* 12星座すべて表示（ふりがな付き） */}
               {[
-                { symbol: '♈', name: '牡羊座' },
-                { symbol: '♉', name: '牡牛座' },
-                { symbol: '♊', name: '双子座' },
-                { symbol: '♋', name: '蟹座' },
-                { symbol: '♌', name: '獅子座' },
-                { symbol: '♍', name: '乙女座' },
-                { symbol: '♎', name: '天秤座' },
-                { symbol: '♏', name: '蠍座' },
-                { symbol: '♐', name: '射手座' },
-                { symbol: '♑', name: '山羊座' },
-                { symbol: '♒', name: '水瓶座' },
-                { symbol: '♓', name: '魚座' },
+                { symbol: '♈', kanji: '牡羊座', reading: 'おひつじざ' },
+                { symbol: '♉', kanji: '牡牛座', reading: 'おうしざ' },
+                { symbol: '♊', kanji: '双子座', reading: 'ふたござ' },
+                { symbol: '♋', kanji: '蟹座', reading: 'かにざ' },
+                { symbol: '♌', kanji: '獅子座', reading: 'ししざ' },
+                { symbol: '♍', kanji: '乙女座', reading: 'おとめざ' },
+                { symbol: '♎', kanji: '天秤座', reading: 'てんびんざ' },
+                { symbol: '♏', kanji: '蠍座', reading: 'さそりざ' },
+                { symbol: '♐', kanji: '射手座', reading: 'いてざ' },
+                { symbol: '♑', kanji: '山羊座', reading: 'やぎざ' },
+                { symbol: '♒', kanji: '水瓶座', reading: 'みずがめざ' },
+                { symbol: '♓', kanji: '魚座', reading: 'うおざ' },
               ].map((zodiac) => (
                 <div
-                  key={zodiac.name}
+                  key={zodiac.kanji}
                   className="bg-white/80 backdrop-blur-sm rounded-xl p-3 text-center hover:scale-105 transition-transform cursor-pointer"
                   onClick={() => router.push('/horoscope')}
                 >
                   <div className="text-3xl mb-1">{zodiac.symbol}</div>
-                  <div className="text-xs font-semibold text-gray-700">{zodiac.name}</div>
+                  <div className="text-xs font-semibold text-gray-700 leading-tight">{zodiac.kanji}</div>
+                  <div className="text-xs text-gray-500 mt-0.5">（{zodiac.reading}）</div>
                 </div>
               ))}
             </div>
