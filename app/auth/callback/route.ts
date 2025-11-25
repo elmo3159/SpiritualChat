@@ -28,9 +28,9 @@ export async function GET(request: NextRequest) {
         .eq('id', user.id)
         .single()
 
-      // If no profile exists, redirect to profile creation
+      // If no profile exists, redirect to profile creation with new user flag
       if (!profile) {
-        return NextResponse.redirect(`${origin}/profile/create`)
+        return NextResponse.redirect(`${origin}/profile/create?new=oauth`)
       }
     }
 

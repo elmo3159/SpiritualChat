@@ -5,12 +5,12 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { profileSchema, concernCategories, type ProfileFormData } from '@/lib/validations/profile'
 import { createProfile } from '@/app/actions/profile'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
-import { trackCompleteRegistration, trackTikTokIdentify } from '@/lib/analytics/tiktok-pixel'
+import { trackCompleteRegistration, trackTikTokIdentify, trackSignup } from '@/lib/analytics/tiktok-pixel'
 import { useAuth } from '@/lib/contexts/AuthContext'
 import { createClient } from '@/lib/supabase/client'
-import { ChevronRight, ChevronDown, ChevronUp, Sparkles, Heart, Briefcase, Home, Coins, Users, MessageCircle, Star, Check } from 'lucide-react'
+import { ChevronRight, ChevronDown, ChevronUp, Sparkles, Heart, Briefcase, Home, Coins, Users, MessageCircle, Star, Check, Clock } from 'lucide-react'
 
 // 日本の都道府県リスト
 const PREFECTURES = [
@@ -89,20 +89,75 @@ interface FortuneTeller {
   id: string
   name: string
   avatar_url: string
-  specialty: string
+  specialties: string[]
   description: string
+}
+
+// 星座判定関数
+function getZodiacSign(birthDate: string): { name: string; emoji: string; message: string } | null {
+  if (!birthDate) return null
+
+  const date = new Date(birthDate)
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  const zodiacData: { name: string; emoji: string; message: string; start: [number, number]; end: [number, number] }[] = [
+    { name: '牡羊座', emoji: '♈', message: '行動力と情熱に満ちたあなた。今、新しい扉が開こうとしています', start: [3, 21], end: [4, 19] },
+    { name: '牡牛座', emoji: '♉', message: '堅実で愛情深いあなた。大切なものを守る力が強まっています', start: [4, 20], end: [5, 20] },
+    { name: '双子座', emoji: '♊', message: '知性とコミュニケーション力を持つあなた。素敵な出会いの予感', start: [5, 21], end: [6, 21] },
+    { name: '蟹座', emoji: '♋', message: '優しさと直感力に優れたあなた。心の声に従うと道が開けます', start: [6, 22], end: [7, 22] },
+    { name: '獅子座', emoji: '♌', message: '輝くオーラを持つあなた。自信を持てば願いが叶う時期です', start: [7, 23], end: [8, 22] },
+    { name: '乙女座', emoji: '♍', message: '繊細で分析力のあるあなた。努力が実を結ぶ時が近づいています', start: [8, 23], end: [9, 22] },
+    { name: '天秤座', emoji: '♎', message: '調和とバランスを大切にするあなた。人間関係に幸運が訪れます', start: [9, 23], end: [10, 23] },
+    { name: '蠍座', emoji: '♏', message: '深い洞察力を持つあなた。隠された真実が明らかになるでしょう', start: [10, 24], end: [11, 22] },
+    { name: '射手座', emoji: '♐', message: '自由と冒険を愛するあなた。新しい挑戦が幸運を呼びます', start: [11, 23], end: [12, 21] },
+    { name: '山羊座', emoji: '♑', message: '忍耐力と野心を持つあなた。目標達成の時が近づいています', start: [12, 22], end: [1, 19] },
+    { name: '水瓶座', emoji: '♒', message: '独創性と人道精神に溢れるあなた。ユニークな発想が鍵になります', start: [1, 20], end: [2, 18] },
+    { name: '魚座', emoji: '♓', message: '感受性豊かで夢見るあなた。インスピレーションが高まっています', start: [2, 19], end: [3, 20] },
+  ]
+
+  for (const zodiac of zodiacData) {
+    const [startMonth, startDay] = zodiac.start
+    const [endMonth, endDay] = zodiac.end
+
+    if (startMonth === 12 && endMonth === 1) {
+      // 山羊座の特殊ケース（年をまたぐ）
+      if ((month === 12 && day >= startDay) || (month === 1 && day <= endDay)) {
+        return { name: zodiac.name, emoji: zodiac.emoji, message: zodiac.message }
+      }
+    } else if (
+      (month === startMonth && day >= startDay) ||
+      (month === endMonth && day <= endDay)
+    ) {
+      return { name: zodiac.name, emoji: zodiac.emoji, message: zodiac.message }
+    }
+  }
+
+  return null
 }
 
 // プログレスバーコンポーネント
 function ProgressBar({ currentStep, totalSteps }: { currentStep: number; totalSteps: number }) {
   const steps = [
-    { num: 1, label: '基本情報' },
-    { num: 2, label: 'お悩み' },
-    { num: 3, label: '完了' },
+    { num: 1, label: '基本情報', time: '30秒' },
+    { num: 2, label: 'お悩み', time: '30秒' },
+    { num: 3, label: '完了', time: '10秒' },
   ]
+
+  // 残り時間を計算
+  const remainingSteps = steps.filter(s => s.num >= currentStep)
+  const remainingTime = currentStep === 1 ? '約1分' : currentStep === 2 ? '約40秒' : '約10秒'
 
   return (
     <div className="mb-6 md:mb-8">
+      {/* 残り時間表示 */}
+      <div className="text-center mb-4">
+        <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-spiritual-gold/20 rounded-full text-sm text-spiritual-gold border border-spiritual-gold/30">
+          <Clock className="w-4 h-4" />
+          登録完了まで{remainingTime}
+        </span>
+      </div>
+
       <div className="flex items-center justify-between relative">
         {/* 接続線（背景） */}
         <div className="absolute top-5 left-0 right-0 h-0.5 bg-spiritual-lavender/30" />
@@ -149,7 +204,20 @@ export default function ProfileCreatePage() {
   const [showOptionalInfo, setShowOptionalInfo] = useState(false)
   const [fortuneTellers, setFortuneTellers] = useState<FortuneTeller[]>([])
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { user } = useAuth()
+
+  // Google OAuthからの新規ユーザーの場合、アカウント作成トラッキングを発火
+  useEffect(() => {
+    const isNewOAuthUser = searchParams.get('new') === 'oauth'
+    if (isNewOAuthUser) {
+      trackSignup()
+      // URLからパラメータを削除（再発火防止）
+      const url = new URL(window.location.href)
+      url.searchParams.delete('new')
+      window.history.replaceState({}, '', url.toString())
+    }
+  }, [searchParams])
 
   const {
     register,
@@ -165,6 +233,10 @@ export default function ProfileCreatePage() {
 
   const concernCategory = watch('concernCategory')
   const concernDescription = watch('concernDescription')
+  const birthDate = watch('birthDate')
+
+  // 星座を計算
+  const zodiacInfo = birthDate ? getZodiacSign(birthDate) : null
 
   // カテゴリが変更されたらテンプレートをリセット
   useEffect(() => {
@@ -183,7 +255,7 @@ export default function ProfileCreatePage() {
       const supabase = createClient()
       const { data } = await supabase
         .from('fortune_tellers')
-        .select('id, name, avatar_url, specialty, description')
+        .select('id, name, avatar_url, specialties, description')
         .eq('is_active', true)
         .order('display_order', { ascending: true })
         .limit(2)
@@ -334,7 +406,29 @@ export default function ProfileCreatePage() {
                   {errors.birthDate && (
                     <p className="mt-1 text-sm text-red-300">{errors.birthDate.message}</p>
                   )}
-                  <p className="mt-1 text-xs text-spiritual-lavender">星座や運命数の算出に使用します</p>
+                  {!errors.birthDate && !zodiacInfo && (
+                    <p className="mt-1 text-xs text-spiritual-lavender">星座や運命数の算出に使用します</p>
+                  )}
+
+                  {/* 星座表示＆ミニ占い（生年月日入力後に表示） */}
+                  {zodiacInfo && (
+                    <div className="mt-3 p-4 bg-gradient-to-r from-spiritual-gold/20 to-spiritual-accent/20 rounded-xl border border-spiritual-gold/40 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-3xl">{zodiacInfo.emoji}</span>
+                        <div>
+                          <p className="text-spiritual-gold font-bold text-lg">{zodiacInfo.name}</p>
+                          <p className="text-xs text-spiritual-lavender">あなたの星座</p>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-200 leading-relaxed">
+                        <Sparkles className="inline w-4 h-4 text-spiritual-gold mr-1" />
+                        {zodiacInfo.message}
+                      </p>
+                      <p className="text-xs text-spiritual-gold/80 mt-2 font-medium">
+                        さらに詳しい鑑定を受けてみませんか？
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Gender */}
@@ -523,32 +617,63 @@ export default function ProfileCreatePage() {
                   </p>
                 </div>
 
-                {/* 占い師プレビュー */}
+                {/* 占い師プレビュー - 待っている演出 */}
                 {fortuneTellers.length > 0 && (
-                  <div className="bg-spiritual-dark/40 rounded-2xl p-4 border border-spiritual-lavender/30">
-                    <p className="text-center text-sm text-spiritual-gold mb-3">
-                      <Star className="w-4 h-4 inline-block mr-1" />
-                      人気の占い師
-                    </p>
-                    <div className="flex justify-center gap-4">
-                      {fortuneTellers.map((ft) => (
-                        <div key={ft.id} className="flex flex-col items-center">
-                          <div className="relative">
-                            <Image
-                              src={ft.avatar_url || '/images/default-avatar.png'}
-                              alt={ft.name}
-                              width={64}
-                              height={64}
-                              className="w-16 h-16 rounded-full border-2 border-spiritual-gold/50 object-cover"
-                            />
-                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-spiritual-dark flex items-center justify-center">
-                              <MessageCircle className="w-3 h-3 text-white" />
-                            </div>
-                          </div>
-                          <span className="mt-2 text-sm font-medium text-gray-200">{ft.name}</span>
-                          <span className="text-xs text-spiritual-lavender">{ft.specialty}</span>
+                  <div className="bg-gradient-to-br from-spiritual-dark/60 to-spiritual-purple/40 rounded-2xl p-5 border border-spiritual-gold/30 relative overflow-hidden">
+                    {/* 背景のキラキラ */}
+                    <div className="absolute inset-0 overflow-hidden">
+                      {[...Array(6)].map((_, i) => (
+                        <div
+                          key={i}
+                          className="absolute animate-twinkle"
+                          style={{
+                            left: `${15 + (i * 15) % 70}%`,
+                            top: `${20 + (i * 20) % 60}%`,
+                            animationDelay: `${i * 0.4}s`,
+                          }}
+                        >
+                          <Star className="w-2 h-2 text-spiritual-gold/40 fill-spiritual-gold/30" />
                         </div>
                       ))}
+                    </div>
+
+                    <div className="relative z-10">
+                      <p className="text-center text-sm text-spiritual-gold mb-4 font-medium">
+                        <Sparkles className="w-4 h-4 inline-block mr-1 animate-pulse" />
+                        あなたをお待ちしている占い師
+                      </p>
+                      <div className="flex justify-center gap-6">
+                        {fortuneTellers.map((ft, index) => (
+                          <div key={ft.id} className="flex flex-col items-center">
+                            <div className="relative">
+                              {/* パルスアニメーション（オンライン感） */}
+                              <div className="absolute inset-0 rounded-full bg-spiritual-gold/30 animate-ping" style={{ animationDuration: '2s', animationDelay: `${index * 0.5}s` }} />
+                              <Image
+                                src={ft.avatar_url || '/images/default-avatar.png'}
+                                alt={ft.name}
+                                width={72}
+                                height={72}
+                                className="w-18 h-18 rounded-full border-3 border-spiritual-gold/60 object-cover relative z-10 shadow-lg shadow-spiritual-gold/30"
+                                style={{ width: '72px', height: '72px' }}
+                              />
+                              {/* オンラインバッジ */}
+                              <div className="absolute -bottom-1 -right-1 z-20">
+                                <div className="relative">
+                                  <div className="absolute inset-0 w-7 h-7 bg-green-400 rounded-full animate-ping opacity-50" />
+                                  <div className="w-7 h-7 bg-green-500 rounded-full border-2 border-spiritual-dark flex items-center justify-center relative">
+                                    <MessageCircle className="w-3.5 h-3.5 text-white" />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <span className="mt-3 text-sm font-bold text-white">{ft.name}</span>
+                            <span className="text-xs text-spiritual-gold">{ft.specialties?.[0] || '総合占い'}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-center text-xs text-spiritual-lavender mt-4 animate-pulse">
+                        登録が完了すると、すぐにメッセージが届きます
+                      </p>
                     </div>
                   </div>
                 )}

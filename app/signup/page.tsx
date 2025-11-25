@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { trackSignup } from '@/lib/analytics/tiktok-pixel'
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('')
@@ -40,6 +41,8 @@ export default function SignUpPage() {
       if (error) {
         setError(error.message)
       } else {
+        // アカウント作成成功時にTikTok Pixelイベントを送信
+        trackSignup()
         setSuccess(true)
       }
     } catch (err) {

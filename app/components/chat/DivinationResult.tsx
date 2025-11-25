@@ -1,6 +1,6 @@
 'use client'
 
-import { Lock, Sparkles, Loader2, Coins } from 'lucide-react'
+import { Lock, Sparkles, Loader2, Coins, Star, Heart, TrendingUp, Clock } from 'lucide-react'
 import type { DivinationResultDisplay } from '@/lib/types/divination'
 import Link from 'next/link'
 
@@ -40,6 +40,11 @@ export default function DivinationResult({
   const UNLOCK_COST = 1000
   const hasEnoughPoints = userPoints >= UNLOCK_COST
 
+  // プレビュー文字数を計算（残りの文字数）
+  const previewLength = divination.resultPreview?.length || 0
+  const totalLength = divination.resultLength || 400
+  const remainingChars = Math.max(0, totalLength - previewLength)
+
   const handleUnlock = async () => {
     if (onUnlock && !isUnlocking && hasEnoughPoints) {
       await onUnlock(divination.id)
@@ -76,71 +81,129 @@ export default function DivinationResult({
                 {divination.resultFull}
               </div>
             ) : (
-              /* 未開封: プレビュー + ぼかし効果 */
+              /* 未開封: プレビュー + 神秘的なぼかし効果 */
               <div className="space-y-4">
                 {/* プレビュー（最初の20文字） */}
                 <p className="text-sm md:text-base text-gray-900 whitespace-pre-wrap leading-relaxed">
                   {divination.resultPreview}
                 </p>
 
-                {/* ぼかし効果のテキスト */}
-                <div className="relative min-h-[200px]">
-                  <div
-                    className="text-sm md:text-base text-gray-800 whitespace-pre-wrap leading-relaxed"
-                    style={{
-                      filter: 'blur(20px)',
-                      userSelect: 'none',
-                      pointerEvents: 'none',
-                      opacity: 0.8,
-                    }}
-                  >
-                    {/* ダミーテキスト（実際の内容ではなく、視覚効果のみ） */}
-                    あなたの運勢について、詳しく占った結果をお伝えします。現在の状況を見ると、大きな転換期を迎えようとしているようです。これまでの努力が実を結び、新しい展開が期待できます。ただし、焦りは禁物です。一歩ずつ着実に進むことが大切です。人間関係においても良い変化が訪れるでしょう。周囲の人々との絆を大切にすることで、さらなる幸運を引き寄せることができます。金運も上昇の兆しが見えています。
+                {/* 神秘的なぼかしエリア */}
+                <div className="relative min-h-[280px] rounded-xl overflow-hidden">
+                  {/* グラデーション霧の背景 */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#ffd4e5]/60 via-purple-200/50 to-indigo-200/60"></div>
+
+                  {/* アニメーションする霧エフェクト */}
+                  <div className="absolute inset-0 opacity-60">
+                    <div className="absolute top-0 left-1/4 w-40 h-40 bg-white/40 rounded-full blur-3xl animate-pulse"></div>
+                    <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-spiritual-pink/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-purple-300/40 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
                   </div>
 
-                  {/* 「全文を読む」ボタンまたは「今すぐチャージ」ボタン */}
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  {/* キラキラ星のアニメーション */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute animate-twinkle"
+                        style={{
+                          left: `${10 + (i * 7) % 80}%`,
+                          top: `${15 + (i * 11) % 70}%`,
+                          animationDelay: `${i * 0.3}s`,
+                        }}
+                      >
+                        <Star className="w-3 h-3 text-spiritual-gold/70 fill-spiritual-gold/50" />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* ぼかしテキスト（うっすら見える程度） */}
+                  <div
+                    className="absolute inset-0 p-4 text-sm text-gray-600/80"
+                    style={{
+                      filter: 'blur(8px)',
+                      userSelect: 'none',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    あなたの運勢について詳しく占った結果をお伝えします。現在の状況を見ると、大きな転換期を迎えようとしているようです。これまでの努力が実を結び、新しい展開が期待できます。人間関係においても良い変化が訪れるでしょう。周囲の人々との絆を大切にすることで、さらなる幸運を引き寄せることができます。
+                  </div>
+
+                  {/* 中央のコンテンツエリア */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+
+                    {/* セクションヒント - 何が書いてあるかのチラ見せ */}
+                    <div className="mb-5 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg border border-spiritual-pink/30">
+                      <p className="text-xs text-gray-500 mb-2 text-center font-medium">この鑑定結果に含まれる内容</p>
+                      <div className="flex flex-wrap justify-center gap-2">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-pink-100 rounded-full text-xs text-pink-700">
+                          <Heart className="w-3 h-3" />
+                          運勢の流れ
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-100 rounded-full text-xs text-purple-700">
+                          <Clock className="w-3 h-3" />
+                          転機の時期
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-indigo-100 rounded-full text-xs text-indigo-700">
+                          <TrendingUp className="w-3 h-3" />
+                          開運アドバイス
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 残り文字数の価値訴求 */}
+                    <div className="mb-4 text-center">
+                      <p className="text-spiritual-pink-dark font-bold text-lg animate-pulse">
+                        あと <span className="text-2xl">{remainingChars}</span> 文字
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">あなただけの特別なメッセージ</p>
+                    </div>
+
+                    {/* 開封ボタン */}
                     {hasEnoughPoints ? (
                       <button
                         onClick={handleUnlock}
                         disabled={isUnlocking}
-                        className="group relative px-6 md:px-8 py-3.5 md:py-4 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-sm md:text-base shadow-2xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-400 transition-all duration-300 flex items-center gap-2 md:gap-3 border-2 border-spiritual-gold/60 overflow-hidden min-h-[48px]"
+                        className="group relative px-8 py-4 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-base shadow-2xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-400 transition-all duration-300 flex items-center gap-3 border-2 border-spiritual-gold/60 overflow-hidden"
                       >
                         {/* 輝きエフェクト */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
 
-                        <div className="relative z-10 flex items-center gap-2 md:gap-3">
+                        <div className="relative z-10 flex items-center gap-3">
                           {isUnlocking ? (
                             <>
-                              <Loader2 className="w-5 h-5 md:w-6 md:h-6 animate-spin" />
+                              <Loader2 className="w-6 h-6 animate-spin" />
                               <span>開封中...</span>
                             </>
                           ) : (
                             <>
-                              <Lock className="w-5 h-5 md:w-6 md:h-6" />
-                              <span>すべて読む</span>
-                              <span className="text-xs md:text-sm font-normal opacity-90">(1000pt)</span>
+                              <Lock className="w-6 h-6" />
+                              <span>全文を読む</span>
+                              <span className="text-sm font-normal opacity-90 bg-white/20 px-2 py-0.5 rounded-full">{UNLOCK_COST}pt</span>
                             </>
                           )}
                         </div>
                       </button>
                     ) : (
                       <div className="flex flex-col items-center gap-3">
-                        <div className="px-4 py-3 bg-white/95 border-2 border-red-500 rounded-lg text-red-600 text-sm font-bold shadow-lg text-center">
-                          <div>⚠️ ポイントが不足しています</div>
-                          <div className="text-xs mt-1 font-normal">
-                            開封に必要: <span className="font-bold">{UNLOCK_COST}pt</span> ／ 残高: <span className="font-bold">{userPoints}pt</span>
+                        <div className="px-4 py-3 bg-white/95 border-2 border-red-400 rounded-xl text-red-600 text-sm font-bold shadow-lg text-center">
+                          <div className="flex items-center justify-center gap-1">
+                            <span>⚠️</span>
+                            <span>ポイントが不足しています</span>
+                          </div>
+                          <div className="text-xs mt-1.5 font-normal text-gray-600">
+                            開封に必要: <span className="font-bold text-red-500">{UNLOCK_COST}pt</span> ／ 残高: <span className="font-bold">{userPoints}pt</span>
                           </div>
                         </div>
                         <Link
                           href="/points/purchase"
-                          className="group relative px-6 md:px-8 py-3.5 md:py-4 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-sm md:text-base shadow-2xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 md:gap-3 border-2 border-spiritual-gold/60 overflow-hidden min-h-[48px]"
+                          className="group relative px-8 py-4 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-base shadow-2xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 border-2 border-spiritual-gold/60 overflow-hidden"
                         >
                           {/* 輝きエフェクト */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
 
-                          <div className="relative z-10 flex items-center gap-2 md:gap-3">
-                            <Coins className="w-5 h-5 md:w-6 md:h-6" />
+                          <div className="relative z-10 flex items-center gap-3">
+                            <Coins className="w-6 h-6" />
                             <span>今すぐチャージ</span>
                           </div>
                         </Link>

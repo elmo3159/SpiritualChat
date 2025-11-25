@@ -91,7 +91,20 @@ export const trackTikTokIdentify = async (
 }
 
 /**
- * 会員登録完了イベント
+ * アカウント作成イベント（メール登録またはGoogle OAuth）
+ * プロフィール登録前の段階で発火します
+ */
+export const trackSignup = () => {
+  if (typeof window !== 'undefined' && (window as any).ttq) {
+    console.log('TikTok Pixel: SubmitForm イベント送信（アカウント作成）')
+    trackTikTokEvent('SubmitForm')
+  } else {
+    console.warn('TikTok Pixel: ttqオブジェクトが見つかりません (SubmitForm)')
+  }
+}
+
+/**
+ * 会員登録完了イベント（プロフィール登録完了時）
  */
 export const trackCompleteRegistration = () => {
   if (typeof window !== 'undefined' && (window as any).ttq) {
