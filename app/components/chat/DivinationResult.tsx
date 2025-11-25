@@ -1,6 +1,6 @@
 'use client'
 
-import { Lock, Sparkles, Loader2, Coins, Star, Heart, TrendingUp, Clock } from 'lucide-react'
+import { Lock, Sparkles, Loader2, Coins, Star } from 'lucide-react'
 import type { DivinationResultDisplay } from '@/lib/types/divination'
 import Link from 'next/link'
 
@@ -88,8 +88,8 @@ export default function DivinationResult({
                   {divination.resultPreview}
                 </p>
 
-                {/* 神秘的なぼかしエリア */}
-                <div className="relative min-h-[280px] rounded-xl overflow-hidden">
+                {/* 神秘的なぼかしエリア - ポイント不足時は高さを増やす */}
+                <div className={`relative rounded-xl overflow-hidden ${hasEnoughPoints ? 'min-h-[260px]' : 'min-h-[320px]'}`}>
                   {/* グラデーション霧の背景 */}
                   <div className="absolute inset-0 bg-gradient-to-b from-[#ffd4e5]/60 via-purple-200/50 to-indigo-200/60"></div>
 
@@ -130,33 +130,14 @@ export default function DivinationResult({
                   </div>
 
                   {/* 中央のコンテンツエリア */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-
-                    {/* セクションヒント - 何が書いてあるかのチラ見せ */}
-                    <div className="mb-5 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg border border-spiritual-pink/30">
-                      <p className="text-xs text-gray-500 mb-2 text-center font-medium">この鑑定結果に含まれる内容</p>
-                      <div className="flex flex-wrap justify-center gap-2">
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-pink-100 rounded-full text-xs text-pink-700">
-                          <Heart className="w-3 h-3" />
-                          運勢の流れ
-                        </span>
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-100 rounded-full text-xs text-purple-700">
-                          <Clock className="w-3 h-3" />
-                          転機の時期
-                        </span>
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-indigo-100 rounded-full text-xs text-indigo-700">
-                          <TrendingUp className="w-3 h-3" />
-                          開運アドバイス
-                        </span>
-                      </div>
-                    </div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-3">
 
                     {/* 残り文字数の価値訴求 */}
-                    <div className="mb-4 text-center">
-                      <p className="text-spiritual-pink-dark font-bold text-lg animate-pulse">
-                        あと <span className="text-2xl">{remainingChars}</span> 文字
+                    <div className="mb-3 text-center">
+                      <p className="text-spiritual-pink-dark font-bold text-base animate-pulse">
+                        あと <span className="text-xl">{remainingChars}</span> 文字
                       </p>
-                      <p className="text-xs text-gray-600 mt-1">あなただけの特別なメッセージ</p>
+                      <p className="text-xs text-gray-600 mt-0.5">あなただけの特別な鑑定結果</p>
                     </div>
 
                     {/* 開封ボタン */}
@@ -164,46 +145,46 @@ export default function DivinationResult({
                       <button
                         onClick={handleUnlock}
                         disabled={isUnlocking}
-                        className="group relative px-8 py-4 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-base shadow-2xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-400 transition-all duration-300 flex items-center gap-3 border-2 border-spiritual-gold/60 overflow-hidden"
+                        className="group relative px-6 py-3 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-sm shadow-2xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-400 transition-all duration-300 flex items-center gap-2 border-2 border-spiritual-gold/60 overflow-hidden"
                       >
                         {/* 輝きエフェクト */}
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
 
-                        <div className="relative z-10 flex items-center gap-3">
+                        <div className="relative z-10 flex items-center gap-2">
                           {isUnlocking ? (
                             <>
-                              <Loader2 className="w-6 h-6 animate-spin" />
+                              <Loader2 className="w-5 h-5 animate-spin" />
                               <span>開封中...</span>
                             </>
                           ) : (
                             <>
-                              <Lock className="w-6 h-6" />
+                              <Lock className="w-5 h-5" />
                               <span>全文を読む</span>
-                              <span className="text-sm font-normal opacity-90 bg-white/20 px-2 py-0.5 rounded-full">{UNLOCK_COST}pt</span>
+                              <span className="text-xs font-normal opacity-90 bg-white/20 px-2 py-0.5 rounded-full">{UNLOCK_COST}pt</span>
                             </>
                           )}
                         </div>
                       </button>
                     ) : (
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="px-4 py-3 bg-white/95 border-2 border-red-400 rounded-xl text-red-600 text-sm font-bold shadow-lg text-center">
+                      <div className="flex flex-col items-center gap-2 w-full max-w-[280px]">
+                        <div className="px-3 py-2 bg-white/95 border-2 border-red-400 rounded-lg text-red-600 text-xs font-bold shadow-lg text-center w-full">
                           <div className="flex items-center justify-center gap-1">
                             <span>⚠️</span>
                             <span>ポイントが不足しています</span>
                           </div>
-                          <div className="text-xs mt-1.5 font-normal text-gray-600">
-                            開封に必要: <span className="font-bold text-red-500">{UNLOCK_COST}pt</span> ／ 残高: <span className="font-bold">{userPoints}pt</span>
+                          <div className="text-[10px] mt-1 font-normal text-gray-600">
+                            必要: <span className="font-bold text-red-500">{UNLOCK_COST}pt</span> ／ 残高: <span className="font-bold">{userPoints}pt</span>
                           </div>
                         </div>
                         <Link
                           href="/points/purchase"
-                          className="group relative px-8 py-4 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-base shadow-2xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-3 border-2 border-spiritual-gold/60 overflow-hidden"
+                          className="group relative px-5 py-2.5 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-sm shadow-xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 border-2 border-spiritual-gold/60 overflow-hidden"
                         >
                           {/* 輝きエフェクト */}
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
 
-                          <div className="relative z-10 flex items-center gap-3">
-                            <Coins className="w-6 h-6" />
+                          <div className="relative z-10 flex items-center gap-2">
+                            <Coins className="w-5 h-5" />
                             <span>今すぐチャージ</span>
                           </div>
                         </Link>
