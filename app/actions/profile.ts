@@ -6,33 +6,34 @@ import { revalidatePath } from 'next/cache'
 import { checkAndAwardBadges } from '@/lib/services/badge-service'
 
 /**
- * プロフィール完成バッジを直接付与する（高速版）
- * 全バッジチェックは重いので、新規登録時はこの関数のみを使用
+ * プロフィール完成バッジを直接付与する（超高速版）
+ * DB呼び出しを並列化して最速で処理
+ * この関数は非同期で呼び出され、完了を待たない
  */
 async function awardProfileCompleteBadge(userId: string): Promise<void> {
   const supabase = createAdminClient()
 
   try {
-    // プロフィール完成バッジの定義を取得
-    const { data: badge } = await supabase
-      .from('badge_definitions')
-      .select('*')
-      .eq('condition_type', 'profile_complete')
-      .single()
+    // Step 1: バッジ定義と既存バッジを並列取得
+    const [badgeResult, existingBadgeResult] = await Promise.all([
+      supabase
+        .from('badge_definitions')
+        .select('badge_key, bonus_points, bonus_exp')
+        .eq('condition_type', 'profile_complete')
+        .single(),
+      supabase
+        .from('user_badges')
+        .select('id')
+        .eq('user_id', userId)
+        .like('badge_key', '%profile%')
+        .maybeSingle()
+    ])
 
+    const badge = badgeResult.data
     if (!badge) return
+    if (existingBadgeResult.data) return // 既に持っている
 
-    // 既に獲得済みかチェック
-    const { data: existingBadge } = await supabase
-      .from('user_badges')
-      .select('id')
-      .eq('user_id', userId)
-      .eq('badge_key', badge.badge_key)
-      .maybeSingle()
-
-    if (existingBadge) return // 既に持っている
-
-    // バッジを付与
+    // Step 2: バッジ付与
     const { error: badgeError } = await supabase
       .from('user_badges')
       .insert({
@@ -45,60 +46,60 @@ async function awardProfileCompleteBadge(userId: string): Promise<void> {
       return
     }
 
-    // ボーナスポイントを付与
+    // Step 3: ポイント・経験値付与を並列実行
+    const updatePromises: Promise<any>[] = []
+
     if (badge.bonus_points > 0) {
-      const { data: currentPoints } = await supabase
-        .from('user_points')
-        .select('points_balance')
-        .eq('user_id', userId)
-        .single()
+      // ポイント更新を並列実行
+      updatePromises.push(
+        (async () => {
+          const { data: currentPoints } = await supabase
+            .from('user_points')
+            .select('points_balance')
+            .eq('user_id', userId)
+            .single()
 
-      const newBalance = (currentPoints?.points_balance || 0) + badge.bonus_points
+          const newBalance = (currentPoints?.points_balance || 0) + badge.bonus_points
 
-      await supabase
-        .from('user_points')
-        .update({ points_balance: newBalance })
-        .eq('user_id', userId)
-
-      // トランザクション記録
-      await supabase
-        .from('points_transactions')
-        .insert({
-          user_id: userId,
-          transaction_type: 'bonus',
-          amount: badge.bonus_points,
-          description: `バッジ獲得ボーナス: ${badge.badge_key}`,
-        })
-
-      // バッジのボーナスポイント請求済みフラグを立てる
-      await supabase
-        .from('user_badges')
-        .update({ bonus_points_claimed: true })
-        .eq('user_id', userId)
-        .eq('badge_key', badge.badge_key)
+          await Promise.all([
+            supabase.from('user_points').update({ points_balance: newBalance }).eq('user_id', userId),
+            supabase.from('points_transactions').insert({
+              user_id: userId,
+              transaction_type: 'bonus',
+              amount: badge.bonus_points,
+              description: `バッジ獲得ボーナス: ${badge.badge_key}`,
+            }),
+            supabase.from('user_badges').update({ bonus_points_claimed: true }).eq('user_id', userId).eq('badge_key', badge.badge_key)
+          ])
+        })()
+      )
     }
 
-    // ボーナス経験値を付与
     if (badge.bonus_exp > 0) {
-      const { data: levelData } = await supabase
-        .from('user_levels')
-        .select('*')
-        .eq('user_id', userId)
-        .single()
+      // 経験値更新を並列実行
+      updatePromises.push(
+        (async () => {
+          const { data: levelData } = await supabase
+            .from('user_levels')
+            .select('current_exp')
+            .eq('user_id', userId)
+            .single()
 
-      if (levelData) {
-        const newExp = levelData.current_exp + badge.bonus_exp
-        const newLevel = Math.floor(newExp / 1000) + 1
+          if (levelData) {
+            const newExp = levelData.current_exp + badge.bonus_exp
+            const newLevel = Math.floor(newExp / 1000) + 1
 
-        await supabase
-          .from('user_levels')
-          .update({
-            current_exp: newExp,
-            current_level: newLevel,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('user_id', userId)
-      }
+            await supabase
+              .from('user_levels')
+              .update({ current_exp: newExp, current_level: newLevel, updated_at: new Date().toISOString() })
+              .eq('user_id', userId)
+          }
+        })()
+      )
+    }
+
+    if (updatePromises.length > 0) {
+      await Promise.all(updatePromises)
     }
 
     console.log('プロフィール完成バッジを付与しました:', userId)
@@ -278,10 +279,12 @@ export async function createProfile(formData: ProfileFormData) {
       }
     }
 
-    // プロフィール完成バッジを付与（高速版 - 他のバッジチェックはスキップ）
-    // 全バッジチェックは12+回のDB呼び出しがあり重いので、
-    // プロフィール完成バッジのみを直接付与する
-    await awardProfileCompleteBadge(user.id)
+    // プロフィール完成バッジを付与（非ブロッキング版）
+    // 画面遷移を待たせないため、awaitせずに実行
+    // エラーが発生してもログに記録するのみで、ユーザー体験に影響しない
+    awardProfileCompleteBadge(user.id).catch((error) => {
+      console.error('バッジ付与処理エラー（非同期）:', error)
+    })
 
     return {
       success: true,

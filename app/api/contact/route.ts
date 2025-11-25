@@ -2,7 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// 遅延初期化でビルド時エラーを防止
+let resendInstance: Resend | null = null
+
+function getResend(): Resend {
+  if (!resendInstance) {
+    resendInstance = new Resend(process.env.RESEND_API_KEY || '')
+  }
+  return resendInstance
+}
 
 const CATEGORY_LABELS: Record<string, string> = {
   bug: 'バグ報告',
@@ -105,7 +113,7 @@ ${message}
     // Resendでメールを送信
     const supportEmail = process.env.SUPPORT_EMAIL || 'noreply@example.com'
 
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from: 'スピチャ お問い合わせ <onboarding@resend.dev>',
       to: [supportEmail],
       replyTo: user.email || undefined,
