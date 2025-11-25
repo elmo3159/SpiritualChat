@@ -363,31 +363,35 @@ export default function LandingPage() {
             </div>
 
             <div className="grid grid-cols-3 md:grid-cols-4 gap-3 mb-6">
-              {/* 12星座すべて表示（ふりがな付き） */}
+              {/* 12星座すべて表示（ふりがな付き） - 個別詳細ページにリンク */}
               {[
-                { symbol: '♈', kanji: '牡羊座', reading: 'おひつじざ' },
-                { symbol: '♉', kanji: '牡牛座', reading: 'おうしざ' },
-                { symbol: '♊', kanji: '双子座', reading: 'ふたござ' },
-                { symbol: '♋', kanji: '蟹座', reading: 'かにざ' },
-                { symbol: '♌', kanji: '獅子座', reading: 'ししざ' },
-                { symbol: '♍', kanji: '乙女座', reading: 'おとめざ' },
-                { symbol: '♎', kanji: '天秤座', reading: 'てんびんざ' },
-                { symbol: '♏', kanji: '蠍座', reading: 'さそりざ' },
-                { symbol: '♐', kanji: '射手座', reading: 'いてざ' },
-                { symbol: '♑', kanji: '山羊座', reading: 'やぎざ' },
-                { symbol: '♒', kanji: '水瓶座', reading: 'みずがめざ' },
-                { symbol: '♓', kanji: '魚座', reading: 'うおざ' },
-              ].map((zodiac) => (
-                <div
-                  key={zodiac.kanji}
-                  className="bg-white/80 backdrop-blur-sm rounded-xl p-3 text-center hover:scale-105 transition-transform cursor-pointer"
-                  onClick={() => router.push('/horoscope')}
-                >
-                  <div className="text-3xl mb-1">{zodiac.symbol}</div>
-                  <div className="text-xs font-semibold text-gray-700 leading-tight">{zodiac.kanji}</div>
-                  <div className="text-[10px] text-gray-500 mt-0.5 whitespace-nowrap">（{zodiac.reading}）</div>
-                </div>
-              ))}
+                { id: 'aries', symbol: '♈', kanji: '牡羊座', reading: 'おひつじざ' },
+                { id: 'taurus', symbol: '♉', kanji: '牡牛座', reading: 'おうしざ' },
+                { id: 'gemini', symbol: '♊', kanji: '双子座', reading: 'ふたござ' },
+                { id: 'cancer', symbol: '♋', kanji: '蟹座', reading: 'かにざ' },
+                { id: 'leo', symbol: '♌', kanji: '獅子座', reading: 'ししざ' },
+                { id: 'virgo', symbol: '♍', kanji: '乙女座', reading: 'おとめざ' },
+                { id: 'libra', symbol: '♎', kanji: '天秤座', reading: 'てんびんざ' },
+                { id: 'scorpio', symbol: '♏', kanji: '蠍座', reading: 'さそりざ' },
+                { id: 'sagittarius', symbol: '♐', kanji: '射手座', reading: 'いてざ' },
+                { id: 'capricorn', symbol: '♑', kanji: '山羊座', reading: 'やぎざ' },
+                { id: 'aquarius', symbol: '♒', kanji: '水瓶座', reading: 'みずがめざ' },
+                { id: 'pisces', symbol: '♓', kanji: '魚座', reading: 'うおざ' },
+              ].map((zodiac) => {
+                // 今日の日付を取得（YYYY-MM-DD形式）
+                const today = new Date().toISOString().split('T')[0]
+                return (
+                  <div
+                    key={zodiac.kanji}
+                    className="bg-white/80 backdrop-blur-sm rounded-xl p-3 text-center hover:scale-105 transition-transform cursor-pointer"
+                    onClick={() => router.push(`/horoscope/${zodiac.id}/${today}`)}
+                  >
+                    <div className="text-3xl mb-1">{zodiac.symbol}</div>
+                    <div className="text-xs font-semibold text-gray-700 leading-tight">{zodiac.kanji}</div>
+                    <div className="text-[10px] text-gray-500 mt-0.5 whitespace-nowrap">（{zodiac.reading}）</div>
+                  </div>
+                )
+              })}
             </div>
 
             <button

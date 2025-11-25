@@ -94,12 +94,12 @@ export default function HoroscopeDetailClient({ zodiac, horoscope, formattedDate
         </div>
 
         {/* スピチャ登録CTA（恋愛運の後） */}
-        <div className="bg-gradient-to-r from-spiritual-gold/20 to-spiritual-accent/20 backdrop-blur-sm rounded-2xl p-6 md:p-8 mb-6 border-2 border-spiritual-gold/40 shadow-lg">
+        <div className="bg-gradient-to-r from-white/95 to-pink-50/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 mb-6 border-2 border-spiritual-gold/60 shadow-lg">
           <div className="text-center">
-            <p className="text-gray-800 font-semibold text-lg mb-4">
+            <p className="text-gray-900 font-semibold text-lg mb-4">
               💝 もっと詳しく恋愛運を占いたい方へ
             </p>
-            <p className="text-gray-700 mb-5 text-sm md:text-base">
+            <p className="text-gray-800 mb-5 text-sm md:text-base">
               人気占い師監修のAIがあなただけの<strong className="text-spiritual-pink-dark">恋愛アドバイス</strong>を提供します。<br />
               片思い・復縁・相手の気持ち…何でも相談OK！
             </p>
@@ -171,25 +171,25 @@ export default function HoroscopeDetailClient({ zodiac, horoscope, formattedDate
         </div>
 
         {/* 最終CTA */}
-        <div className="bg-gradient-to-br from-spiritual-pink/20 to-spiritual-purple/20 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-2xl border-2 border-spiritual-pink/40">
+        <div className="bg-gradient-to-br from-white/95 to-pink-50/90 backdrop-blur-sm rounded-3xl p-8 md:p-10 shadow-2xl border-2 border-spiritual-pink/60">
           <div className="text-center">
             <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
               もっと詳しく占いたい方は…
             </h3>
-            <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-6">
+            <p className="text-gray-800 text-base md:text-lg leading-relaxed mb-6">
               人気スピリチュアル占い師監修のAIが、<br className="hidden md:block" />
               あなたの<strong className="text-spiritual-pink-dark">悩みに寄り添って</strong>個別にアドバイスします。
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-5">
-              <div className="flex items-center gap-2 text-gray-700">
+              <div className="flex items-center gap-2 text-gray-800">
                 <span className="text-spiritual-gold">✓</span>
                 <span className="font-semibold">24時間365日対応</span>
               </div>
-              <div className="flex items-center gap-2 text-gray-700">
+              <div className="flex items-center gap-2 text-gray-800">
                 <span className="text-spiritual-gold">✓</span>
                 <span className="font-semibold">完全匿名で安心</span>
               </div>
-              <div className="flex items-center gap-2 text-gray-700">
+              <div className="flex items-center gap-2 text-gray-800">
                 <span className="text-spiritual-gold">✓</span>
                 <span className="font-semibold">初回1000pt無料</span>
               </div>
