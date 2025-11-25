@@ -59,28 +59,48 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Check if logged-in user has completed onboarding
-  if (
-    user &&
-    request.nextUrl.pathname !== '/' &&
-    !request.nextUrl.pathname.startsWith('/profile/create') &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/signup') &&
-    !request.nextUrl.pathname.startsWith('/auth') &&
-    !request.nextUrl.pathname.startsWith('/terms') &&
-    !request.nextUrl.pathname.startsWith('/privacy') &&
-    !request.nextUrl.pathname.startsWith('/legal') &&
-    !request.nextUrl.pathname.startsWith('/points') &&
-    !request.nextUrl.pathname.startsWith('/horoscope') &&
-    !request.nextUrl.pathname.startsWith('/api/webhooks')
-  ) {
+  if (user) {
     const { data: profile } = await supabase
       .from('profiles')
       .select('onboarding_completed')
       .eq('id', user.id)
       .single()
 
+    const isOnboardingComplete = profile?.onboarding_completed === true
+
+    // プロフィール作成ページにいる場合、既に完了済みなら占い師一覧にリダイレクト
+    if (request.nextUrl.pathname.startsWith('/profile/create')) {
+      if (isOnboardingComplete) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/fortune-tellers'
+        return NextResponse.redirect(url)
+      }
+      // 未完了なら許可
+      return supabaseResponse
+    }
+
+    // その他の保護されたページ
+    const publicPaths = [
+      '/',
+      '/login',
+      '/signup',
+      '/auth',
+      '/terms',
+      '/privacy',
+      '/legal',
+      '/points',
+      '/horoscope',
+      '/api/webhooks',
+    ]
+
+    const isPublicPath = publicPaths.some(
+      (path) =>
+        request.nextUrl.pathname === path ||
+        request.nextUrl.pathname.startsWith(path + '/')
+    )
+
     // プロフィールが存在しない、またはonboarding未完了の場合はプロフィール作成画面にリダイレクト
-    if (!profile || !profile.onboarding_completed) {
+    if (!isPublicPath && !isOnboardingComplete) {
       const url = request.nextUrl.clone()
       url.pathname = '/profile/create'
       return NextResponse.redirect(url)

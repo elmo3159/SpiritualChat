@@ -241,50 +241,45 @@ export async function createProfile(formData: ProfileFormData) {
     }
 
     // ============================================================
-    // 以下の処理は非ブロッキングで実行（画面遷移を即座に行うため）
+    // ポイント付与（ブロッキング - サーバーレスで確実に実行するため）
     // ============================================================
+    try {
+      const { data: existingPoints } = await supabase
+        .from('user_points')
+        .select('points_balance')
+        .eq('user_id', user.id)
+        .maybeSingle()
 
-    // ポイント付与（非ブロッキング版）
-    // 新規登録ボーナス1000ptを付与
-    ;(async () => {
-      try {
-        const adminSupabase = createAdminClient()
-        const { data: existingPoints } = await adminSupabase
-          .from('user_points')
-          .select('points_balance')
-          .eq('user_id', user.id)
-          .maybeSingle()
-
-        // ポイント更新/挿入と取引履歴を並列実行
-        const pointsOp = existingPoints
-          ? adminSupabase
-              .from('user_points')
-              .update({
-                points_balance: existingPoints.points_balance + 1000,
-                updated_at: new Date().toISOString(),
-              })
-              .eq('user_id', user.id)
-          : adminSupabase.from('user_points').insert({
-              user_id: user.id,
-              points_balance: 1000,
+      // ポイント更新/挿入と取引履歴を並列実行（高速化）
+      const pointsOp = existingPoints
+        ? supabase
+            .from('user_points')
+            .update({
+              points_balance: existingPoints.points_balance + 1000,
+              updated_at: new Date().toISOString(),
             })
-
-        await Promise.all([
-          pointsOp,
-          adminSupabase.from('points_transactions').insert({
+            .eq('user_id', user.id)
+        : supabase.from('user_points').insert({
             user_id: user.id,
-            points: 1000,
-            transaction_type: 'bonus',
-            description: '新規登録ボーナス',
-          }),
-        ])
-        console.log('新規登録ボーナスポイントを付与しました:', user.id)
-      } catch (error) {
-        console.error('ポイント付与エラー（非同期）:', error)
-      }
-    })()
+            points_balance: 1000,
+          })
 
-    // プロフィール完成バッジを付与（非ブロッキング版）
+      await Promise.all([
+        pointsOp,
+        supabase.from('points_transactions').insert({
+          user_id: user.id,
+          points: 1000,
+          transaction_type: 'bonus',
+          description: '新規登録ボーナス',
+        }),
+      ])
+      console.log('新規登録ボーナスポイントを付与しました:', user.id)
+    } catch (pointsError) {
+      // ポイント付与に失敗してもプロフィール作成は成功とする
+      console.error('ポイント付与エラー:', pointsError)
+    }
+
+    // プロフィール完成バッジを付与（非ブロッキング - ボーナス機能なので失敗しても問題なし）
     awardProfileCompleteBadge(user.id).catch((error) => {
       console.error('バッジ付与処理エラー（非同期）:', error)
     })

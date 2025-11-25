@@ -379,6 +379,11 @@ function ProfileCreatePageContent() {
       const result = await createProfile(data)
 
       if (result && result.error) {
+        // 「既に登録済み」エラーの場合は占い師一覧に遷移
+        if (result.error.includes('既に登録')) {
+          router.push('/fortune-tellers')
+          return
+        }
         setError(result.error)
         setLoading(false)
       } else if (result && result.success) {
@@ -393,8 +398,13 @@ function ProfileCreatePageContent() {
 
         // 即座に占い師一覧ページに遷移（待機時間なし）
         router.push('/fortune-tellers')
+      } else {
+        // resultがundefinedや予期しない形式の場合
+        setError('プロフィールの保存に失敗しました。もう一度お試しください。')
+        setLoading(false)
       }
     } catch (err) {
+      console.error('プロフィール作成エラー:', err)
       setError('予期しないエラーが発生しました')
       setLoading(false)
     }
