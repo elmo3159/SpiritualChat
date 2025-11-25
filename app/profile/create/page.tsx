@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { profileSchema, concernCategories, type ProfileFormData } from '@/lib/validations/profile'
@@ -10,7 +10,7 @@ import Image from 'next/image'
 import { trackCompleteRegistration, trackTikTokIdentify, trackSignup } from '@/lib/analytics/tiktok-pixel'
 import { useAuth } from '@/lib/contexts/AuthContext'
 import { createClient } from '@/lib/supabase/client'
-import { ChevronRight, ChevronDown, ChevronUp, Sparkles, Heart, Briefcase, Home, Coins, Users, MessageCircle, Star, Check, Clock } from 'lucide-react'
+import { ChevronRight, ChevronDown, ChevronUp, Sparkles, Heart, Briefcase, Home, Coins, Users, MessageCircle, Star, Check, Clock, Loader2 } from 'lucide-react'
 
 // 日本の都道府県リスト
 const PREFECTURES = [
@@ -195,7 +195,7 @@ function ProgressBar({ currentStep, totalSteps }: { currentStep: number; totalSt
   )
 }
 
-export default function ProfileCreatePage() {
+function ProfileCreatePageContent() {
   const [currentStep, setCurrentStep] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -871,5 +871,21 @@ export default function ProfileCreatePage() {
         </p>
       </div>
     </div>
+  )
+}
+
+// Suspense boundary wrapper for useSearchParams
+export default function ProfileCreatePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-b from-spiritual-dark via-spiritual-darker to-spiritual-navy flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-10 h-10 text-spiritual-gold animate-spin" />
+          <p className="text-spiritual-gold text-sm">読み込み中...</p>
+        </div>
+      </div>
+    }>
+      <ProfileCreatePageContent />
+    </Suspense>
   )
 }
