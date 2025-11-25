@@ -48,7 +48,6 @@ export default function ChatContainer({
   const [isUnlocking, setIsUnlocking] = useState(false)
   const [userPoints, setUserPoints] = useState<number>(0)
   const [isDivinating, setIsDivinating] = useState(false)
-  const [isWaitingForSuggestion, setIsWaitingForSuggestion] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const channelRef = useRef<RealtimeChannel | null>(null)
   const hasFetchedSuggestion = useRef(false)
@@ -508,33 +507,9 @@ export default function ChatContainer({
         // メッセージ送信回数制限をリセットしたのでUIを更新
         await refetchMessageLimit()
 
-        // 30秒後に次の提案文を送信
-        setIsWaitingForSuggestion(true)
-        setTimeout(async () => {
-          try {
-            const suggestionResponse = await fetch('/api/chat/post-unlock-suggestion', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                divinationId,
-              }),
-            })
-
-            const suggestionResult = await suggestionResponse.json()
-
-            if (!suggestionResult.success) {
-              console.error('提案文生成エラー:', suggestionResult.message)
-            } else {
-              console.log('提案文を送信しました')
-            }
-          } catch (error) {
-            console.error('提案文送信エラー:', error)
-          } finally {
-            setIsWaitingForSuggestion(false)
-          }
-        }, 30000) // 30秒
+        // 提案文はサーバーサイドで自動生成されるため、クライアント側での呼び出しは不要
+        // Realtimeサブスクリプションで自動的に表示される
+        console.log('鑑定結果を開封しました。提案文はサーバーサイドで生成されます。')
       }
 
       setIsUnlocking(false)
@@ -590,12 +565,10 @@ export default function ChatContainer({
   // 占ってもらうボタンを無効化する条件：
   // 1. 提案文がない
   // 2. 未開封の鑑定結果があり、かつその後にユーザーがメッセージを送信していない
-  // 3. 鑑定結果開封後、次の提案文を待っている状態
-  // 4. 提案文を再生成中
+  // 3. 提案文を再生成中
   const isDivinationButtonDisabled =
     !hasSuggestion ||
     hasUnlockedDivinationWithoutNewSuggestion ||
-    isWaitingForSuggestion ||
     isRegeneratingSuggestion
 
   return (
@@ -759,8 +732,6 @@ export default function ChatContainer({
                   <p className="text-xs text-center text-amber-800">
                     {hasUnlockedDivinationWithoutNewSuggestion
                       ? '💫 鑑定結果を開封するか、メッセージを送信してください'
-                      : isWaitingForSuggestion
-                      ? '⏳ 次の提案を準備中...'
                       : isRegeneratingSuggestion
                       ? '✨ 新しい提案を生成中...'
                       : '💬 メッセージを送信して提案を受け取りましょう'}
@@ -777,15 +748,12 @@ export default function ChatContainer({
               disabled={
                 isLoading ||
                 isDivinating ||
-                isWaitingForSuggestion ||
                 isRegeneratingSuggestion ||
                 remainingMessageCount <= 0
               }
               placeholder={
                 isDivinating
                   ? '鑑定中...'
-                  : isWaitingForSuggestion
-                  ? '次の提案を準備中...'
                   : isRegeneratingSuggestion
                   ? '提案を生成中...'
                   : isLoading
