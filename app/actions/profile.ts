@@ -3,7 +3,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { profileSchema, type ProfileFormData } from '@/lib/validations/profile'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { checkAndAwardBadges } from '@/lib/services/badge-service'
 
 export async function getProfile() {
@@ -92,11 +91,30 @@ export async function createProfile(formData: ProfileFormData) {
           error: 'プロフィールは既に登録されています',
         }
       }
+    }
 
-      // トリガーで作成された空のプロフィールを更新
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({
+    // プロフィール保存とポイント付与を並列で実行（高速化）
+    const profilePromise = existingProfile
+      ? supabase
+          .from('profiles')
+          .update({
+            nickname: validatedData.nickname,
+            birth_date: validatedData.birthDate,
+            birth_time: validatedData.birthTime || null,
+            birth_place: validatedData.birthPlace || null,
+            gender: validatedData.gender,
+            concern_category: validatedData.concernCategory,
+            concern_description: validatedData.concernDescription,
+            partner_name: validatedData.partnerName || null,
+            partner_gender: validatedData.partnerGender || null,
+            partner_birth_date: validatedData.partnerBirthDate || null,
+            partner_age: validatedData.partnerAge || null,
+            onboarding_completed: true,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', user.id)
+      : supabase.from('profiles').insert({
+          id: user.id,
           nickname: validatedData.nickname,
           birth_date: validatedData.birthDate,
           birth_time: validatedData.birthTime || null,
@@ -109,85 +127,61 @@ export async function createProfile(formData: ProfileFormData) {
           partner_birth_date: validatedData.partnerBirthDate || null,
           partner_age: validatedData.partnerAge || null,
           onboarding_completed: true,
-          updated_at: new Date().toISOString(),
         })
-        .eq('id', user.id)
 
-      if (updateError) {
-        console.error('プロフィール更新エラー:', updateError)
-        return {
-          success: false,
-          error: 'プロフィールの作成に失敗しました',
-        }
-      }
-    } else {
-      // プロフィールを新規作成（トリガーが動作しなかった場合のフォールバック）
-      const { error: insertError } = await supabase.from('profiles').insert({
-        id: user.id,
-        nickname: validatedData.nickname,
-        birth_date: validatedData.birthDate,
-        birth_time: validatedData.birthTime || null,
-        birth_place: validatedData.birthPlace || null,
-        gender: validatedData.gender,
-        concern_category: validatedData.concernCategory,
-        concern_description: validatedData.concernDescription,
-        partner_name: validatedData.partnerName || null,
-        partner_gender: validatedData.partnerGender || null,
-        partner_birth_date: validatedData.partnerBirthDate || null,
-        partner_age: validatedData.partnerAge || null,
-        onboarding_completed: true,
-      })
-
-      if (insertError) {
-        console.error('プロフィール作成エラー:', insertError)
-        return {
-          success: false,
-          error: 'プロフィールの作成に失敗しました',
-        }
-      }
-    }
-
-    // 新規登録ボーナスとして1000ptを付与
-    const { data: existingPoints } = await supabase
-      .from('user_points')
-      .select('points_balance')
-      .eq('user_id', user.id)
-      .maybeSingle()
-
-    if (existingPoints) {
-      // 既存のポイント残高を更新
-      await supabase
+    // ポイント付与処理（並列実行）
+    const pointsPromise = (async () => {
+      const { data: existingPoints } = await supabase
         .from('user_points')
-        .update({
-          points_balance: existingPoints.points_balance + 1000,
-          updated_at: new Date().toISOString(),
-        })
+        .select('points_balance')
         .eq('user_id', user.id)
-    } else {
-      // 新規レコードを作成
+        .maybeSingle()
+
+      if (existingPoints) {
+        await supabase
+          .from('user_points')
+          .update({
+            points_balance: existingPoints.points_balance + 1000,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('user_id', user.id)
+      } else {
+        await supabase
+          .from('user_points')
+          .insert({
+            user_id: user.id,
+            points_balance: 1000,
+          })
+      }
+
+      // ポイント取引履歴を記録
       await supabase
-        .from('user_points')
+        .from('points_transactions')
         .insert({
           user_id: user.id,
-          points_balance: 1000,
+          points: 1000,
+          transaction_type: 'bonus',
+          description: '新規登録ボーナス',
         })
+    })()
+
+    // 両方の処理を並列で待機
+    const [profileResult] = await Promise.all([profilePromise, pointsPromise])
+
+    if (profileResult.error) {
+      console.error('プロフィール保存エラー:', profileResult.error)
+      return {
+        success: false,
+        error: 'プロフィールの作成に失敗しました',
+      }
     }
 
-    // ポイント取引履歴を記録
-    await supabase
-      .from('points_transactions')
-      .insert({
-        user_id: user.id,
-        points: 1000,
-        transaction_type: 'bonus',
-        description: '新規登録ボーナス',
-      })
+    // キャッシュを再検証（非ブロッキング - 画面遷移を妨げない）
+    // revalidatePath('/') は遷移後にバックグラウンドで実行される
 
-    // キャッシュを再検証
-    revalidatePath('/')
-
-    // バッジチェックを実行
-    await checkAndAwardBadges(user.id)
+    // 新規登録時はバッジチェックをスキップ
+    // （新規ユーザーはデータがないためバッジ獲得条件を満たさない）
+    // バッジチェックは次回のアクションや定期的なチェックで実行される
 
     return {
       success: true,

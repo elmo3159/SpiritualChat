@@ -312,18 +312,16 @@ function ProfileCreatePageContent() {
         setError(result.error)
         setLoading(false)
       } else if (result && result.success) {
+        // トラッキングは非同期で実行（画面遷移をブロックしない）
         // TikTok Pixel: ユーザー識別情報を送信
         if (user?.email) {
-          await trackTikTokIdentify(user.email, user.id)
+          trackTikTokIdentify(user.email, user.id).catch(() => {})
         }
 
-        // プロフィール登録完了イベントをトラッキング
+        // プロフィール登録完了イベントをトラッキング（非ブロッキング）
         trackCompleteRegistration()
 
-        // イベント送信完了を待つ
-        await new Promise(resolve => setTimeout(resolve, 300))
-
-        // 成功時は占い師一覧ページに直接遷移
+        // 即座に占い師一覧ページに遷移（待機時間なし）
         router.push('/fortune-tellers')
       }
     } catch (err) {
