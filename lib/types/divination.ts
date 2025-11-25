@@ -59,7 +59,10 @@ export interface GenerateDivinationResponse {
   success: boolean
   message?: string
   data?: {
-    divination: DivinationResultDisplay
+    divination: DivinationResultDisplay | {
+      id: string
+      isDuplicate: true
+    }
   }
 }
 

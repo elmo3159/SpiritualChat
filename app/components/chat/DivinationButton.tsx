@@ -1,9 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { Sparkles, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import type { GenerateDivinationResponse } from '@/lib/types/divination'
+
+// ローカルストレージのキー
+const GENERATING_STATE_KEY = 'divination_generating_state'
+
+// タイムアウト時間（ミリ秒）- API側の待機時間(15秒) + 生成時間を考慮して90秒
+const REQUEST_TIMEOUT_MS = 90000
 
 interface Props {
   /**
@@ -36,6 +42,7 @@ interface Props {
  * 占ってもらうボタンコンポーネント
  *
  * クリックするとAI鑑定を生成し、データベースに保存します
+ * 重複リクエスト防止とタイムアウト処理を実装
  */
 export default function DivinationButton({
   fortuneTellerId,
@@ -46,12 +53,80 @@ export default function DivinationButton({
 }: Props) {
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const abortControllerRef = useRef<AbortController | null>(null)
+  const isRequestInFlightRef = useRef(false)
   const router = useRouter()
 
+  // 生成状態をクリア（useEffectより前に定義）
+  const clearGeneratingState = useCallback(() => {
+    setIsGenerating(false)
+    onGeneratingChange?.(false)
+    localStorage.removeItem(GENERATING_STATE_KEY)
+    isRequestInFlightRef.current = false
+  }, [onGeneratingChange])
+
+  // コンポーネントマウント時に進行中の状態をチェック
+  useEffect(() => {
+    const savedState = localStorage.getItem(GENERATING_STATE_KEY)
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState)
+        // 保存から60秒以内で同じ占い師の場合は生成中として扱う
+        const isRecent = Date.now() - state.timestamp < 60000
+        if (isRecent && state.fortuneTellerId === fortuneTellerId) {
+          setIsGenerating(true)
+          onGeneratingChange?.(true)
+          // 60秒後に自動的にリセット
+          const timeRemaining = 60000 - (Date.now() - state.timestamp)
+          setTimeout(() => {
+            clearGeneratingState()
+          }, timeRemaining)
+        } else {
+          // 古い状態はクリア
+          localStorage.removeItem(GENERATING_STATE_KEY)
+        }
+      } catch {
+        localStorage.removeItem(GENERATING_STATE_KEY)
+      }
+    }
+
+    // クリーンアップ
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
+  }, [fortuneTellerId, onGeneratingChange, clearGeneratingState])
+
+  // 生成状態を保存
+  const saveGeneratingState = () => {
+    const state = {
+      fortuneTellerId,
+      timestamp: Date.now(),
+    }
+    localStorage.setItem(GENERATING_STATE_KEY, JSON.stringify(state))
+  }
+
   const handleDivinationRequest = async () => {
+    // 既にリクエスト中の場合は無視
+    if (isRequestInFlightRef.current || isGenerating) {
+      console.log('鑑定リクエストは既に進行中です')
+      return
+    }
+
+    isRequestInFlightRef.current = true
     setIsGenerating(true)
     onGeneratingChange?.(true)
+    saveGeneratingState()
     setError(null)
+
+    // AbortControllerを作成
+    abortControllerRef.current = new AbortController()
+    const timeoutId = setTimeout(() => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }, REQUEST_TIMEOUT_MS)
 
     try {
       const response = await fetch('/api/divination/generate', {
@@ -61,31 +136,41 @@ export default function DivinationButton({
         },
         body: JSON.stringify({
           fortuneTellerId,
+          requestId: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         }),
+        signal: abortControllerRef.current.signal,
       })
+
+      clearTimeout(timeoutId)
 
       const result: GenerateDivinationResponse = await response.json()
 
       if (!result.success) {
         setError(result.message || '鑑定の生成に失敗しました')
-        setIsGenerating(false)
-        onGeneratingChange?.(false)
+        clearGeneratingState()
         return
       }
 
       // 成功時の処理
-      // メッセージはRealtimeサブスクリプションで自動的に表示される
+      // isDuplicateがtrueの場合も成功として扱う（既存の鑑定が使われる）
       if (result.data?.divination) {
         onDivinationGenerated?.(result.data.divination.id)
       }
 
-      setIsGenerating(false)
-      onGeneratingChange?.(false)
-    } catch (error) {
-      console.error('鑑定生成エラー:', error)
-      setError('予期しないエラーが発生しました')
-      setIsGenerating(false)
-      onGeneratingChange?.(false)
+      clearGeneratingState()
+    } catch (error: any) {
+      clearTimeout(timeoutId)
+
+      if (error.name === 'AbortError') {
+        console.log('鑑定リクエストがタイムアウトしました')
+        // タイムアウトの場合はエラーを表示せず、バックグラウンドで処理が続いている可能性を考慮
+        // ユーザーにはページをリロードするよう促す
+        setError('鑑定に時間がかかっています。しばらくお待ちいただくか、ページを更新してください。')
+      } else {
+        console.error('鑑定生成エラー:', error)
+        setError('予期しないエラーが発生しました')
+      }
+      clearGeneratingState()
     }
   }
 

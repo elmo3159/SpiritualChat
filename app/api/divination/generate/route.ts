@@ -7,6 +7,9 @@ import type { GenerateDivinationResponse } from '@/lib/types/divination'
 import { calculateAge, getCurrentJapanTime } from '@/lib/utils/datetime'
 import { cleanupDivinationMessages } from '@/lib/utils/text-cleanup'
 
+// 重複防止用のロック期間（秒）
+const DUPLICATE_PREVENTION_SECONDS = 60
+
 /**
  * 鑑定生成API
  *
@@ -33,13 +36,48 @@ export async function POST(request: NextRequest) {
 
     // リクエストボディを取得
     const body = await request.json()
-    const { fortuneTellerId } = body
+    const { fortuneTellerId, requestId } = body
 
     if (!fortuneTellerId) {
       return NextResponse.json(
         { success: false, message: '占い師IDが必要です' },
         { status: 400 }
       )
+    }
+
+    // 重複防止: 直近の鑑定をチェック
+    const adminSupabaseForCheck = createAdminClient()
+    const cutoffTime = new Date(Date.now() - DUPLICATE_PREVENTION_SECONDS * 1000).toISOString()
+
+    const { data: recentDivination, error: recentError } = await adminSupabaseForCheck
+      .from('divination_results')
+      .select('id, created_at')
+      .eq('user_id', user.id)
+      .eq('fortune_teller_id', fortuneTellerId)
+      .gte('created_at', cutoffTime)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    if (recentDivination) {
+      console.log('重複リクエストを検出:', {
+        userId: user.id,
+        fortuneTellerId,
+        recentDivinationId: recentDivination.id,
+        createdAt: recentDivination.created_at,
+      })
+
+      // 既存の鑑定が見つかった場合は、その情報を返す（重複処理を防止）
+      return NextResponse.json({
+        success: true,
+        message: '既に鑑定が進行中または完了しています',
+        data: {
+          divination: {
+            id: recentDivination.id,
+            isDuplicate: true,
+          },
+        },
+      })
     }
 
     // 占い師情報を取得
