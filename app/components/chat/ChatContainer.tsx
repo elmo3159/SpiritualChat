@@ -48,6 +48,7 @@ export default function ChatContainer({
   const [isUnlocking, setIsUnlocking] = useState(false)
   const [userPoints, setUserPoints] = useState<number>(0)
   const [isDivinating, setIsDivinating] = useState(false)
+  const [isWaitingForSuggestionAfterUnlock, setIsWaitingForSuggestionAfterUnlock] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const channelRef = useRef<RealtimeChannel | null>(null)
   const hasFetchedSuggestion = useRef(false)
@@ -57,6 +58,7 @@ export default function ChatContainer({
   const fortuneTellerAvatarRef = useRef(fortuneTellerAvatar)
   const prevMessagesLengthRef = useRef(0)
   const prevDivinationsLengthRef = useRef(0)
+  const messagesBeforeUnlockRef = useRef<number>(0)
   const router = useRouter()
 
   // 占い師情報のrefを更新
@@ -120,6 +122,16 @@ export default function ChatContainer({
                 ? fortuneTellerAvatarRef.current
                 : undefined,
           }))
+
+          // 開封後に新しい占い師メッセージが来たかチェック
+          if (messagesBeforeUnlockRef.current > 0) {
+            const fortuneTellerMessages = latestMessages.filter(m => m.sender_type === 'fortune_teller')
+            if (fortuneTellerMessages.length > messagesBeforeUnlockRef.current) {
+              // 新しい占い師メッセージが届いた
+              setIsWaitingForSuggestionAfterUnlock(false)
+              messagesBeforeUnlockRef.current = 0
+            }
+          }
 
           setMessages(messageDisplays)
         }
@@ -465,6 +477,10 @@ export default function ChatContainer({
   const handleUnlock = async (divinationId: string) => {
     setIsUnlocking(true)
 
+    // 開封前の占い師メッセージ数を記録
+    const fortuneTellerMessagesCount = messages.filter(m => m.sender_type === 'fortune_teller').length
+    messagesBeforeUnlockRef.current = fortuneTellerMessagesCount
+
     try {
       const response = await fetch('/api/divination/unlock', {
         method: 'POST',
@@ -508,8 +524,9 @@ export default function ChatContainer({
         await refetchMessageLimit()
 
         // 提案文はサーバーサイドで自動生成されるため、クライアント側での呼び出しは不要
-        // Realtimeサブスクリプションで自動的に表示される
-        console.log('鑑定結果を開封しました。提案文はサーバーサイドで生成されます。')
+        // ポーリングで新しい占い師メッセージが検出されるまでボタンを無効化
+        setIsWaitingForSuggestionAfterUnlock(true)
+        console.log('鑑定結果を開封しました。新しい提案文を待機中...')
       }
 
       setIsUnlocking(false)
@@ -566,10 +583,12 @@ export default function ChatContainer({
   // 1. 提案文がない
   // 2. 未開封の鑑定結果があり、かつその後にユーザーがメッセージを送信していない
   // 3. 提案文を再生成中
+  // 4. 鑑定結果開封後、新しい提案文を待機中
   const isDivinationButtonDisabled =
     !hasSuggestion ||
     hasUnlockedDivinationWithoutNewSuggestion ||
-    isRegeneratingSuggestion
+    isRegeneratingSuggestion ||
+    isWaitingForSuggestionAfterUnlock
 
   return (
     <div className="flex-1 flex flex-col min-h-0 relative">
@@ -730,7 +749,9 @@ export default function ChatContainer({
               {isDivinationButtonDisabled && !isDivinating && (
                 <div className="mt-1 px-2">
                   <p className="text-xs text-center text-amber-800">
-                    {hasUnlockedDivinationWithoutNewSuggestion
+                    {isWaitingForSuggestionAfterUnlock
+                      ? '✨ 次の提案を準備中です...'
+                      : hasUnlockedDivinationWithoutNewSuggestion
                       ? '💫 鑑定結果を開封するか、メッセージを送信してください'
                       : isRegeneratingSuggestion
                       ? '✨ 新しい提案を生成中...'
