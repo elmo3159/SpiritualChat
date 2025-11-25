@@ -385,7 +385,7 @@ export default function LandingPage() {
                 >
                   <div className="text-3xl mb-1">{zodiac.symbol}</div>
                   <div className="text-xs font-semibold text-gray-700 leading-tight">{zodiac.kanji}</div>
-                  <div className="text-xs text-gray-500 mt-0.5">（{zodiac.reading}）</div>
+                  <div className="text-[10px] text-gray-500 mt-0.5 whitespace-nowrap">（{zodiac.reading}）</div>
                 </div>
               ))}
             </div>
