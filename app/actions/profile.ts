@@ -1,9 +1,111 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { profileSchema, type ProfileFormData } from '@/lib/validations/profile'
 import { revalidatePath } from 'next/cache'
 import { checkAndAwardBadges } from '@/lib/services/badge-service'
+
+/**
+ * プロフィール完成バッジを直接付与する（高速版）
+ * 全バッジチェックは重いので、新規登録時はこの関数のみを使用
+ */
+async function awardProfileCompleteBadge(userId: string): Promise<void> {
+  const supabase = createAdminClient()
+
+  try {
+    // プロフィール完成バッジの定義を取得
+    const { data: badge } = await supabase
+      .from('badge_definitions')
+      .select('*')
+      .eq('condition_type', 'profile_complete')
+      .single()
+
+    if (!badge) return
+
+    // 既に獲得済みかチェック
+    const { data: existingBadge } = await supabase
+      .from('user_badges')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('badge_key', badge.badge_key)
+      .maybeSingle()
+
+    if (existingBadge) return // 既に持っている
+
+    // バッジを付与
+    const { error: badgeError } = await supabase
+      .from('user_badges')
+      .insert({
+        user_id: userId,
+        badge_key: badge.badge_key,
+      })
+
+    if (badgeError) {
+      console.error('バッジ付与エラー:', badgeError)
+      return
+    }
+
+    // ボーナスポイントを付与
+    if (badge.bonus_points > 0) {
+      const { data: currentPoints } = await supabase
+        .from('user_points')
+        .select('points_balance')
+        .eq('user_id', userId)
+        .single()
+
+      const newBalance = (currentPoints?.points_balance || 0) + badge.bonus_points
+
+      await supabase
+        .from('user_points')
+        .update({ points_balance: newBalance })
+        .eq('user_id', userId)
+
+      // トランザクション記録
+      await supabase
+        .from('points_transactions')
+        .insert({
+          user_id: userId,
+          transaction_type: 'bonus',
+          amount: badge.bonus_points,
+          description: `バッジ獲得ボーナス: ${badge.badge_key}`,
+        })
+
+      // バッジのボーナスポイント請求済みフラグを立てる
+      await supabase
+        .from('user_badges')
+        .update({ bonus_points_claimed: true })
+        .eq('user_id', userId)
+        .eq('badge_key', badge.badge_key)
+    }
+
+    // ボーナス経験値を付与
+    if (badge.bonus_exp > 0) {
+      const { data: levelData } = await supabase
+        .from('user_levels')
+        .select('*')
+        .eq('user_id', userId)
+        .single()
+
+      if (levelData) {
+        const newExp = levelData.current_exp + badge.bonus_exp
+        const newLevel = Math.floor(newExp / 1000) + 1
+
+        await supabase
+          .from('user_levels')
+          .update({
+            current_exp: newExp,
+            current_level: newLevel,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('user_id', userId)
+      }
+    }
+
+    console.log('プロフィール完成バッジを付与しました:', userId)
+  } catch (error) {
+    console.error('プロフィール完成バッジ付与エラー:', error)
+  }
+}
 
 export async function getProfile() {
   try {
@@ -176,12 +278,10 @@ export async function createProfile(formData: ProfileFormData) {
       }
     }
 
-    // キャッシュを再検証（非ブロッキング - 画面遷移を妨げない）
-    // revalidatePath('/') は遷移後にバックグラウンドで実行される
-
-    // 新規登録時はバッジチェックをスキップ
-    // （新規ユーザーはデータがないためバッジ獲得条件を満たさない）
-    // バッジチェックは次回のアクションや定期的なチェックで実行される
+    // プロフィール完成バッジを付与（高速版 - 他のバッジチェックはスキップ）
+    // 全バッジチェックは12+回のDB呼び出しがあり重いので、
+    // プロフィール完成バッジのみを直接付与する
+    await awardProfileCompleteBadge(user.id)
 
     return {
       success: true,

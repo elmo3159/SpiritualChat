@@ -28,6 +28,17 @@ const PREFECTURES = [
 // 年齢の選択肢
 const AGE_OPTIONS = Array.from({ length: 91 }, (_, i) => i + 10)
 
+// 生年月日用の年・月の選択肢
+const currentYear = new Date().getFullYear()
+const BIRTH_YEAR_OPTIONS = Array.from({ length: currentYear - 1919 }, (_, i) => currentYear - i) // 今年から1920年まで
+const BIRTH_MONTH_OPTIONS = Array.from({ length: 12 }, (_, i) => i + 1) // 1-12
+
+// 月ごとの日数を取得（うるう年対応）
+function getDaysInMonth(year: number, month: number): number {
+  if (!year || !month) return 31
+  return new Date(year, month, 0).getDate()
+}
+
 // カテゴリのアイコンと色
 const categoryConfig: Record<string, { icon: React.ReactNode; color: string; bgColor: string }> = {
   '恋愛': { icon: <Heart className="w-6 h-6" />, color: 'text-pink-500', bgColor: 'bg-pink-500/20' },
@@ -203,6 +214,14 @@ function ProfileCreatePageContent() {
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
   const [showOptionalInfo, setShowOptionalInfo] = useState(false)
   const [fortuneTellers, setFortuneTellers] = useState<FortuneTeller[]>([])
+  // 生年月日用の個別state
+  const [birthYear, setBirthYear] = useState<number | null>(null)
+  const [birthMonth, setBirthMonth] = useState<number | null>(null)
+  const [birthDay, setBirthDay] = useState<number | null>(null)
+  // お相手の生年月日用の個別state
+  const [partnerBirthYear, setPartnerBirthYear] = useState<number | null>(null)
+  const [partnerBirthMonth, setPartnerBirthMonth] = useState<number | null>(null)
+  const [partnerBirthDay, setPartnerBirthDay] = useState<number | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
   const { user } = useAuth()
@@ -237,6 +256,57 @@ function ProfileCreatePageContent() {
 
   // 星座を計算
   const zodiacInfo = birthDate ? getZodiacSign(birthDate) : null
+
+  // 日の選択肢を計算（月によって変動）
+  const birthDayOptions = birthYear && birthMonth
+    ? Array.from({ length: getDaysInMonth(birthYear, birthMonth) }, (_, i) => i + 1)
+    : Array.from({ length: 31 }, (_, i) => i + 1)
+
+  // お相手の日の選択肢を計算
+  const partnerBirthDayOptions = partnerBirthYear && partnerBirthMonth
+    ? Array.from({ length: getDaysInMonth(partnerBirthYear, partnerBirthMonth) }, (_, i) => i + 1)
+    : Array.from({ length: 31 }, (_, i) => i + 1)
+
+  // 年・月・日が全て選択されたらフォームに設定
+  useEffect(() => {
+    if (birthYear && birthMonth && birthDay) {
+      // 月と日を2桁にフォーマット
+      const monthStr = String(birthMonth).padStart(2, '0')
+      const dayStr = String(birthDay).padStart(2, '0')
+      const dateStr = `${birthYear}-${monthStr}-${dayStr}`
+      setValue('birthDate', dateStr)
+    }
+  }, [birthYear, birthMonth, birthDay, setValue])
+
+  // お相手の年・月・日が全て選択されたらフォームに設定
+  useEffect(() => {
+    if (partnerBirthYear && partnerBirthMonth && partnerBirthDay) {
+      const monthStr = String(partnerBirthMonth).padStart(2, '0')
+      const dayStr = String(partnerBirthDay).padStart(2, '0')
+      const dateStr = `${partnerBirthYear}-${monthStr}-${dayStr}`
+      setValue('partnerBirthDate', dateStr)
+    }
+  }, [partnerBirthYear, partnerBirthMonth, partnerBirthDay, setValue])
+
+  // 月が変更されたら、日が範囲外の場合は調整
+  useEffect(() => {
+    if (birthYear && birthMonth && birthDay) {
+      const maxDays = getDaysInMonth(birthYear, birthMonth)
+      if (birthDay > maxDays) {
+        setBirthDay(maxDays)
+      }
+    }
+  }, [birthYear, birthMonth, birthDay])
+
+  // お相手の月が変更されたら、日が範囲外の場合は調整
+  useEffect(() => {
+    if (partnerBirthYear && partnerBirthMonth && partnerBirthDay) {
+      const maxDays = getDaysInMonth(partnerBirthYear, partnerBirthMonth)
+      if (partnerBirthDay > maxDays) {
+        setPartnerBirthDay(maxDays)
+      }
+    }
+  }, [partnerBirthYear, partnerBirthMonth, partnerBirthDay])
 
   // カテゴリが変更されたらテンプレートをリセット
   useEffect(() => {
@@ -407,20 +477,61 @@ function ProfileCreatePageContent() {
 
                 {/* Birth Date */}
                 <div>
-                  <label htmlFor="birthDate" className="block text-sm font-medium text-gray-200 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     生年月日
                   </label>
-                  <input
-                    id="birthDate"
-                    type="date"
-                    {...register('birthDate')}
-                    className="w-full px-4 py-3.5 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 focus:border-spiritual-gold/60 transition-all backdrop-blur-sm text-base min-h-[48px]"
-                  />
+                  {/* 年・月・日の3つのドロップダウン */}
+                  <div className="grid grid-cols-3 gap-2">
+                    {/* 年 */}
+                    <div className="relative">
+                      <select
+                        value={birthYear || ''}
+                        onChange={(e) => setBirthYear(e.target.value ? Number(e.target.value) : null)}
+                        className="w-full px-3 py-3.5 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 focus:border-spiritual-gold/60 transition-all backdrop-blur-sm text-base min-h-[48px] appearance-none cursor-pointer"
+                      >
+                        <option value="" className="bg-spiritual-dark">年</option>
+                        {BIRTH_YEAR_OPTIONS.map((year) => (
+                          <option key={year} value={year} className="bg-spiritual-dark">{year}年</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                    </div>
+                    {/* 月 */}
+                    <div className="relative">
+                      <select
+                        value={birthMonth || ''}
+                        onChange={(e) => setBirthMonth(e.target.value ? Number(e.target.value) : null)}
+                        className="w-full px-3 py-3.5 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 focus:border-spiritual-gold/60 transition-all backdrop-blur-sm text-base min-h-[48px] appearance-none cursor-pointer"
+                      >
+                        <option value="" className="bg-spiritual-dark">月</option>
+                        {BIRTH_MONTH_OPTIONS.map((month) => (
+                          <option key={month} value={month} className="bg-spiritual-dark">{month}月</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                    </div>
+                    {/* 日 */}
+                    <div className="relative">
+                      <select
+                        value={birthDay || ''}
+                        onChange={(e) => setBirthDay(e.target.value ? Number(e.target.value) : null)}
+                        className="w-full px-3 py-3.5 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 focus:border-spiritual-gold/60 transition-all backdrop-blur-sm text-base min-h-[48px] appearance-none cursor-pointer"
+                      >
+                        <option value="" className="bg-spiritual-dark">日</option>
+                        {birthDayOptions.map((day) => (
+                          <option key={day} value={day} className="bg-spiritual-dark">{day}日</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                    </div>
+                  </div>
+                  {/* Hidden input for form validation */}
+                  <input type="hidden" {...register('birthDate')} />
                   {errors.birthDate && (
-                    <p className="mt-1 text-sm text-red-300">{errors.birthDate.message}</p>
+                    <p className="mt-2 text-sm text-red-300">{errors.birthDate.message}</p>
                   )}
                   {!errors.birthDate && !zodiacInfo && (
-                    <p className="mt-1 text-xs text-spiritual-lavender">星座や運命数の算出に使用します</p>
+                    <p className="mt-2 text-xs text-spiritual-lavender">星座や運命数の算出に使用します</p>
                   )}
 
                   {/* 星座表示＆ミニ占い（生年月日入力後に表示） */}
@@ -813,11 +924,55 @@ function ProfileCreatePageContent() {
                             </div>
 
                             {!usePartnerAge ? (
-                              <input
-                                type="date"
-                                {...register('partnerBirthDate')}
-                                className="w-full px-4 py-3 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 transition-all text-base min-h-[44px]"
-                              />
+                              <div className="space-y-2">
+                                {/* 年・月・日の3つのドロップダウン */}
+                                <div className="grid grid-cols-3 gap-2">
+                                  {/* 年 */}
+                                  <div className="relative">
+                                    <select
+                                      value={partnerBirthYear || ''}
+                                      onChange={(e) => setPartnerBirthYear(e.target.value ? Number(e.target.value) : null)}
+                                      className="w-full px-2 py-3 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 transition-all text-sm min-h-[44px] appearance-none cursor-pointer"
+                                    >
+                                      <option value="" className="bg-spiritual-dark">年</option>
+                                      {BIRTH_YEAR_OPTIONS.map((year) => (
+                                        <option key={year} value={year} className="bg-spiritual-dark">{year}年</option>
+                                      ))}
+                                    </select>
+                                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                  </div>
+                                  {/* 月 */}
+                                  <div className="relative">
+                                    <select
+                                      value={partnerBirthMonth || ''}
+                                      onChange={(e) => setPartnerBirthMonth(e.target.value ? Number(e.target.value) : null)}
+                                      className="w-full px-2 py-3 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 transition-all text-sm min-h-[44px] appearance-none cursor-pointer"
+                                    >
+                                      <option value="" className="bg-spiritual-dark">月</option>
+                                      {BIRTH_MONTH_OPTIONS.map((month) => (
+                                        <option key={month} value={month} className="bg-spiritual-dark">{month}月</option>
+                                      ))}
+                                    </select>
+                                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                  </div>
+                                  {/* 日 */}
+                                  <div className="relative">
+                                    <select
+                                      value={partnerBirthDay || ''}
+                                      onChange={(e) => setPartnerBirthDay(e.target.value ? Number(e.target.value) : null)}
+                                      className="w-full px-2 py-3 bg-spiritual-dark/50 border border-spiritual-lavender/40 rounded-xl text-gray-100 focus:outline-none focus:ring-2 focus:ring-spiritual-gold/60 transition-all text-sm min-h-[44px] appearance-none cursor-pointer"
+                                    >
+                                      <option value="" className="bg-spiritual-dark">日</option>
+                                      {partnerBirthDayOptions.map((day) => (
+                                        <option key={day} value={day} className="bg-spiritual-dark">{day}日</option>
+                                      ))}
+                                    </select>
+                                    <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                  </div>
+                                </div>
+                                {/* Hidden input for form */}
+                                <input type="hidden" {...register('partnerBirthDate')} />
+                              </div>
                             ) : (
                               <select
                                 {...register('partnerAge', { valueAsNumber: true })}
