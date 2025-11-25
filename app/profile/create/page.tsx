@@ -166,6 +166,14 @@ export default function ProfileCreatePage() {
   const concernCategory = watch('concernCategory')
   const concernDescription = watch('concernDescription')
 
+  // カテゴリが変更されたらテンプレートをリセット
+  useEffect(() => {
+    if (concernCategory) {
+      setSelectedTemplate(null)
+      setValue('concernDescription', '')
+    }
+  }, [concernCategory, setValue])
+
   // 恋愛関連のカテゴリかどうか
   const isLoveCategory = concernCategory && ['恋愛', '片思い', '復縁', '不倫/浮気', '結婚'].includes(concernCategory)
 
@@ -406,10 +414,6 @@ export default function ProfileCreatePage() {
                             value={category}
                             {...register('concernCategory')}
                             className="sr-only"
-                            onChange={() => {
-                              setSelectedTemplate(null)
-                              setValue('concernDescription', '')
-                            }}
                           />
                           <div className={`${config.bgColor} p-2 rounded-full mb-2`}>
                             <div className={config.color}>{config.icon}</div>
