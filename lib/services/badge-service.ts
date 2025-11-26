@@ -109,12 +109,24 @@ export async function checkAndAwardBadges(userId: string): Promise<string[]> {
 
     const usedFortuneTellerCount = Object.keys(fortuneTellerCounts).length
 
-    // 全占い師数を取得
+    // アクティブな占い師数を取得
     const { count: totalFortuneTellers } = await supabase
       .from('fortune_tellers')
       .select('*', { count: 'exact', head: true })
+      .eq('is_active', true)
 
-    const allFortuneTellersUsed = usedFortuneTellerCount === totalFortuneTellers && totalFortuneTellers > 0
+    // アクティブな占い師のIDを取得
+    const { data: activeFortuneTellers } = await supabase
+      .from('fortune_tellers')
+      .select('id')
+      .eq('is_active', true)
+
+    const activeFortuneTellerIds = new Set(activeFortuneTellers?.map(ft => ft.id) || [])
+
+    // ユーザーが相談したアクティブな占い師の数をカウント
+    const usedActiveFortuneTellerCount = Object.keys(fortuneTellerCounts).filter(id => activeFortuneTellerIds.has(id)).length
+
+    const allFortuneTellersUsed = usedActiveFortuneTellerCount === totalFortuneTellers && totalFortuneTellers > 0
 
     // レベル情報を取得
     const { data: levelData } = await supabase
@@ -482,11 +494,22 @@ export async function getUnearnedBadges(userId: string): Promise<UnearnedBadge[]
       fortuneTellerCounts[stat.fortune_teller_id] = (fortuneTellerCounts[stat.fortune_teller_id] || 0) + 1
     })
 
-    const usedFortuneTellerCount = Object.keys(fortuneTellerCounts).length
-
+    // アクティブな占い師数を取得
     const { count: totalFortuneTellers } = await supabase
       .from('fortune_tellers')
       .select('*', { count: 'exact', head: true })
+      .eq('is_active', true)
+
+    // アクティブな占い師のIDを取得
+    const { data: activeFortuneTellers } = await supabase
+      .from('fortune_tellers')
+      .select('id')
+      .eq('is_active', true)
+
+    const activeFortuneTellerIds = new Set(activeFortuneTellers?.map(ft => ft.id) || [])
+
+    // ユーザーが相談したアクティブな占い師の数をカウント
+    const usedActiveFortuneTellerCount = Object.keys(fortuneTellerCounts).filter(id => activeFortuneTellerIds.has(id)).length
 
     const { data: levelData } = await supabase
       .from('user_levels')
@@ -611,7 +634,7 @@ export async function getUnearnedBadges(userId: string): Promise<UnearnedBadge[]
           requirementText = 'すべてのプロフィール項目を入力する'
           break
         case 'all_fortune_tellers':
-          currentProgress = usedFortuneTellerCount
+          currentProgress = usedActiveFortuneTellerCount
           requirementText = `すべての占い師（${totalFortuneTellers || 0}人）に相談する`
           break
         case 'level':
