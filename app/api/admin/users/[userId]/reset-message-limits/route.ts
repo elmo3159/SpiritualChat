@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { resetMessageLimit } from '@/lib/supabase/message-limits'
+import { getCurrentAdmin } from '@/lib/auth/admin'
 
 /**
  * メッセージ送信制限リセットAPI（管理者用）
@@ -13,6 +14,15 @@ export async function POST(
   { params }: { params: { userId: string } }
 ) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createAdminClient()
     const { fortuneTellerId } = await request.json()
 

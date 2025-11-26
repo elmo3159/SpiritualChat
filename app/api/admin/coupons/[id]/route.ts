@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
+import { getCurrentAdmin } from '@/lib/auth/admin'
 
 /**
  * クーポン削除API
@@ -10,6 +11,15 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createAdminClient()
 
     const { error } = await supabase
@@ -47,6 +57,15 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createAdminClient()
     const body = await request.json()
     const { is_active } = body
@@ -86,6 +105,15 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createAdminClient()
     const body = await request.json()
 

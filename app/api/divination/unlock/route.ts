@@ -7,6 +7,18 @@ import { calculateAge, getCurrentJapanTime } from '@/lib/utils/datetime'
 import { generateContent } from '@/lib/gemini'
 import { buildRegenerateSuggestionPrompt } from '@/lib/gemini/prompts'
 import { cleanupMessageText } from '@/lib/utils/text-cleanup'
+import { createLogger } from '@/lib/utils/logger'
+import { logUserAction } from '@/lib/security/audit-log'
+import {
+  unauthorizedResponse,
+  validationErrorResponse,
+  notFoundResponse,
+  internalErrorResponse,
+  errorResponse,
+  ErrorCodes,
+} from '@/lib/api/response'
+
+const logger = createLogger('api:divination:unlock')
 
 /**
  * 鑑定結果開封API
@@ -26,10 +38,7 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json(
-        { success: false, message: '認証が必要です' },
-        { status: 401 }
-      )
+      return unauthorizedResponse()
     }
 
     // リクエストボディを取得
@@ -37,10 +46,7 @@ export async function POST(request: NextRequest) {
     const { divinationId } = body
 
     if (!divinationId) {
-      return NextResponse.json(
-        { success: false, message: '鑑定結果IDが必要です' },
-        { status: 400 }
-      )
+      return validationErrorResponse('鑑定結果IDが必要です')
     }
 
     // 鑑定結果を取得
@@ -52,10 +58,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (divinationError || !divination) {
-      return NextResponse.json(
-        { success: false, message: '鑑定結果が見つかりません' },
-        { status: 404 }
-      )
+      return notFoundResponse('鑑定結果が見つかりません')
     }
 
     // 既に開封済みかチェック
@@ -86,11 +89,19 @@ export async function POST(request: NextRequest) {
     )
 
     if (consumeError) {
-      console.error('ポイント消費エラー:', consumeError)
-      return NextResponse.json(
-        { success: false, message: 'ポイント消費に失敗しました' },
-        { status: 500 }
-      )
+      logger.error('ポイント消費エラー', consumeError, {
+        userId: user.id,
+        divinationId,
+      })
+      // 監査ログ：エラー
+      await logUserAction(user.id, user.email, 'divination_unlock', {
+        resourceType: 'divination_result',
+        resourceId: divinationId,
+        status: 'error',
+        errorMessage: 'ポイント消費に失敗しました',
+        details: { cost: UNLOCK_COST },
+      })
+      return internalErrorResponse('ポイント消費に失敗しました')
     }
 
     // consume_points関数の返り値を確認
@@ -100,10 +111,21 @@ export async function POST(request: NextRequest) {
           ? 'ポイントが不足しています'
           : 'ポイント消費に失敗しました'
 
-      return NextResponse.json(
-        { success: false, message: errorMessage },
-        { status: 400 }
-      )
+      logger.info('ポイント不足', {
+        userId: user.id,
+        divinationId,
+        error: consumeResult?.error,
+      })
+      // 監査ログ：失敗
+      await logUserAction(user.id, user.email, 'divination_unlock', {
+        resourceType: 'divination_result',
+        resourceId: divinationId,
+        status: 'failure',
+        errorMessage: errorMessage,
+        details: { cost: UNLOCK_COST, reason: consumeResult?.error },
+      })
+
+      return errorResponse(ErrorCodes.INSUFFICIENT_POINTS, errorMessage, 400)
     }
 
     // ポイント消費成功 → 経験値とレベルを更新
@@ -121,12 +143,29 @@ export async function POST(request: NextRequest) {
       .eq('user_id', user.id) // セキュリティのため再確認
 
     if (updateError) {
-      console.error('鑑定結果更新エラー:', updateError)
-      return NextResponse.json(
-        { success: false, message: '鑑定結果の更新に失敗しました' },
-        { status: 500 }
-      )
+      logger.error('鑑定結果更新エラー', updateError, {
+        userId: user.id,
+        divinationId,
+      })
+      return internalErrorResponse('鑑定結果の更新に失敗しました')
     }
+
+    logger.info('鑑定結果開封成功', {
+      userId: user.id,
+      divinationId,
+      pointsConsumed: UNLOCK_COST,
+      newBalance: consumeResult.new_balance,
+    })
+    // 監査ログ：成功
+    await logUserAction(user.id, user.email, 'divination_unlock', {
+      resourceType: 'divination_result',
+      resourceId: divinationId,
+      details: {
+        cost: UNLOCK_COST,
+        newBalance: consumeResult.new_balance,
+        fortuneTellerId: divination.fortune_teller_id,
+      },
+    })
 
     // メッセージ送信回数制限をリセット
     await resetMessageLimit(supabase, user.id, divination.fortune_teller_id)
@@ -136,7 +175,7 @@ export async function POST(request: NextRequest) {
     // ブラウザを閉じても確実に実行される
     // ============================================================
     try {
-      console.log('開封後の提案文生成を開始します...')
+      logger.debug('開封後の提案文生成を開始', { userId: user.id, divinationId })
 
       // 占い師情報を取得
       const { data: fortuneTeller } = await supabase
@@ -231,15 +270,24 @@ export async function POST(request: NextRequest) {
             })
 
           if (insertError) {
-            console.error('提案メッセージ保存エラー:', insertError)
+            logger.error('提案メッセージ保存エラー', insertError, {
+              userId: user.id,
+              fortuneTellerId: divination.fortune_teller_id,
+            })
           } else {
-            console.log('開封後の提案文を送信しました（サーバーサイド）')
+            logger.debug('開封後の提案文を送信', {
+              userId: user.id,
+              fortuneTellerId: divination.fortune_teller_id,
+            })
           }
         }
       }
     } catch (suggestionError) {
       // 提案文生成に失敗しても開封処理自体は成功しているので、エラーログのみ
-      console.error('提案文生成エラー（開封は成功）:', suggestionError)
+      logger.error('提案文生成エラー（開封は成功）', suggestionError, {
+        userId: user.id,
+        divinationId,
+      })
     }
 
     // レスポンスを返却
@@ -253,16 +301,8 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(response)
-  } catch (error: any) {
-    console.error('鑑定結果開封エラー:', error)
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: '鑑定結果の開封に失敗しました',
-        error: error.message || 'Unknown error',
-      },
-      { status: 500 }
-    )
+  } catch (error) {
+    logger.error('鑑定結果開封エラー', error)
+    return internalErrorResponse('鑑定結果の開封に失敗しました')
   }
 }

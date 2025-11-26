@@ -128,7 +128,6 @@ ${message}
       return NextResponse.json(
         {
           error: 'メールの送信に失敗しました',
-          details: error.message || 'Unknown error'
         },
         { status: 500 }
       )

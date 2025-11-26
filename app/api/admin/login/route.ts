@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { verifyAdminPassword, generateAdminToken } from '@/lib/auth/admin'
+import { logAdminAction } from '@/lib/security/audit-log'
 
 /**
  * 管理者ログインAPI
@@ -72,6 +73,17 @@ export async function POST(request: NextRequest) {
       .from('admin_users')
       .update({ updated_at: new Date().toISOString() })
       .eq('id', adminUser.id)
+
+    // 監査ログを記録
+    const ipAddress = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+                      request.headers.get('x-real-ip') || 'unknown'
+    const userAgent = request.headers.get('user-agent') || 'unknown'
+
+    await logAdminAction(adminUser.id, adminUser.email, 'admin_login', {
+      ipAddress,
+      userAgent,
+      status: 'success',
+    })
 
     // レスポンスを作成してCookieを設定
     const response = NextResponse.json({

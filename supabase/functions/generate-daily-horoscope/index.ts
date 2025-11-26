@@ -169,7 +169,7 @@ ${ZODIAC_SIGNS.map((s) => s.name).join('、')}
   } catch (error) {
     console.error('Error:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: '運勢生成に失敗しました' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     )
   }

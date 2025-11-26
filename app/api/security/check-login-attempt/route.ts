@@ -44,10 +44,10 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(data)
-  } catch (error: any) {
+  } catch (error) {
     console.error('ログイン試行チェックエラー:', error)
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: 'ログイン試行のチェックに失敗しました' },
       { status: 500 }
     )
   }

@@ -10,6 +10,16 @@ import { SupabaseClient } from '@supabase/supabase-js'
 export const MAX_MESSAGES_PER_DAY = 3
 
 /**
+ * 日本時間（JST）で今日の日付をYYYY-MM-DD形式で取得
+ */
+function getTodayJST(): string {
+  const now = new Date()
+  const jstOffset = 9 * 60 // JST is UTC+9
+  const jstTime = new Date(now.getTime() + (jstOffset + now.getTimezoneOffset()) * 60 * 1000)
+  return jstTime.toISOString().split('T')[0]
+}
+
+/**
  * メッセージ送信回数チェック結果
  */
 export interface MessageLimitCheck {
@@ -33,7 +43,7 @@ export async function checkMessageLimit(
   fortuneTellerId: string
 ): Promise<MessageLimitCheck> {
   try {
-    const today = new Date().toISOString().split('T')[0] // YYYY-MM-DD形式
+    const today = getTodayJST() // YYYY-MM-DD形式（JST）
 
     // 今日の送信回数を取得
     const { data, error } = await supabase
@@ -97,7 +107,7 @@ export async function incrementMessageCount(
   fortuneTellerId: string
 ): Promise<boolean> {
   try {
-    const today = new Date().toISOString().split('T')[0]
+    const today = getTodayJST()
 
     // データベース関数を使用してカウントをインクリメント
     // この関数は新規作成時は1、既存レコード更新時はカウント+1を実行
@@ -133,7 +143,7 @@ export async function getTodayMessageCount(
   fortuneTellerId: string
 ): Promise<number> {
   try {
-    const today = new Date().toISOString().split('T')[0]
+    const today = getTodayJST()
 
     const { data, error } = await supabase
       .from('message_limits')
@@ -169,7 +179,7 @@ export async function resetMessageLimit(
   fortuneTellerId: string
 ): Promise<boolean> {
   try {
-    const today = new Date().toISOString().split('T')[0]
+    const today = getTodayJST()
 
     // 今日のレコードを削除（次回送信時に新規作成される）
     const { error } = await supabase

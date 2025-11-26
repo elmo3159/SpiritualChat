@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
               .eq('endpoint', sub.endpoint)
           }
 
-          return { success: false, endpoint: sub.endpoint, error: error.message }
+          return { success: false, endpoint: sub.endpoint, error: '送信に失敗しました' }
         }
       })
     )

@@ -5,8 +5,16 @@ import jwt from 'jsonwebtoken'
  * 管理者認証ユーティリティ
  */
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+const JWT_SECRET = process.env.JWT_SECRET
 const JWT_EXPIRES_IN = '7d' // 7日間有効
+
+// JWT_SECRETが設定されていない場合はエラー
+function getJwtSecret(): string {
+  if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is not set')
+  }
+  return JWT_SECRET
+}
 
 export interface AdminTokenPayload {
   adminId: string
@@ -48,7 +56,7 @@ export function generateAdminToken(
     type: 'admin',
   }
 
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN })
+  return jwt.sign(payload, getJwtSecret(), { expiresIn: JWT_EXPIRES_IN })
 }
 
 /**
@@ -56,7 +64,7 @@ export function generateAdminToken(
  */
 export function verifyAdminToken(token: string): AdminTokenPayload | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AdminTokenPayload
+    const decoded = jwt.verify(token, getJwtSecret()) as AdminTokenPayload
 
     // 管理者トークンであることを確認
     if (decoded.type !== 'admin') {

@@ -1,5 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createLogger } from '@/lib/utils/logger'
+import { logUserAction } from '@/lib/security/audit-log'
+import {
+  successResponse,
+  unauthorizedResponse,
+  validationErrorResponse,
+  internalErrorResponse,
+} from '@/lib/api/response'
+
+const logger = createLogger('api:auth:change-password')
 
 /**
  * パスワード変更API
@@ -18,10 +28,7 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json(
-        { success: false, message: '認証が必要です' },
-        { status: 401 }
-      )
+      return unauthorizedResponse()
     }
 
     // リクエストボディを取得
@@ -29,24 +36,12 @@ export async function POST(request: NextRequest) {
     const { currentPassword, newPassword } = body
 
     if (!currentPassword || !newPassword) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: '現在のパスワードと新しいパスワードが必要です',
-        },
-        { status: 400 }
-      )
+      return validationErrorResponse('現在のパスワードと新しいパスワードが必要です')
     }
 
     // 新しいパスワードのバリデーション
     if (newPassword.length < 6) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: '新しいパスワードは6文字以上である必要があります',
-        },
-        { status: 400 }
-      )
+      return validationErrorResponse('新しいパスワードは6文字以上である必要があります')
     }
 
     // 現在のパスワードを検証
@@ -56,13 +51,15 @@ export async function POST(request: NextRequest) {
     })
 
     if (signInError) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: '現在のパスワードが正しくありません',
-        },
-        { status: 400 }
-      )
+      logger.warn('パスワード検証失敗', { userId: user.id })
+      // 監査ログ：失敗
+      await logUserAction(user.id, user.email, 'password_change', {
+        status: 'failure',
+        errorMessage: '現在のパスワードが正しくありません',
+        ipAddress: request.headers.get('x-forwarded-for') || undefined,
+        userAgent: request.headers.get('user-agent') || undefined,
+      })
+      return validationErrorResponse('現在のパスワードが正しくありません')
     }
 
     // パスワードを更新
@@ -71,30 +68,27 @@ export async function POST(request: NextRequest) {
     })
 
     if (updateError) {
-      console.error('パスワード更新エラー:', updateError)
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'パスワードの更新に失敗しました',
-        },
-        { status: 500 }
-      )
+      logger.error('パスワード更新エラー', updateError, { userId: user.id })
+      // 監査ログ：エラー
+      await logUserAction(user.id, user.email, 'password_change', {
+        status: 'error',
+        errorMessage: 'パスワードの更新に失敗しました',
+        ipAddress: request.headers.get('x-forwarded-for') || undefined,
+        userAgent: request.headers.get('user-agent') || undefined,
+      })
+      return internalErrorResponse('パスワードの更新に失敗しました')
     }
 
-    return NextResponse.json({
-      success: true,
-      message: 'パスワードを変更しました',
+    logger.info('パスワード変更成功', { userId: user.id })
+    // 監査ログ：成功
+    await logUserAction(user.id, user.email, 'password_change', {
+      ipAddress: request.headers.get('x-forwarded-for') || undefined,
+      userAgent: request.headers.get('user-agent') || undefined,
     })
-  } catch (error: any) {
-    console.error('パスワード変更エラー:', error)
 
-    return NextResponse.json(
-      {
-        success: false,
-        message: 'パスワードの変更に失敗しました',
-        error: error.message || 'Unknown error',
-      },
-      { status: 500 }
-    )
+    return successResponse(undefined, 'パスワードを変更しました')
+  } catch (error) {
+    logger.error('パスワード変更エラー', error)
+    return internalErrorResponse('パスワードの変更に失敗しました')
   }
 }

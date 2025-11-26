@@ -148,14 +148,13 @@ export async function POST(request: NextRequest) {
         greeting: suggestion,
       },
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('初回提案生成エラー:', error)
 
     return NextResponse.json(
       {
         success: false,
         message: '初回提案の生成に失敗しました',
-        error: error.message || 'Unknown error',
       },
       { status: 500 }
     )

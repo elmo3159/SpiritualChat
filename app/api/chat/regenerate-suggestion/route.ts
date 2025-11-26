@@ -174,14 +174,13 @@ export async function POST(request: NextRequest) {
         greeting: suggestion,
       },
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('提案再生成エラー:', error)
 
     return NextResponse.json(
       {
         success: false,
         message: '提案の再生成に失敗しました',
-        error: error.message || 'Unknown error',
       },
       { status: 500 }
     )

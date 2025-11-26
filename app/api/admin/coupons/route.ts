@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
+import { getCurrentAdmin } from '@/lib/auth/admin'
 
 /**
  * クーポン作成API
@@ -7,6 +8,15 @@ import { createAdminClient } from '@/lib/supabase/server'
  */
 export async function POST(request: NextRequest) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createAdminClient()
     const body = await request.json()
 

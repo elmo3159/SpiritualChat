@@ -210,7 +210,7 @@ export async function purchaseDailyFortune() {
     return { fortune: savedFortune }
   } catch (error) {
     console.error('今日の運勢生成エラー:', error)
-    return { error: error instanceof Error ? error.message : '運勢の生成に失敗しました' }
+    return { error: '運勢の生成に失敗しました' }
   }
 }
 

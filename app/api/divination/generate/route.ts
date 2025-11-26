@@ -6,9 +6,27 @@ import type { DivinationContext, ChatHistory } from '@/lib/gemini/types'
 import type { GenerateDivinationResponse } from '@/lib/types/divination'
 import { calculateAge, getCurrentJapanTime } from '@/lib/utils/datetime'
 import { cleanupDivinationMessages } from '@/lib/utils/text-cleanup'
+import { createLogger } from '@/lib/utils/logger'
+import { logUserAction } from '@/lib/security/audit-log'
+import {
+  unauthorizedResponse,
+  validationErrorResponse,
+  notFoundResponse,
+  internalErrorResponse,
+} from '@/lib/api/response'
+
+const logger = createLogger('api:divination:generate')
 
 // 重複防止用のロック期間（秒）
 const DUPLICATE_PREVENTION_SECONDS = 60
+
+// メッセージ送信間隔（ミリ秒）
+// 注意: Vercelの無料プランは10秒タイムアウトのため、合計15秒以内に抑える必要がある
+// Proプランでは60秒まで可能
+const MESSAGE_DELAY_MS = {
+  afterGreeting: 2000,  // 鑑定前メッセージ後の待機時間（2秒）
+  afterResult: 1000,    // 鑑定結果後の待機時間（1秒）
+}
 
 /**
  * 鑑定生成API
@@ -28,10 +46,7 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json(
-        { success: false, message: '認証が必要です' },
-        { status: 401 }
-      )
+      return unauthorizedResponse()
     }
 
     // リクエストボディを取得
@@ -39,10 +54,7 @@ export async function POST(request: NextRequest) {
     const { fortuneTellerId, requestId } = body
 
     if (!fortuneTellerId) {
-      return NextResponse.json(
-        { success: false, message: '占い師IDが必要です' },
-        { status: 400 }
-      )
+      return validationErrorResponse('占い師IDが必要です')
     }
 
     // 重複防止: 直近の鑑定をチェック
@@ -60,7 +72,7 @@ export async function POST(request: NextRequest) {
       .maybeSingle()
 
     if (recentDivination) {
-      console.log('重複リクエストを検出:', {
+      logger.info('重複リクエストを検出', {
         userId: user.id,
         fortuneTellerId,
         recentDivinationId: recentDivination.id,
@@ -89,10 +101,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (fortuneTellerError || !fortuneTeller) {
-      return NextResponse.json(
-        { success: false, message: '占い師が見つかりません' },
-        { status: 404 }
-      )
+      return notFoundResponse('占い師が見つかりません')
     }
 
     // ユーザープロフィールを取得
@@ -103,10 +112,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (profileError || !profile) {
-      return NextResponse.json(
-        { success: false, message: 'プロフィール情報が見つかりません' },
-        { status: 404 }
-      )
+      return notFoundResponse('プロフィール情報が見つかりません')
     }
 
     // チャット履歴を取得（最新10件）
@@ -119,11 +125,11 @@ export async function POST(request: NextRequest) {
       .limit(10)
 
     if (chatError) {
-      console.error('チャット履歴取得エラー:', chatError)
-      return NextResponse.json(
-        { success: false, message: 'チャット履歴の取得に失敗しました' },
-        { status: 500 }
-      )
+      logger.error('チャット履歴取得エラー', chatError, {
+        userId: user.id,
+        fortuneTellerId,
+      })
+      return internalErrorResponse('チャット履歴の取得に失敗しました')
     }
 
     // チャット履歴を古い順に並び替え（時系列順）
@@ -145,7 +151,11 @@ export async function POST(request: NextRequest) {
       .limit(3)
 
     if (divinationError) {
-      console.error('過去の鑑定結果取得エラー:', divinationError)
+      logger.warn('過去の鑑定結果取得エラー', {
+        userId: user.id,
+        fortuneTellerId,
+        error: divinationError,
+      })
       // 過去の鑑定が取得できなくてもエラーにしない
     }
 
@@ -185,7 +195,11 @@ export async function POST(request: NextRequest) {
       context
     )
 
-    console.log('鑑定プロンプトを構築:', prompt.substring(0, 200) + '...')
+    logger.debug('鑑定プロンプトを構築', {
+      userId: user.id,
+      fortuneTellerId,
+      promptLength: prompt.length,
+    })
 
     // Gemini APIで鑑定を生成
     const rawDivination = await generateFullDivination(prompt)
@@ -193,10 +207,10 @@ export async function POST(request: NextRequest) {
     // 生成された鑑定結果から不要な文字列を削除
     const divination = cleanupDivinationMessages(rawDivination)
 
-    console.log('鑑定を生成しました:', {
-      greeting: divination.greetingMessage.substring(0, 50),
+    logger.debug('鑑定を生成', {
+      userId: user.id,
+      fortuneTellerId,
       resultLength: divination.resultMessage.length,
-      after: divination.afterMessage.substring(0, 50),
     })
 
     // 鑑定結果の最初の20文字をプレビューとして取得
@@ -217,17 +231,17 @@ export async function POST(request: NextRequest) {
       })
 
     if (greetingError) {
-      console.error('鑑定前メッセージ保存エラー:', greetingError)
-      return NextResponse.json(
-        { success: false, message: '鑑定前メッセージの保存に失敗しました' },
-        { status: 500 }
-      )
+      logger.error('鑑定前メッセージ保存エラー', greetingError, {
+        userId: user.id,
+        fortuneTellerId,
+      })
+      return internalErrorResponse('鑑定前メッセージの保存に失敗しました')
     }
 
-    console.log('鑑定前メッセージを送信しました')
+    logger.debug('鑑定前メッセージを送信', { userId: user.id, fortuneTellerId })
 
-    // 10秒待機
-    await new Promise(resolve => setTimeout(resolve, 10000))
+    // メッセージ間の待機（Realtimeでのリアルタイム表示用）
+    await new Promise(resolve => setTimeout(resolve, MESSAGE_DELAY_MS.afterGreeting))
 
     // 2. 鑑定結果を保存
     const { data: savedDivination, error: insertError } = await adminSupabase
@@ -245,19 +259,23 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (insertError || !savedDivination) {
-      console.error('鑑定結果保存エラー:', insertError)
-      return NextResponse.json(
-        { success: false, message: '鑑定結果の保存に失敗しました' },
-        { status: 500 }
-      )
+      logger.error('鑑定結果保存エラー', insertError, {
+        userId: user.id,
+        fortuneTellerId,
+      })
+      return internalErrorResponse('鑑定結果の保存に失敗しました')
     }
 
     const savedDivinationId = savedDivination.id
 
-    console.log('鑑定結果を送信しました')
+    logger.debug('鑑定結果を保存', {
+      userId: user.id,
+      fortuneTellerId,
+      divinationId: savedDivinationId,
+    })
 
-    // 5秒待機
-    await new Promise(resolve => setTimeout(resolve, 5000))
+    // メッセージ間の待機（Realtimeでのリアルタイム表示用）
+    await new Promise(resolve => setTimeout(resolve, MESSAGE_DELAY_MS.afterResult))
 
     // 3. 鑑定後メッセージを保存
     const { error: afterError } = await adminSupabase
@@ -271,13 +289,31 @@ export async function POST(request: NextRequest) {
       })
 
     if (afterError) {
-      console.error('鑑定後メッセージ保存エラー:', afterError)
+      logger.warn('鑑定後メッセージ保存エラー', {
+        userId: user.id,
+        fortuneTellerId,
+        error: afterError,
+      })
       // 鑑定後メッセージの保存に失敗してもエラーにはしない
-    } else {
-      console.log('鑑定後メッセージを送信しました')
     }
 
-    console.log('鑑定の3つのメッセージを全て送信しました')
+    logger.info('鑑定生成完了', {
+      userId: user.id,
+      fortuneTellerId,
+      divinationId: savedDivinationId,
+      resultLength: divination.resultMessage.length,
+    })
+
+    // 監査ログ：鑑定生成成功
+    await logUserAction(user.id, user.email, 'divination_generate', {
+      resourceType: 'divination_result',
+      resourceId: savedDivinationId,
+      details: {
+        fortuneTellerId,
+        fortuneTellerName: fortuneTeller.name,
+        resultLength: divination.resultMessage.length,
+      },
+    })
 
     // レスポンスを返却（全メッセージ送信済み）
     // クライアント側のRealtimeサブスクリプションでリアルタイムに表示される
@@ -299,16 +335,8 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(response)
-  } catch (error: any) {
-    console.error('鑑定生成エラー:', error)
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: '鑑定の生成に失敗しました',
-        error: error.message || 'Unknown error',
-      },
-      { status: 500 }
-    )
+  } catch (error) {
+    logger.error('鑑定生成エラー', error instanceof Error ? error : undefined)
+    return internalErrorResponse('鑑定の生成に失敗しました')
   }
 }

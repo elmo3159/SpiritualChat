@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { getCurrentAdmin } from '@/lib/auth/admin'
 
 /**
  * 管理者用ポイント追加API（テスト用）
@@ -10,16 +11,25 @@ import { createClient } from '@/lib/supabase/server'
  */
 export async function POST(request: NextRequest) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '管理者認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = await createClient()
 
-    // 認証チェック
+    // ユーザー認証チェック
     const {
       data: { user },
     } = await supabase.auth.getUser()
 
     if (!user) {
       return NextResponse.json(
-        { success: false, message: '認証が必要です' },
+        { success: false, message: 'ユーザー認証が必要です' },
         { status: 401 }
       )
     }
@@ -106,14 +116,13 @@ export async function POST(request: NextRequest) {
         newBalance: newBalance,
       },
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('ポイント追加エラー:', error)
 
     return NextResponse.json(
       {
         success: false,
         message: 'ポイントの追加に失敗しました',
-        error: error.message || 'Unknown error',
       },
       { status: 500 }
     )

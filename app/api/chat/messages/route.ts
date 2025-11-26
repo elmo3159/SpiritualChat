@@ -71,14 +71,13 @@ export async function GET(request: NextRequest) {
         messages: messages || [],
       },
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('メッセージ取得エラー:', error)
 
     return NextResponse.json(
       {
         success: false,
         message: 'メッセージの取得に失敗しました',
-        error: error.message || 'Unknown error',
       },
       { status: 500 }
     )

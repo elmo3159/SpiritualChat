@@ -91,14 +91,13 @@ export async function DELETE(request: NextRequest) {
       success: true,
       message: 'アカウントを完全に削除しました',
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('アカウント削除エラー:', error)
 
     return NextResponse.json(
       {
         success: false,
         message: 'アカウントの削除に失敗しました',
-        error: error.message || 'Unknown error',
       },
       { status: 500 }
     )

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
+import { getCurrentAdmin } from '@/lib/auth/admin'
 
 /**
  * チャットメッセージ編集API (管理者用)
@@ -11,6 +12,15 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createAdminClient()
     const { content } = await request.json()
 
@@ -67,6 +77,15 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createAdminClient()
 
     // メッセージを削除

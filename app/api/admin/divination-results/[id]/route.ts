@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
+import { getCurrentAdmin } from '@/lib/auth/admin'
 
 /**
  * 鑑定結果削除API (管理者用)
@@ -11,6 +12,15 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createAdminClient()
 
     // 鑑定結果を削除

@@ -180,14 +180,13 @@ export async function POST(request: NextRequest) {
       success: true,
       message: '提案を送信しました',
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('提案送信エラー:', error)
 
     return NextResponse.json(
       {
         success: false,
         message: '提案の送信に失敗しました',
-        error: error.message || 'Unknown error',
       },
       { status: 500 }
     )

@@ -1,5 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { getCurrentAdmin } from '@/lib/auth/admin'
 
 // 運勢データ更新
 export async function PUT(
@@ -7,6 +8,15 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     const supabase = createAdminClient()
 
     // リクエストボディを取得
@@ -44,6 +54,15 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    // 管理者認証チェック
+    const admin = await getCurrentAdmin()
+    if (!admin) {
+      return NextResponse.json(
+        { success: false, message: '認証が必要です' },
+        { status: 401 }
+      )
+    }
+
     console.log('=== 削除リクエスト受信 ===')
     console.log('削除対象ID:', params.id)
 
@@ -78,7 +97,6 @@ export async function DELETE(
       console.error('運勢データ削除エラー:', error)
       return NextResponse.json({
         error: '削除に失敗しました',
-        details: error.message
       }, { status: 500 })
     }
 
@@ -88,7 +106,6 @@ export async function DELETE(
     console.error('運勢データ削除エラー:', error)
     return NextResponse.json({
       error: '削除に失敗しました',
-      details: error instanceof Error ? error.message : String(error)
     }, { status: 500 })
   }
 }

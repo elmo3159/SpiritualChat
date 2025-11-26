@@ -148,8 +148,6 @@ export async function GET() {
       {
         success: false,
         message: 'Prompt builder test failed',
-        error: error.message || 'Unknown error',
-        stack: error.stack,
         timestamp: new Date().toISOString(),
       },
       { status: 500 }

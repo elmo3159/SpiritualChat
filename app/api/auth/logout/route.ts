@@ -30,14 +30,13 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'ログアウトしました',
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('ログアウトエラー:', error)
 
     return NextResponse.json(
       {
         success: false,
         message: 'ログアウトに失敗しました',
-        error: error.message || 'Unknown error',
       },
       { status: 500 }
     )

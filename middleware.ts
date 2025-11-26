@@ -1,19 +1,28 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
+import { checkRateLimit } from '@/lib/security/rate-limit'
 
 /**
- * ベーシック認証チェック
- * 管理者画面のセキュリティ対策として実装
- * 現在は無効化されています
+ * レート制限対象のAPIパス
  */
-function checkBasicAuth(request: NextRequest): NextResponse | null {
-  // ベーシック認証を完全に無効化
-  // アプリケーション内の認証（メール/パスワード + ログイン試行制限）で十分なセキュリティを確保
-  return null
-}
+const RATE_LIMITED_PATHS = [
+  '/api/auth/login',
+  '/api/auth/signup',
+  '/api/chat/send-message',
+  '/api/divination/generate',
+  '/api/contact',
+]
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  // レート制限チェック（対象のAPIパスのみ）
+  if (RATE_LIMITED_PATHS.some(path => pathname.startsWith(path))) {
+    const rateLimitResponse = checkRateLimit(request)
+    if (rateLimitResponse) {
+      return rateLimitResponse
+    }
+  }
 
   // ログインページや認証関連のパスはベーシック認証をスキップ
   const authBypassPaths = [
@@ -26,16 +35,11 @@ export async function middleware(request: NextRequest) {
     pathname === path || pathname.startsWith(path)
   )
 
-  // 管理者ルート（/admin/*）とAPIルート（/api/admin/*）にベーシック認証を適用
+  // 管理者ルート（/admin/*）とAPIルート（/api/admin/*）
   if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin/')) {
-    // ログインページや認証関連パスはベーシック認証をスキップ
     if (!shouldBypassAuth) {
-      const authResponse = checkBasicAuth(request)
-      if (authResponse) {
-        return authResponse
-      }
+      // 将来的なセキュリティチェックをここに追加可能
     }
-
     return NextResponse.next()
   }
 

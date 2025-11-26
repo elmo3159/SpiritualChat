@@ -3,6 +3,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getStripeClient } from '@/lib/stripe/client'
 import { createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
+import { createLogger } from '@/lib/utils/logger'
+import { logUserAction, logSystemAction } from '@/lib/security/audit-log'
+
+const logger = createLogger('api:webhooks:stripe')
 
 /**
  * Stripe Webhookハンドラー
@@ -17,7 +21,7 @@ export async function POST(request: NextRequest) {
     const signature = headers().get('stripe-signature')
 
     if (!signature) {
-      console.error('Stripe署名ヘッダーが見つかりません')
+      logger.warn('Stripe署名ヘッダーが見つかりません')
       return NextResponse.json(
         { error: 'Stripe署名がありません' },
         { status: 400 }
@@ -33,10 +37,13 @@ export async function POST(request: NextRequest) {
         signature,
         process.env.STRIPE_WEBHOOK_SECRET!
       )
-    } catch (err: any) {
-      console.error('Webhook署名検証エラー:', err.message)
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+      logger.error('Webhook署名検証エラー', err instanceof Error ? err : undefined, {
+        errorMessage,
+      })
       return NextResponse.json(
-        { error: `Webhook署名検証失敗: ${err.message}` },
+        { error: 'Webhook署名検証に失敗しました' },
         { status: 400 }
       )
     }
@@ -45,10 +52,11 @@ export async function POST(request: NextRequest) {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session
 
-      console.log('=== Stripe Webhook受信 ===')
-      console.log('イベントID:', event.id)
-      console.log('セッションID:', session.id)
-      console.log('メタデータ:', session.metadata)
+      logger.info('Stripe Webhook受信', {
+        eventId: event.id,
+        sessionId: session.id,
+        metadata: session.metadata,
+      })
 
       // メタデータから必要な情報を取得
       const userId = session.metadata?.userId
@@ -60,14 +68,21 @@ export async function POST(request: NextRequest) {
       const discount = parseInt(session.metadata?.discount || '0')
 
       if (!userId || !points) {
-        console.error('メタデータが不足しています:', session.metadata)
+        logger.error('メタデータが不足しています', undefined, {
+          metadata: session.metadata,
+        })
         return NextResponse.json(
           { error: 'メタデータが不足しています' },
           { status: 400 }
         )
       }
 
-      console.log(`ユーザー: ${userId}, ポイント: ${points}, ボーナス: ${bonusPoints}`)
+      logger.debug('Webhook処理開始', {
+        userId,
+        points,
+        bonusPoints,
+        planId,
+      })
 
       // 合計ポイント（基本ポイント + ボーナスポイント）
       const totalPoints = points + bonusPoints
@@ -91,9 +106,10 @@ export async function POST(request: NextRequest) {
         .eq('stripe_session_id', session.id)
 
       if (existingTransactions && existingTransactions.length > 0) {
-        console.log(
-          `既に処理済みのセッションです: ${session.id}, トランザクションID: ${existingTransactions[0].id}`
-        )
+        logger.info('既に処理済みのセッション', {
+          sessionId: session.id,
+          transactionId: existingTransactions[0].id,
+        })
         return NextResponse.json(
           { message: '既に処理済みです' },
           { status: 200 }
@@ -108,7 +124,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (fetchError) {
-        console.error('ポイント残高取得エラー:', fetchError)
+        logger.error('ポイント残高取得エラー', fetchError, { userId })
         return NextResponse.json(
           { error: 'ポイント残高の取得に失敗しました' },
           { status: 500 }
@@ -128,7 +144,7 @@ export async function POST(request: NextRequest) {
         .eq('user_id', userId)
 
       if (updateError) {
-        console.error('ポイント残高更新エラー:', updateError)
+        logger.error('ポイント残高更新エラー', updateError, { userId })
         return NextResponse.json(
           { error: 'ポイント残高の更新に失敗しました' },
           { status: 500 }
@@ -136,6 +152,7 @@ export async function POST(request: NextRequest) {
       }
 
       // トランザクション履歴を記録（基本ポイント購入）
+      // UNIQUE constraint（stripe_session_id）で重複を防止
       let description = `ポイント購入: ${planId}`
       if (discount > 0) {
         description += ` (${discount}円割引適用)`
@@ -156,7 +173,17 @@ export async function POST(request: NextRequest) {
         })
 
       if (transactionError) {
-        console.error('トランザクション履歴記録エラー:', transactionError)
+        // UNIQUE constraint違反は重複リクエストを意味する
+        if (transactionError.code === '23505') {
+          logger.info('重複Webhookを検出（constraint violation）', {
+            sessionId: session.id,
+          })
+          return NextResponse.json(
+            { message: '既に処理済みです' },
+            { status: 200 }
+          )
+        }
+        logger.error('トランザクション履歴記録エラー', transactionError, { userId })
       }
 
       // クーポン使用記録
@@ -170,7 +197,10 @@ export async function POST(request: NextRequest) {
           })
 
         if (couponUsageError) {
-          console.error('クーポン使用記録エラー:', couponUsageError)
+          logger.error('クーポン使用記録エラー', couponUsageError, {
+            userId,
+            couponId,
+          })
         }
       }
 
@@ -191,20 +221,45 @@ export async function POST(request: NextRequest) {
           })
 
         if (bonusError) {
-          console.error('ボーナスポイント記録エラー:', bonusError)
+          logger.error('ボーナスポイント記録エラー', bonusError, {
+            userId,
+            campaignId,
+            bonusPoints,
+          })
         }
       }
 
-      console.log(
-        `✅ ポイント付与完了: ユーザー ${userId}, +${points}pt ${bonusPoints > 0 ? `(+${bonusPoints}pt ボーナス) ` : ''}(${currentBalance} → ${newBalance})`
-      )
-      console.log('=== Webhook処理完了 ===')
+      logger.info('ポイント付与完了', {
+        userId,
+        pointsAdded: points,
+        bonusPoints,
+        previousBalance: currentBalance,
+        newBalance,
+        sessionId: session.id,
+        planId,
+      })
+
+      // 監査ログ：ポイント購入成功
+      await logUserAction(userId, undefined, 'points_purchase', {
+        resourceType: 'stripe_checkout',
+        resourceId: session.id,
+        details: {
+          planId,
+          pointsAdded: points,
+          bonusPoints,
+          totalPoints,
+          previousBalance: currentBalance,
+          newBalance,
+          couponId,
+          campaignId,
+        },
+      })
     }
 
     // 正常終了
     return NextResponse.json({ received: true }, { status: 200 })
-  } catch (error: any) {
-    console.error('Webhook処理エラー:', error)
+  } catch (error) {
+    logger.error('Webhook処理エラー', error instanceof Error ? error : undefined)
     return NextResponse.json(
       { error: 'Webhook処理に失敗しました' },
       { status: 500 }

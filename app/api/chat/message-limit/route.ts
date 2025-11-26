@@ -48,14 +48,13 @@ export async function GET(request: NextRequest) {
         message: limitCheck.message,
       },
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('メッセージ制限チェックエラー:', error)
 
     return NextResponse.json(
       {
         success: false,
         message: 'メッセージ制限の確認に失敗しました',
-        error: error.message || 'Unknown error',
       },
       { status: 500 }
     )

@@ -35,7 +35,6 @@ export async function GET() {
       {
         success: false,
         message: 'Gemini API test failed',
-        error: error.message || 'Unknown error',
         timestamp: new Date().toISOString(),
       },
       { status: 500 }
