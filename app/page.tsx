@@ -65,7 +65,7 @@ export default function LandingPage() {
       {/* トップバナー */}
       <div className="relative z-10 bg-gradient-to-r from-spiritual-pink to-spiritual-pink-dark backdrop-blur-sm py-3 px-4 text-center border-b-2 border-white/20 shadow-lg">
         <div className="text-sm md:text-lg font-extrabold text-white">
-          <div className="mb-1">登録ですぐ1000pt付与 →</div>
+          <div className="mb-1">登録ですぐ500pt付与 →</div>
           <div className="flex items-center justify-center gap-2">
             <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
             <span>＼</span>
@@ -275,7 +275,7 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-white/20 animate-shimmer"></div>
               </button>
               <p className="text-xs md:text-sm text-gray-300 bg-spiritual-dark/40 inline-block px-4 py-2 rounded-full">
-                ✨ 1回1000pt無料付与後、すぐに占いに使えます
+                ✨ 500pt無料付与で、すぐに占いに使えます
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-white/10">
@@ -474,7 +474,7 @@ export default function LandingPage() {
               <div className="flex-1">
                 <h3 className="text-xl font-bold text-white mb-2">無料会員登録</h3>
                 <p className="text-gray-300">
-                  Googleアカウントで簡単登録。今なら1000ptプレゼント！
+                  Googleアカウントで簡単登録。今なら500ptプレゼント！
                 </p>
               </div>
             </div>
@@ -536,7 +536,7 @@ export default function LandingPage() {
                 <span className="text-spiritual-pink group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="text-gray-300 mt-4 leading-relaxed">
-                はい、初回登録時に1000ポイントを無料でプレゼントしており、1回の鑑定（400文字程度）に必要な1000ポイントと同じです。つまり、1回目の鑑定は完全無料でお試しいただけます。
+                はい、初回登録時に500ポイントを無料でプレゼントしており、1回の鑑定（400文字程度）に必要な480ポイント以上です。つまり、1回目の鑑定は完全無料でお試しいただけます。
               </p>
             </details>
 

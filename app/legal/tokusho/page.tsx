@@ -154,7 +154,7 @@ export default function TokushoPage() {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">お試しプラン</span>
                     <span className="text-spiritual-gold font-semibold">
-                      1,000円（1,000ポイント）
+                      480円（500ポイント）
                     </span>
                   </div>
                   <p className="text-sm text-gray-400 mt-1">鑑定結果1回分</p>
@@ -163,7 +163,7 @@ export default function TokushoPage() {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">通常プラン</span>
                     <span className="text-spiritual-gold font-semibold">
-                      2,700円（3,000ポイント）
+                      1,350円（1,500ポイント）
                     </span>
                   </div>
                   <p className="text-sm text-gray-400 mt-1">
@@ -174,7 +174,7 @@ export default function TokushoPage() {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">スタンダードプラン</span>
                     <span className="text-spiritual-gold font-semibold">
-                      4,500円（5,000ポイント）
+                      2,250円（2,500ポイント）
                     </span>
                   </div>
                   <p className="text-sm text-gray-400 mt-1">
@@ -185,7 +185,7 @@ export default function TokushoPage() {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">プレミアムプラン</span>
                     <span className="text-spiritual-gold font-semibold">
-                      8,500円（10,000ポイント）
+                      4,250円（5,000ポイント）
                     </span>
                   </div>
                   <p className="text-sm text-gray-400 mt-1">
@@ -196,17 +196,17 @@ export default function TokushoPage() {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">VIPプラン</span>
                     <span className="text-spiritual-gold font-semibold">
-                      24,000円（30,000ポイント）
+                      12,000円（15,000ポイント）
                     </span>
                   </div>
                   <p className="text-sm text-gray-400 mt-1">
-                    鑑定結果30回分、20%お得
+                    鑑定結果31回分、20%お得
                   </p>
                 </div>
               </div>
               <div className="bg-spiritual-lavender/10 rounded-lg p-4 mt-4">
                 <p className="text-sm text-gray-300">
-                  ※ 鑑定結果の閲覧には1,000ポイントが必要です
+                  ※ 鑑定結果の閲覧には480ポイントが必要です
                 </p>
                 <p className="text-sm text-gray-300">
                   ※ 表示価格はすべて税込価格です

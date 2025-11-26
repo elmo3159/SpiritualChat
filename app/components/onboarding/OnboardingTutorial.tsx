@@ -28,7 +28,7 @@ const ONBOARDING_STEPS: OnboardingStep[] = [
   },
   {
     title: 'ポイントについて',
-    description: '鑑定結果の全文を読むには1000ポイントが必要です。ヘッダーのポイント表示や+ボタン、ボトムナビから購入できます。',
+    description: '鑑定結果の全文を読むには480ポイントが必要です。ヘッダーのポイント表示や+ボタン、ボトムナビから購入できます。',
     icon: <Coins className="w-16 h-16 text-spiritual-gold" />,
   },
   {

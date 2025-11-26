@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: "人気占い師監修のAIチャット占い【スピチャ】",
     template: "%s | スピチャ"
   },
-  description: "24時間365日いつでも相談できる本格AI占い。恋愛・復縁・仕事の悩みを人気占い師監修のAIが解決。初回1000pt無料",
+  description: "24時間365日いつでも相談できる本格AI占い。恋愛・復縁・仕事の悩みを人気占い師監修のAIが解決。初回500pt無料",
   manifest: "/manifest.json?v=2",
   verification: {
     google: "5e9ctUo8hxatMmni9GvRg0rf4eDd83j_lnEOxDsigR0",
@@ -50,12 +50,12 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "スピチャ",
     title: "人気占い師監修のAIチャット占い【スピチャ】",
-    description: "24時間365日いつでも相談できる本格AI占い。恋愛・復縁・仕事の悩みを人気占い師監修のAIが解決。初回1000pt無料",
+    description: "24時間365日いつでも相談できる本格AI占い。恋愛・復縁・仕事の悩みを人気占い師監修のAIが解決。初回500pt無料",
   },
   twitter: {
     card: "summary_large_image",
     title: "人気占い師監修のAIチャット占い【スピチャ】",
-    description: "24時間365日いつでも相談できる本格AI占い。恋愛・復縁・仕事の悩みを人気占い師監修のAIが解決。初回1000pt無料",
+    description: "24時間365日いつでも相談できる本格AI占い。恋愛・復縁・仕事の悩みを人気占い師監修のAIが解決。初回500pt無料",
   },
 };
 

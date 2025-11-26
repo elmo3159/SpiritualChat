@@ -255,20 +255,20 @@ export async function createProfile(formData: ProfileFormData) {
         ? supabase
             .from('user_points')
             .update({
-              points_balance: existingPoints.points_balance + 1000,
+              points_balance: existingPoints.points_balance + 500,
               updated_at: new Date().toISOString(),
             })
             .eq('user_id', user.id)
         : supabase.from('user_points').insert({
             user_id: user.id,
-            points_balance: 1000,
+            points_balance: 500,
           })
 
       await Promise.all([
         pointsOp,
         supabase.from('points_transactions').insert({
           user_id: user.id,
-          points: 1000,
+          points: 500,
           transaction_type: 'bonus',
           description: '新規登録ボーナス',
         }),

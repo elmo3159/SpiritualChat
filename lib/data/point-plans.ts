@@ -55,12 +55,13 @@ export interface PointPlan {
 /**
  * ポイント購入プラン一覧
  *
+ * 1鑑定 = 480pt（480円）を基準とした価格体系
  * まとめ買いするほどお得になる設計：
- * - 1,000pt: 割引なし（お試しプラン）
- * - 3,000pt: 10%割引（人気プラン）
- * - 5,000pt: 10%割引
- * - 10,000pt: 15%割引（おすすめプラン）
- * - 30,000pt: 20%割引（VIPプラン）
+ * - 500pt: 割引なし（お試しプラン）
+ * - 1,500pt: 10%割引（人気プラン）
+ * - 2,500pt: 10%割引
+ * - 5,000pt: 15%割引（おすすめプラン）
+ * - 15,000pt: 20%割引（VIPプラン）
  */
 export const POINT_PLANS: PointPlan[] = [
   {
@@ -73,52 +74,52 @@ export const POINT_PLANS: PointPlan[] = [
     description: 'システムテスト用（テスト完了後削除予定）',
   },
   {
-    id: 'plan-1000',
+    id: 'plan-500',
     name: 'お試しプラン',
-    points: 1000,
-    price: 1000,
+    points: 500,
+    price: 480,
     discountRate: 0,
-    regularPrice: 1000,
+    regularPrice: 500,
     description: '鑑定結果1回分',
   },
   {
-    id: 'plan-3000',
+    id: 'plan-1500',
     name: '通常プラン',
-    points: 3000,
-    price: 2700,
+    points: 1500,
+    price: 1350,
     discountRate: 10,
-    regularPrice: 3000,
+    regularPrice: 1500,
     badge: 'popular',
     description: '鑑定結果3回分、10%お得！',
   },
   {
-    id: 'plan-5000',
+    id: 'plan-2500',
     name: 'スタンダードプラン',
-    points: 5000,
-    price: 4500,
+    points: 2500,
+    price: 2250,
     discountRate: 10,
-    regularPrice: 5000,
+    regularPrice: 2500,
     description: '鑑定結果5回分、10%お得！',
   },
   {
-    id: 'plan-10000',
+    id: 'plan-5000',
     name: 'プレミアムプラン',
-    points: 10000,
-    price: 8500,
+    points: 5000,
+    price: 4250,
     discountRate: 15,
-    regularPrice: 10000,
+    regularPrice: 5000,
     badge: 'recommended',
     description: '鑑定結果10回分、15%お得！',
   },
   {
-    id: 'plan-30000',
+    id: 'plan-15000',
     name: 'VIPプラン',
-    points: 30000,
-    price: 24000,
+    points: 15000,
+    price: 12000,
     discountRate: 20,
-    regularPrice: 30000,
+    regularPrice: 15000,
     badge: 'best-value',
-    description: '鑑定結果30回分、20%お得！',
+    description: '鑑定結果31回分、20%お得！',
   },
 ]
 

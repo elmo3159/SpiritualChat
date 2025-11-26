@@ -218,7 +218,7 @@ export default function HoroscopeListClient() {
                   スピチャで本格的に占う
                 </button>
                 <p className="text-sm text-gray-600 mt-3">
-                  ✨ 初回1000pt無料 ／ 完全匿名で安心 ／ 24時間365日対応
+                  ✨ 初回500pt無料 ／ 完全匿名で安心 ／ 24時間365日対応
                 </p>
               </div>
             </div>

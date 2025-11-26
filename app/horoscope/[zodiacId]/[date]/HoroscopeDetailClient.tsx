@@ -110,7 +110,7 @@ export default function HoroscopeDetailClient({ zodiac, horoscope, formattedDate
               今すぐ無料で占う
             </button>
             <p className="text-xs text-gray-600 mt-2">
-              ✨ 初回1000pt無料 ／ 24時間いつでも相談OK
+              ✨ 初回500pt無料 ／ 24時間いつでも相談OK
             </p>
           </div>
         </div>
@@ -191,7 +191,7 @@ export default function HoroscopeDetailClient({ zodiac, horoscope, formattedDate
               </div>
               <div className="flex items-center gap-2 text-gray-800">
                 <span className="text-spiritual-gold">✓</span>
-                <span className="font-semibold">初回1000pt無料</span>
+                <span className="font-semibold">初回500pt無料</span>
               </div>
             </div>
             <button
