@@ -37,7 +37,7 @@ export default function DivinationResult({
   isUnlocking = false,
   userPoints = 0,
 }: Props) {
-  const UNLOCK_COST = 480
+  const UNLOCK_COST = 500
   const hasEnoughPoints = userPoints >= UNLOCK_COST
 
   // プレビュー文字数を計算（残りの文字数）

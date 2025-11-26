@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     }
 
     // ポイント消費（consume_points関数を呼び出し）
-    const UNLOCK_COST = 480 // 開封コスト
+    const UNLOCK_COST = 500 // 開封コスト
 
     const { data: consumeResult, error: consumeError } = await supabase.rpc(
       'consume_points',

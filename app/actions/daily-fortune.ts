@@ -7,7 +7,7 @@ import { updateLevelOnPointsUsed } from '@/lib/services/level-service'
 import { checkAndAwardBadges } from '@/lib/services/badge-service'
 import { getLegalComplianceNotice } from '@/lib/gemini/prompts'
 
-const DAILY_FORTUNE_COST = 480 // ポイント
+const DAILY_FORTUNE_COST = 500 // ポイント
 
 const SYSTEM_PROMPT = `
 あなたは「今日の運勢」を専門とする、経験豊かなスピリチュアルカウンセラーです。

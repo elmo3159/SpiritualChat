@@ -536,7 +536,7 @@ export default function LandingPage() {
                 <span className="text-spiritual-pink group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="text-gray-300 mt-4 leading-relaxed">
-                はい、初回登録時に500ポイントを無料でプレゼントしており、1回の鑑定（400文字程度）に必要な480ポイント以上です。つまり、1回目の鑑定は完全無料でお試しいただけます。
+                はい、初回登録時に500ポイントを無料でプレゼントしており、1回の鑑定（400文字程度）に必要な500ポイントちょうどです。つまり、1回目の鑑定は完全無料でお試しいただけます。
               </p>
             </details>
 

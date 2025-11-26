@@ -131,7 +131,7 @@ export default function WelcomePopup({ points, onClose }: Props) {
 
         {/* 注釈 */}
         <p className="text-center text-xs text-spiritual-lavender mt-4">
-          1回の鑑定結果を見るには480ptが必要です
+          1回の鑑定結果を見るには500ptが必要です
         </p>
       </div>
     </div>

@@ -206,7 +206,7 @@ export default function TokushoPage() {
               </div>
               <div className="bg-spiritual-lavender/10 rounded-lg p-4 mt-4">
                 <p className="text-sm text-gray-300">
-                  ※ 鑑定結果の閲覧には480ポイントが必要です
+                  ※ 鑑定結果の閲覧には500ポイントが必要です
                 </p>
                 <p className="text-sm text-gray-300">
                   ※ 表示価格はすべて税込価格です
