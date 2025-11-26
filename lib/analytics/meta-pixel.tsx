@@ -82,16 +82,16 @@ export const trackMetaCustomEvent = (
 /**
  * 会員登録完了イベント（プロフィール登録完了時）
  * Meta標準イベント: CompleteRegistration
+ * @param value 登録の価値（デフォルト: 0）
+ * @param currency 通貨コード（デフォルト: JPY）
  */
-export const trackMetaCompleteRegistration = (value?: number, currency: string = 'JPY') => {
+export const trackMetaCompleteRegistration = (value: number = 0, currency: string = 'JPY') => {
   if (typeof window !== 'undefined' && (window as any).fbq) {
-    console.log('Meta Pixel: CompleteRegistration イベント送信')
-    const params: Record<string, unknown> = {}
-    if (value !== undefined) {
-      params.value = value
-      params.currency = currency
-    }
-    trackMetaEvent('CompleteRegistration', Object.keys(params).length > 0 ? params : undefined)
+    console.log(`Meta Pixel: CompleteRegistration イベント送信 (value: ${value}, currency: ${currency})`)
+    trackMetaEvent('CompleteRegistration', {
+      value,
+      currency,
+    })
   } else {
     console.warn('Meta Pixel: fbqオブジェクトが見つかりません (CompleteRegistration)')
   }
@@ -132,16 +132,16 @@ export const trackMetaPurchase = (
 /**
  * リード獲得イベント（アカウント作成時など）
  * Meta標準イベント: Lead
+ * @param value リードの価値（デフォルト: 0）
+ * @param currency 通貨コード（デフォルト: JPY）
  */
-export const trackMetaLead = (value?: number, currency: string = 'JPY') => {
+export const trackMetaLead = (value: number = 0, currency: string = 'JPY') => {
   if (typeof window !== 'undefined' && (window as any).fbq) {
-    console.log('Meta Pixel: Lead イベント送信')
-    const params: Record<string, unknown> = {}
-    if (value !== undefined) {
-      params.value = value
-      params.currency = currency
-    }
-    trackMetaEvent('Lead', Object.keys(params).length > 0 ? params : undefined)
+    console.log(`Meta Pixel: Lead イベント送信 (value: ${value}, currency: ${currency})`)
+    trackMetaEvent('Lead', {
+      value,
+      currency,
+    })
   } else {
     console.warn('Meta Pixel: fbqオブジェクトが見つかりません (Lead)')
   }
