@@ -147,7 +147,7 @@ export default function TokushoPage() {
             </h2>
             <div className="bg-spiritual-dark/50 rounded-lg p-5 space-y-4">
               <p className="text-gray-300 mb-4">
-                当サービスでは、ポイント制を採用しております（1ポイント＝1円）。
+                当サービスでは、ポイント制を採用しております。まとめ買いでお得になります。
               </p>
               <div className="space-y-3">
                 <div className="border-b border-spiritual-lavender/20 pb-3">
