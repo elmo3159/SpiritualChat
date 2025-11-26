@@ -1,8 +1,8 @@
 'use client'
 
-import { Lock, Sparkles, Loader2, Coins, Star } from 'lucide-react'
+import { Lock, Sparkles, Loader2, Star } from 'lucide-react'
 import type { DivinationResultDisplay } from '@/lib/types/divination'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   /**
@@ -37,6 +37,7 @@ export default function DivinationResult({
   isUnlocking = false,
   userPoints = 0,
 }: Props) {
+  const router = useRouter()
   const UNLOCK_COST = 500
   const hasEnoughPoints = userPoints >= UNLOCK_COST
 
@@ -46,7 +47,16 @@ export default function DivinationResult({
   const remainingChars = Math.max(0, totalLength - previewLength)
 
   const handleUnlock = async () => {
-    if (onUnlock && !isUnlocking && hasEnoughPoints) {
+    if (isUnlocking) return
+
+    // 残高不足の場合はポイント購入ページへ遷移
+    if (!hasEnoughPoints) {
+      router.push('/points/purchase')
+      return
+    }
+
+    // 残高がある場合は開封処理
+    if (onUnlock) {
       await onUnlock(divination.id)
     }
   }
@@ -88,8 +98,8 @@ export default function DivinationResult({
                   {divination.resultPreview}
                 </p>
 
-                {/* 神秘的なぼかしエリア - ポイント不足時は高さを増やす */}
-                <div className={`relative rounded-xl overflow-hidden ${hasEnoughPoints ? 'min-h-[260px]' : 'min-h-[320px]'}`}>
+                {/* 神秘的なぼかしエリア */}
+                <div className="relative rounded-xl overflow-hidden min-h-[260px]">
                   {/* グラデーション霧の背景 */}
                   <div className="absolute inset-0 bg-gradient-to-b from-[#ffd4e5]/60 via-purple-200/50 to-indigo-200/60"></div>
 
@@ -140,56 +150,30 @@ export default function DivinationResult({
                       <p className="text-xs text-gray-600 mt-0.5">あなただけの特別な鑑定結果</p>
                     </div>
 
-                    {/* 開封ボタン */}
-                    {hasEnoughPoints ? (
-                      <button
-                        onClick={handleUnlock}
-                        disabled={isUnlocking}
-                        className="group relative px-6 py-3 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-sm shadow-2xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-400 transition-all duration-300 flex items-center gap-2 border-2 border-spiritual-gold/60 overflow-hidden"
-                      >
-                        {/* 輝きエフェクト */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                    {/* 開封ボタン - 残高に関わらず同じ見た目 */}
+                    <button
+                      onClick={handleUnlock}
+                      disabled={isUnlocking}
+                      className="group relative px-6 py-3 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-sm shadow-2xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-400 transition-all duration-300 flex items-center gap-2 border-2 border-spiritual-gold/60 overflow-hidden"
+                    >
+                      {/* 輝きエフェクト */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
 
-                        <div className="relative z-10 flex items-center gap-2">
-                          {isUnlocking ? (
-                            <>
-                              <Loader2 className="w-5 h-5 animate-spin" />
-                              <span>開封中...</span>
-                            </>
-                          ) : (
-                            <>
-                              <Lock className="w-5 h-5" />
-                              <span>全文を読む</span>
-                              <span className="text-xs font-normal opacity-90 bg-white/20 px-2 py-0.5 rounded-full">{UNLOCK_COST}pt</span>
-                            </>
-                          )}
-                        </div>
-                      </button>
-                    ) : (
-                      <div className="flex flex-col items-center gap-2 w-full max-w-[280px]">
-                        <div className="px-3 py-2 bg-white/95 border-2 border-red-400 rounded-lg text-red-600 text-xs font-bold shadow-lg text-center w-full">
-                          <div className="flex items-center justify-center gap-1">
-                            <span>⚠️</span>
-                            <span>ポイントが不足しています</span>
-                          </div>
-                          <div className="text-[10px] mt-1 font-normal text-gray-600">
-                            必要: <span className="font-bold text-red-500">{UNLOCK_COST}pt</span> ／ 残高: <span className="font-bold">{userPoints}pt</span>
-                          </div>
-                        </div>
-                        <Link
-                          href="/points/purchase"
-                          className="group relative px-5 py-2.5 bg-gradient-to-r from-spiritual-accent via-spiritual-gold to-spiritual-accent bg-size-200 bg-pos-0 hover:bg-pos-100 text-spiritual-dark rounded-xl font-bold text-sm shadow-xl shadow-spiritual-gold/50 hover:shadow-spiritual-gold/70 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 border-2 border-spiritual-gold/60 overflow-hidden"
-                        >
-                          {/* 輝きエフェクト */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-
-                          <div className="relative z-10 flex items-center gap-2">
-                            <Coins className="w-5 h-5" />
-                            <span>今すぐチャージ</span>
-                          </div>
-                        </Link>
+                      <div className="relative z-10 flex items-center gap-2">
+                        {isUnlocking ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            <span>開封中...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Lock className="w-5 h-5" />
+                            <span>全文を読む</span>
+                            <span className="text-xs font-normal opacity-90 bg-white/20 px-2 py-0.5 rounded-full">{UNLOCK_COST}pt</span>
+                          </>
+                        )}
                       </div>
-                    )}
+                    </button>
                   </div>
                 </div>
               </div>
