@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { X, Send, Upload, Loader2, CheckCircle2 } from 'lucide-react'
+import { trackMetaContact } from '@/lib/analytics/meta-pixel'
 
 interface ContactFormProps {
   onClose: () => void
@@ -105,6 +106,9 @@ export default function ContactForm({ onClose }: ContactFormProps) {
       }
 
       setIsSuccess(true)
+
+      // Meta Pixel: Contact イベント
+      trackMetaContact()
 
       // 2秒後に閉じる
       setTimeout(() => {

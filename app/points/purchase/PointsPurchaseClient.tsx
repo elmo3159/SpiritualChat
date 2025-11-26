@@ -5,6 +5,7 @@ import { Check } from 'lucide-react'
 import { POINT_PLANS, getBadgeLabel, PointPlan } from '@/lib/data/point-plans'
 import PurchaseButton from '@/app/components/points/PurchaseButton'
 import CouponInput from '@/app/components/points/CouponInput'
+import { trackMetaAddToCart } from '@/lib/analytics/meta-pixel'
 
 interface CouponData {
   id: string
@@ -44,6 +45,17 @@ export default function PointsPurchaseClient() {
 
     fetchSettings()
   }, [])
+
+  // ページ表示時にMeta Pixel AddToCartイベントを送信
+  useEffect(() => {
+    if (!isLoading && visiblePlans.length > 0) {
+      // おすすめプランの価格でAddToCartイベントを送信
+      const recommendedPlan = visiblePlans.find(p => p.badge === 'recommended') || visiblePlans[0]
+      if (recommendedPlan) {
+        trackMetaAddToCart(recommendedPlan.price, 'JPY', recommendedPlan.name, [recommendedPlan.id])
+      }
+    }
+  }, [isLoading, visiblePlans])
 
   const calculateDiscountedPrice = (originalPrice: number) => {
     if (!appliedCoupon) return originalPrice

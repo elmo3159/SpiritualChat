@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { createCheckoutSession } from '@/app/actions/checkout'
 import { Loader2 } from 'lucide-react'
+import { trackMetaInitiateCheckout } from '@/lib/analytics/meta-pixel'
+import { POINT_PLANS } from '@/lib/data/point-plans'
 
 interface Props {
   /**
@@ -43,6 +45,12 @@ export default function PurchaseButton({
   const handlePurchase = async () => {
     setIsPending(true)
     setError(null)
+
+    // プラン情報を取得してMeta Pixelイベントを送信
+    const plan = POINT_PLANS.find(p => p.id === planId)
+    if (plan) {
+      trackMetaInitiateCheckout(plan.price, 'JPY', 1)
+    }
 
     try {
       const { url } = await createCheckoutSession(planId, couponCode)

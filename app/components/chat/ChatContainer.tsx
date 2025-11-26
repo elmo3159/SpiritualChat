@@ -13,6 +13,7 @@ import { sendMessage } from '@/app/actions/chat'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { RealtimeChannel } from '@supabase/supabase-js'
+import { trackMetaViewContent } from '@/lib/analytics/meta-pixel'
 
 interface Props {
   initialMessages: ChatMessageDisplay[]
@@ -66,6 +67,11 @@ export default function ChatContainer({
     fortuneTellerNameRef.current = fortuneTellerName
     fortuneTellerAvatarRef.current = fortuneTellerAvatar
   }, [fortuneTellerName, fortuneTellerAvatar])
+
+  // Meta Pixel: ViewContent イベント（占い師ページ閲覧）
+  useEffect(() => {
+    trackMetaViewContent(fortuneTellerName, fortuneTellerId)
+  }, [fortuneTellerName, fortuneTellerId])
 
   // 新しいメッセージまたは鑑定結果が追加された時だけ自動スクロール
   useEffect(() => {

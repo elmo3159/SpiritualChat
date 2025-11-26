@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { trackSignup } from '@/lib/analytics/tiktok-pixel'
+import { trackMetaLead } from '@/lib/analytics/meta-pixel'
 
 // よくあるドメインのタイポを検出するマップ
 const COMMON_EMAIL_TYPOS: Record<string, string> = {
@@ -142,8 +143,9 @@ export default function SignUpPage() {
       if (error) {
         setError(error.message)
       } else {
-        // アカウント作成成功時にTikTok Pixelイベントを送信
+        // アカウント作成成功時にPixelイベントを送信
         trackSignup()
+        trackMetaLead() // Meta Pixel: Lead イベント
         setSuccess(true)
       }
     } catch (err) {

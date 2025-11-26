@@ -8,6 +8,7 @@ import { createProfile } from '@/app/actions/profile'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { trackCompleteRegistration, trackTikTokIdentify, trackSignup } from '@/lib/analytics/tiktok-pixel'
+import { trackMetaCompleteRegistration, trackMetaLead } from '@/lib/analytics/meta-pixel'
 import { useAuth } from '@/lib/contexts/AuthContext'
 import { createClient } from '@/lib/supabase/client'
 import { ChevronRight, ChevronDown, ChevronUp, Sparkles, Heart, Briefcase, Home, Coins, Users, MessageCircle, Star, Check, Clock, Loader2 } from 'lucide-react'
@@ -231,6 +232,7 @@ function ProfileCreatePageContent() {
     const isNewOAuthUser = searchParams.get('new') === 'oauth'
     if (isNewOAuthUser) {
       trackSignup()
+      trackMetaLead() // Meta Pixel: Lead イベント
       // URLからパラメータを削除（再発火防止）
       const url = new URL(window.location.href)
       url.searchParams.delete('new')
@@ -395,6 +397,7 @@ function ProfileCreatePageContent() {
 
         // プロフィール登録完了イベントをトラッキング（非ブロッキング）
         trackCompleteRegistration()
+        trackMetaCompleteRegistration()
 
         // 即座に占い師一覧ページに遷移（待機時間なし）
         router.push('/fortune-tellers')

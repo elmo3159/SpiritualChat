@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getStripeClient } from '@/lib/stripe/client'
 import { CheckCircle, Sparkles } from 'lucide-react'
 import TikTokPurchaseTracker from './TikTokPurchaseTracker'
+import MetaPurchaseTracker from './MetaPurchaseTracker'
 
 interface PageProps {
   searchParams: {
@@ -64,8 +65,9 @@ export default async function PointsSuccessPage({
 
   return (
     <>
-      {/* TikTok購入イベントトラッカー */}
+      {/* 購入イベントトラッカー */}
       <TikTokPurchaseTracker amount={purchaseAmount} />
+      <MetaPurchaseTracker amount={purchaseAmount} points={points} planId={planId} />
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-purple-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         {/* 成功アニメーション */}
