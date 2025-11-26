@@ -114,6 +114,10 @@ export default function LandingPage() {
         <div className="container mx-auto max-w-6xl">
           {/* メインキャッチコピー */}
           <div className="text-center mb-3 md:mb-5 px-2">
+            {/* 噂フレーズ */}
+            <p className="text-sm md:text-lg text-spiritual-gold font-bold mb-1 md:mb-2 tracking-wide">
+              ＼ 当たると噂のチャット占い！ ／
+            </p>
             <h1 className="text-2xl md:text-5xl lg:text-6xl font-bold text-white mb-2 leading-tight">
               彼からの連絡が止まった理由、<br className="hidden md:block" />
               <span className="text-spiritual-pink-light">今すぐ</span>見えます
@@ -571,7 +575,7 @@ export default function LandingPage() {
                 <span className="text-spiritual-pink group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="text-gray-300 mt-4 leading-relaxed">
-                クレジットカード（Visa / Mastercard / JCB / American Express）でのお支払いが可能です。決済はStripeの安全なシステムを使用しており、当サービス側でカード情報を保持することはありません。
+                クレジットカード（Visa / Mastercard / JCB / American Express）、デビットカード、Apple Pay、Google Payでのお支払いが可能です。決済はStripeの安全なシステムを使用しており、当サービス側でカード情報を保持することはありません。
               </p>
             </details>
 
