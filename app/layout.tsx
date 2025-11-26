@@ -5,6 +5,7 @@ import { AuthProvider } from "@/lib/contexts/AuthContext";
 import BottomNavigation from "@/app/components/navigation/BottomNavigation";
 import GoogleAnalytics from "@/lib/analytics/google-analytics";
 import TikTokPixel from "@/lib/analytics/tiktok-pixel";
+import MetaPixel from "@/lib/analytics/meta-pixel";
 import RegisterServiceWorker from "@/lib/pwa/register-sw";
 import InstallPrompt from "@/app/components/pwa/InstallPrompt";
 import { Suspense } from "react";
@@ -90,6 +91,7 @@ export default function RootLayout({
         />
         {gaId && <GoogleAnalytics measurementId={gaId} />}
         <TikTokPixel />
+        <MetaPixel />
         <RegisterServiceWorker />
         <InstallPrompt />
         <AuthProvider>
