@@ -92,8 +92,8 @@ export default function PointsPurchaseClient() {
         if (element) {
           const rect = element.getBoundingClientRect()
           const elementTop = window.pageYOffset + rect.top
-          // 画面の上から10%の位置にバナーの上端が来るように調整
-          const offset = window.innerHeight * 0.1
+          // スクロール位置を調整
+          const offset = window.innerHeight * -0.1
           window.scrollTo({
             top: elementTop - offset,
             behavior: 'smooth',
