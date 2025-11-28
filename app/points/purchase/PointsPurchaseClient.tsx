@@ -83,15 +83,22 @@ export default function PointsPurchaseClient() {
     }
   }, [isLoading, visiblePlans])
 
-  // 初回限定プランがある場合、画面中央にスクロール
+  // 初回限定プランがある場合、適切な位置にスクロール
   useEffect(() => {
     if (!isLoading && isFirstPurchase && firstTimePlan && firstTimePlanRef.current) {
       // 少し遅延させてDOMのレンダリング完了を待つ
       setTimeout(() => {
-        firstTimePlanRef.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        })
+        const element = firstTimePlanRef.current
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const elementTop = window.pageYOffset + rect.top
+          // 画面の上から30%の位置にバナーの上端が来るように調整
+          const offset = window.innerHeight * 0.3
+          window.scrollTo({
+            top: elementTop - offset,
+            behavior: 'smooth',
+          })
+        }
       }, 100)
     }
   }, [isLoading, isFirstPurchase, firstTimePlan])
