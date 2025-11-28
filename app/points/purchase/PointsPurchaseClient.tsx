@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Check } from 'lucide-react'
+import { Check, Sparkles, Clock, Gift, Zap } from 'lucide-react'
 import { POINT_PLANS, getBadgeLabel, PointPlan } from '@/lib/data/point-plans'
 import PurchaseButton from '@/app/components/points/PurchaseButton'
 import CouponInput from '@/app/components/points/CouponInput'
@@ -18,41 +18,66 @@ export default function PointsPurchaseClient() {
   const [appliedCoupon, setAppliedCoupon] = useState<CouponData | null>(null)
   const [visiblePlans, setVisiblePlans] = useState<PointPlan[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isFirstPurchase, setIsFirstPurchase] = useState(false)
+  const [firstTimePlan, setFirstTimePlan] = useState<PointPlan | null>(null)
 
-  // 設定を取得してプランをフィルタリング
+  // 設定と初回購入判定を取得
   useEffect(() => {
-    const fetchSettings = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch('/api/settings')
-        const data = await res.json()
+        // 並列で取得
+        const [settingsRes, firstPurchaseRes] = await Promise.all([
+          fetch('/api/settings'),
+          fetch('/api/points/is-first-purchase'),
+        ])
 
-        // テストプランの表示/非表示を制御
-        if (data.enable_test_plan === false) {
-          setVisiblePlans(
-            POINT_PLANS.filter((plan) => plan.id !== 'plan-test-100')
+        const settingsData = await settingsRes.json()
+        const firstPurchaseData = await firstPurchaseRes.json()
+
+        setIsFirstPurchase(firstPurchaseData.isFirstPurchase)
+
+        // 初回限定プランを取得
+        const firstTime = POINT_PLANS.find((plan) => plan.isFirstTimeOnly)
+        setFirstTimePlan(firstTime || null)
+
+        // プランをフィルタリング（テストプランと初回限定プランを除外）
+        let filteredPlans = POINT_PLANS.filter(
+          (plan) => !plan.isFirstTimeOnly
+        )
+
+        if (settingsData.enable_test_plan === false) {
+          filteredPlans = filteredPlans.filter(
+            (plan) => plan.id !== 'plan-test-100'
           )
-        } else {
-          setVisiblePlans(POINT_PLANS)
         }
+
+        setVisiblePlans(filteredPlans)
       } catch (error) {
-        console.error('設定取得エラー:', error)
-        // エラー時は全プランを表示
-        setVisiblePlans(POINT_PLANS)
+        console.error('データ取得エラー:', error)
+        // エラー時は初回限定プラン以外を表示
+        setVisiblePlans(
+          POINT_PLANS.filter((plan) => !plan.isFirstTimeOnly)
+        )
       } finally {
         setIsLoading(false)
       }
     }
 
-    fetchSettings()
+    fetchData()
   }, [])
 
   // ページ表示時にMeta Pixel AddToCartイベントを送信
   useEffect(() => {
     if (!isLoading && visiblePlans.length > 0) {
-      // おすすめプランの価格でAddToCartイベントを送信
-      const recommendedPlan = visiblePlans.find(p => p.badge === 'recommended') || visiblePlans[0]
+      const recommendedPlan =
+        visiblePlans.find((p) => p.badge === 'recommended') || visiblePlans[0]
       if (recommendedPlan) {
-        trackMetaAddToCart(recommendedPlan.price, 'JPY', recommendedPlan.name, [recommendedPlan.id])
+        trackMetaAddToCart(
+          recommendedPlan.price,
+          'JPY',
+          recommendedPlan.name,
+          [recommendedPlan.id]
+        )
       }
     }
   }, [isLoading, visiblePlans])
@@ -61,7 +86,9 @@ export default function PointsPurchaseClient() {
     if (!appliedCoupon) return originalPrice
 
     if (appliedCoupon.discount_type === 'percentage') {
-      const discount = Math.round((originalPrice * appliedCoupon.discount_value) / 100)
+      const discount = Math.round(
+        (originalPrice * appliedCoupon.discount_value) / 100
+      )
       return Math.max(0, originalPrice - discount)
     } else {
       return Math.max(0, originalPrice - appliedCoupon.discount_value)
@@ -83,7 +110,9 @@ export default function PointsPurchaseClient() {
       <div className="flex justify-center items-center py-20">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-spiritual-gold/30 border-t-spiritual-gold rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-white text-base md:text-lg drop-shadow-md">プランを読み込み中...</p>
+          <p className="text-white text-base md:text-lg drop-shadow-md">
+            プランを読み込み中...
+          </p>
         </div>
       </div>
     )
@@ -91,6 +120,122 @@ export default function PointsPurchaseClient() {
 
   return (
     <>
+      {/* 初回限定プラン - 派手なバナー */}
+      {isFirstPurchase && firstTimePlan && (
+        <div className="mb-8 relative">
+          {/* 背景のキラキラエフェクト */}
+          <div className="absolute inset-0 overflow-hidden rounded-3xl">
+            <div className="absolute top-0 left-1/4 w-32 h-32 bg-yellow-400/30 rounded-full blur-3xl animate-pulse" />
+            <div
+              className="absolute bottom-0 right-1/4 w-40 h-40 bg-pink-500/30 rounded-full blur-3xl animate-pulse"
+              style={{ animationDelay: '0.5s' }}
+            />
+            <div
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl animate-pulse"
+              style={{ animationDelay: '1s' }}
+            />
+          </div>
+
+          <div className="relative bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 rounded-3xl p-1 shadow-2xl shadow-orange-500/30">
+            <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 rounded-[22px] p-6 md:p-8">
+              {/* 限定バッジ */}
+              <div className="flex justify-center mb-4">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-6 py-2 rounded-full font-bold text-sm md:text-base animate-bounce shadow-lg">
+                  <Sparkles className="w-5 h-5" />
+                  <span>🎉 初回限定！特別割引価格 🎉</span>
+                  <Sparkles className="w-5 h-5" />
+                </div>
+              </div>
+
+              {/* メインコンテンツ */}
+              <div className="text-center">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                  {firstTimePlan.name}
+                </h2>
+                <p className="text-gray-300 mb-6">
+                  {firstTimePlan.description}
+                </p>
+
+                {/* ポイント数 */}
+                <div className="mb-4">
+                  <p className="text-5xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">
+                    {firstTimePlan.points.toLocaleString()}
+                    <span className="text-2xl md:text-3xl text-yellow-400">
+                      pt
+                    </span>
+                  </p>
+                </div>
+
+                {/* 価格表示 - 取り消し線付き */}
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <div className="relative">
+                    <p className="text-2xl md:text-3xl text-gray-400 line-through decoration-red-500 decoration-2">
+                      ¥{firstTimePlan.regularPrice.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="text-3xl md:text-4xl text-white">→</div>
+                  <div className="relative">
+                    <p className="text-4xl md:text-5xl font-bold text-white">
+                      ¥{firstTimePlan.price.toLocaleString()}
+                    </p>
+                    <div className="absolute -top-2 -right-12 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full transform rotate-12">
+                      {firstTimePlan.discountRate}%OFF
+                    </div>
+                  </div>
+                </div>
+
+                {/* お得ポイント */}
+                <div className="flex flex-wrap justify-center gap-4 mb-6">
+                  <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+                    <Zap className="w-5 h-5 text-yellow-400" />
+                    <span className="text-white text-sm">
+                      {firstTimePlan.regularPrice - firstTimePlan.price}円お得
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+                    <Gift className="w-5 h-5 text-pink-400" />
+                    <span className="text-white text-sm">
+                      鑑定1回分がたった100円
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full">
+                    <Clock className="w-5 h-5 text-orange-400" />
+                    <span className="text-white text-sm">
+                      今だけの特別価格
+                    </span>
+                  </div>
+                </div>
+
+                {/* 購入ボタン */}
+                <div className="max-w-xs mx-auto">
+                  <PurchaseButton
+                    planId={firstTimePlan.id}
+                    label="🎁 今すぐ特別価格で購入"
+                    couponCode={appliedCoupon?.code}
+                    className="w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-pink-500 hover:from-yellow-400 hover:via-orange-400 hover:to-pink-400 text-white font-bold py-4 px-8 rounded-xl text-lg shadow-lg shadow-orange-500/50 transform hover:scale-105 transition-all duration-200"
+                  />
+                </div>
+
+                {/* 注意書き */}
+                <p className="text-gray-400 text-xs mt-4">
+                  ※ 初回購入の方限定。おひとり様1回限り。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 通常プラン一覧のタイトル */}
+      {isFirstPurchase && firstTimePlan && (
+        <div className="text-center mb-6">
+          <h3 className="text-xl font-bold text-white">その他のプラン</h3>
+          <p className="text-gray-400 text-sm">
+            まとめ買いでさらにお得！
+          </p>
+        </div>
+      )}
+
       {/* プラン一覧 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {visiblePlans.map((plan) => {
@@ -165,9 +310,7 @@ export default function PointsPurchaseClient() {
 
               {/* 説明 */}
               {plan.description && (
-                <p className="text-sm text-gray-600 mb-4">
-                  {plan.description}
-                </p>
+                <p className="text-sm text-gray-600 mb-4">{plan.description}</p>
               )}
 
               {/* 特徴リスト */}

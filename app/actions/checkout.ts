@@ -35,6 +35,19 @@ export async function createCheckoutSession(
       throw new Error('無効なプランIDです')
     }
 
+    // 初回限定プランの場合、購入履歴をチェック
+    if (plan.isFirstTimeOnly) {
+      const { count } = await supabaseAdmin
+        .from('points_transactions')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('transaction_type', 'purchase')
+
+      if (count && count > 0) {
+        throw new Error('初回限定プランは既にご利用済みです')
+      }
+    }
+
     let finalPrice = plan.price
     let discount = 0
     let couponId: string | null = null

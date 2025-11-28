@@ -152,7 +152,7 @@ export default function TokushoPage() {
               <div className="space-y-3">
                 <div className="border-b border-spiritual-lavender/20 pb-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-300">お試しプラン</span>
+                    <span className="text-gray-300">ライトプラン</span>
                     <span className="text-spiritual-gold font-semibold">
                       480円（500ポイント）
                     </span>

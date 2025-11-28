@@ -39,7 +39,12 @@ export interface PointPlan {
   /**
    * バッジ表示（人気、おすすめ、など）
    */
-  badge?: 'popular' | 'recommended' | 'best-value'
+  badge?: 'popular' | 'recommended' | 'best-value' | 'first-time'
+
+  /**
+   * 初回購入者限定プランかどうか
+   */
+  isFirstTimeOnly?: boolean
 
   /**
    * Stripe Price ID（Stripeダッシュボードで作成後に設定）
@@ -66,6 +71,18 @@ export interface PointPlan {
  */
 export const POINT_PLANS: PointPlan[] = [
   {
+    id: 'plan-first-time',
+    name: '✨ 初回限定プラン',
+    points: 500,
+    price: 100,
+    discountRate: 79,
+    regularPrice: 480,
+    badge: 'first-time',
+    isFirstTimeOnly: true,
+    stripePriceId: 'price_1SYKK6D8HZjEJ3xYY9UQmJlX',
+    description: '初めての方限定！鑑定結果1回分が特別価格',
+  },
+  {
     id: 'plan-test-100',
     name: '🧪 テストプラン',
     points: 100,
@@ -76,11 +93,11 @@ export const POINT_PLANS: PointPlan[] = [
   },
   {
     id: 'plan-500',
-    name: 'お試しプラン',
+    name: 'ライトプラン',
     points: 500,
     price: 480,
     discountRate: 0,
-    regularPrice: 500,
+    regularPrice: 480,
     description: '鑑定結果1回分',
   },
   {
@@ -142,6 +159,8 @@ export function getBadgeLabel(badge?: PointPlan['badge']): string | null {
       return 'おすすめ'
     case 'best-value':
       return '最もお得'
+    case 'first-time':
+      return '初回限定'
     default:
       return null
   }
