@@ -207,124 +207,116 @@ export default function DivinationResult({
                   {divination.resultFull}
                 </div>
               ) : (
-                /* 未開封: プレビュー + 神秘的なぼかし効果 */
-                <div className="space-y-4">
-                  {/* プレビュー（最初の20文字） */}
-                  <p className="text-sm md:text-base text-gray-800 whitespace-pre-wrap leading-relaxed bg-white/40 rounded-xl p-4 border border-amber-200/50">
-                    {divination.resultPreview}
-                  </p>
-
-                  {/* 神秘的なぼかしエリア - 豪華なフレーム付き */}
-                  <div className="relative rounded-xl overflow-hidden min-h-[280px]">
-                    {/* 内側の豪華なボーダー */}
-                    <div className="absolute inset-0 rounded-xl border-4 border-double border-amber-400/40 pointer-events-none z-20"
+                /* 未開封: プレビュー + 連続してぼやけていく効果 */
+                <div className="relative bg-white/40 rounded-xl border border-amber-200/50 overflow-hidden">
+                  {/* テキストエリア */}
+                  <div className="p-4 pb-48">
+                    {/* プレビュー（最初の20文字） - はっきり見える */}
+                    <span className="text-sm md:text-base text-gray-800 whitespace-pre-wrap leading-relaxed">
+                      {divination.resultPreview}
+                    </span>
+                    {/* 続きのテキスト - ぼやけている */}
+                    <span
+                      className="text-sm md:text-base text-gray-800 whitespace-pre-wrap leading-relaxed"
                       style={{
-                        boxShadow: `
-                          inset 0 0 20px rgba(218, 165, 32, 0.2),
-                          inset 0 0 40px rgba(218, 165, 32, 0.1)
-                        `
+                        filter: 'blur(5px)',
+                        userSelect: 'none',
                       }}
-                    />
+                    >
+                      あなたの運勢について詳しく占った結果をお伝えします。現在の状況を見ると、大きな転換期を迎えようとしているようです。これまでの努力が実を結び、新しい展開が期待できます。人間関係においても良い変化が訪れるでしょう。周囲の人々との絆を大切にすることで、さらなる幸運を引き寄せることができます。星の導きによれば、今月は特に重要な決断を迫られる時期となりそうです。
+                    </span>
+                  </div>
 
-                    {/* グラデーション霧の背景 */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-amber-50/80 via-purple-100/60 to-pink-100/80"></div>
-
+                  {/* 下部のグラデーションオーバーレイ - 霧のような効果 */}
+                  <div
+                    className="absolute bottom-0 left-0 right-0 h-56 pointer-events-none"
+                    style={{
+                      background: 'linear-gradient(to bottom, transparent 0%, rgba(255,245,230,0.3) 15%, rgba(255,245,230,0.7) 35%, rgba(255,240,220,0.95) 60%, rgba(255,235,210,1) 100%)'
+                    }}
+                  >
                     {/* アニメーションする霧エフェクト */}
-                    <div className="absolute inset-0 opacity-70">
-                      <div className="absolute top-0 left-1/4 w-40 h-40 bg-amber-200/50 rounded-full blur-3xl animate-pulse"></div>
-                      <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-pink-200/50 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-purple-200/50 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                    <div className="absolute inset-0 opacity-60">
+                      <div className="absolute top-4 left-1/4 w-32 h-32 bg-amber-200/40 rounded-full blur-3xl animate-pulse"></div>
+                      <div className="absolute bottom-8 right-1/4 w-40 h-40 bg-pink-200/40 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-purple-200/40 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
                     </div>
 
                     {/* キラキラ星のアニメーション */}
                     <div className="absolute inset-0 overflow-hidden">
-                      {[...Array(15)].map((_, i) => (
+                      {[...Array(8)].map((_, i) => (
                         <div
                           key={i}
                           className="absolute animate-twinkle"
                           style={{
-                            left: `${10 + (i * 6) % 80}%`,
-                            top: `${10 + (i * 9) % 80}%`,
-                            animationDelay: `${i * 0.25}s`,
+                            left: `${15 + (i * 10) % 70}%`,
+                            top: `${20 + (i * 12) % 60}%`,
+                            animationDelay: `${i * 0.3}s`,
                           }}
                         >
-                          <Star className="w-3 h-3 text-amber-500/80 fill-amber-400/60 drop-shadow-lg" />
+                          <Star className="w-3 h-3 text-amber-500/70 fill-amber-400/50 drop-shadow-lg" />
                         </div>
                       ))}
                     </div>
+                  </div>
 
-                    {/* ぼかしテキスト（うっすら見える程度） */}
-                    <div
-                      className="absolute inset-0 p-4 text-sm text-gray-600/80"
-                      style={{
-                        filter: 'blur(8px)',
-                        userSelect: 'none',
-                        pointerEvents: 'none',
-                      }}
-                    >
-                      あなたの運勢について詳しく占った結果をお伝えします。現在の状況を見ると、大きな転換期を迎えようとしているようです。これまでの努力が実を結び、新しい展開が期待できます。人間関係においても良い変化が訪れるでしょう。周囲の人々との絆を大切にすることで、さらなる幸運を引き寄せることができます。
+                  {/* 下部のコンテンツエリア - ボタン */}
+                  <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center pb-5 pt-2 pointer-events-auto">
+                    {/* 残り文字数の価値訴求 */}
+                    <div className="mb-3 text-center">
+                      <p className="text-amber-700 font-bold text-sm drop-shadow-sm">
+                        あと <span className="text-xl bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent">{remainingChars}</span> 文字
+                      </p>
+                      <p className="text-xs text-gray-600 mt-0.5">あなただけの特別な鑑定結果</p>
                     </div>
 
-                    {/* 中央のコンテンツエリア */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
+                    {/* 開封ボタン - 超豪華版 */}
+                    <div className="relative">
+                      {/* ボタンの外側グロー */}
+                      <div className="absolute -inset-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 rounded-2xl blur-lg opacity-60 animate-pulse" />
 
-                      {/* 残り文字数の価値訴求 */}
-                      <div className="mb-4 text-center">
-                        <p className="text-amber-700 font-bold text-base">
-                          あと <span className="text-2xl bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent">{remainingChars}</span> 文字
-                        </p>
-                        <p className="text-xs text-gray-600 mt-1">あなただけの特別な鑑定結果</p>
-                      </div>
+                      {/* ボタン装飾フレーム */}
+                      <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 rounded-xl opacity-80" />
 
-                      {/* 開封ボタン - 超豪華版 */}
-                      <div className="relative">
-                        {/* ボタンの外側グロー */}
-                        <div className="absolute -inset-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 rounded-2xl blur-lg opacity-60 animate-pulse" />
+                      <button
+                        onClick={handleUnlock}
+                        disabled={isUnlocking}
+                        className="relative group px-8 py-4 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-amber-900 rounded-xl font-bold text-base shadow-2xl hover:shadow-amber-400/60 hover:scale-105 active:scale-95 disabled:from-gray-500 disabled:via-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-600 transition-all duration-300 overflow-hidden"
+                        style={{
+                          boxShadow: `
+                            0 4px 15px rgba(218, 165, 32, 0.4),
+                            0 8px 30px rgba(218, 165, 32, 0.2),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                            inset 0 -1px 0 rgba(0, 0, 0, 0.1)
+                          `,
+                          textShadow: '0 1px 0 rgba(255, 255, 255, 0.5)'
+                        }}
+                      >
+                        {/* 輝きエフェクト */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
 
-                        {/* ボタン装飾フレーム */}
-                        <div className="absolute -inset-1 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 rounded-xl opacity-80" />
+                        {/* 内側のハイライト */}
+                        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-xl" />
 
-                        <button
-                          onClick={handleUnlock}
-                          disabled={isUnlocking}
-                          className="relative group px-8 py-4 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-amber-900 rounded-xl font-bold text-base shadow-2xl hover:shadow-amber-400/60 hover:scale-105 active:scale-95 disabled:from-gray-500 disabled:via-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:shadow-none disabled:scale-100 disabled:text-gray-600 transition-all duration-300 overflow-hidden"
-                          style={{
-                            boxShadow: `
-                              0 4px 15px rgba(218, 165, 32, 0.4),
-                              0 8px 30px rgba(218, 165, 32, 0.2),
-                              inset 0 1px 0 rgba(255, 255, 255, 0.5),
-                              inset 0 -1px 0 rgba(0, 0, 0, 0.1)
-                            `,
-                            textShadow: '0 1px 0 rgba(255, 255, 255, 0.5)'
-                          }}
-                        >
-                          {/* 輝きエフェクト */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-
-                          {/* 内側のハイライト */}
-                          <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-xl" />
-
-                          <div className="relative z-10 flex items-center gap-3">
-                            {isUnlocking ? (
-                              <>
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                <span>開封中...</span>
-                              </>
-                            ) : (
-                              <>
-                                <div className="relative">
-                                  <Lock className="w-5 h-5" />
-                                  <div className="absolute inset-0 bg-amber-600/30 rounded-full blur-sm animate-pulse" />
-                                </div>
-                                <span className="text-lg">全文を読む</span>
-                                <span className="text-sm font-semibold bg-amber-600/20 px-3 py-1 rounded-full border border-amber-600/30">
-                                  {UNLOCK_COST}pt
-                                </span>
-                              </>
-                            )}
-                          </div>
-                        </button>
-                      </div>
+                        <div className="relative z-10 flex items-center gap-3">
+                          {isUnlocking ? (
+                            <>
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                              <span>開封中...</span>
+                            </>
+                          ) : (
+                            <>
+                              <div className="relative">
+                                <Lock className="w-5 h-5" />
+                                <div className="absolute inset-0 bg-amber-600/30 rounded-full blur-sm animate-pulse" />
+                              </div>
+                              <span className="text-lg">全文を読む</span>
+                              <span className="text-sm font-semibold bg-amber-600/20 px-3 py-1 rounded-full border border-amber-600/30">
+                                {UNLOCK_COST}pt
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </button>
                     </div>
                   </div>
                 </div>
