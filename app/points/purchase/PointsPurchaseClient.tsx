@@ -93,7 +93,7 @@ export default function PointsPurchaseClient() {
           const rect = element.getBoundingClientRect()
           const elementTop = window.pageYOffset + rect.top
           // スクロール位置を調整
-          const offset = window.innerHeight * -0.02
+          const offset = window.innerHeight * -0.01
           window.scrollTo({
             top: elementTop - offset,
             behavior: 'smooth',
