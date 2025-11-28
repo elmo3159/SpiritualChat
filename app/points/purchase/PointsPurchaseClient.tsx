@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Check, Sparkles, Clock, Gift, Zap } from 'lucide-react'
 import { POINT_PLANS, getBadgeLabel, PointPlan } from '@/lib/data/point-plans'
 import PurchaseButton from '@/app/components/points/PurchaseButton'
@@ -20,6 +20,7 @@ export default function PointsPurchaseClient() {
   const [isLoading, setIsLoading] = useState(true)
   const [isFirstPurchase, setIsFirstPurchase] = useState(false)
   const [firstTimePlan, setFirstTimePlan] = useState<PointPlan | null>(null)
+  const firstTimePlanRef = useRef<HTMLDivElement>(null)
 
   // 設定と初回購入判定を取得
   useEffect(() => {
@@ -82,6 +83,19 @@ export default function PointsPurchaseClient() {
     }
   }, [isLoading, visiblePlans])
 
+  // 初回限定プランがある場合、画面中央にスクロール
+  useEffect(() => {
+    if (!isLoading && isFirstPurchase && firstTimePlan && firstTimePlanRef.current) {
+      // 少し遅延させてDOMのレンダリング完了を待つ
+      setTimeout(() => {
+        firstTimePlanRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        })
+      }, 100)
+    }
+  }, [isLoading, isFirstPurchase, firstTimePlan])
+
   const calculateDiscountedPrice = (originalPrice: number) => {
     if (!appliedCoupon) return originalPrice
 
@@ -122,7 +136,7 @@ export default function PointsPurchaseClient() {
     <>
       {/* 初回限定プラン - 派手なバナー */}
       {isFirstPurchase && firstTimePlan && (
-        <div className="mb-8 relative">
+        <div ref={firstTimePlanRef} className="mb-8 relative">
           {/* 背景のキラキラエフェクト */}
           <div className="absolute inset-0 overflow-hidden rounded-3xl">
             <div className="absolute top-0 left-1/4 w-32 h-32 bg-yellow-400/30 rounded-full blur-3xl animate-pulse" />
@@ -141,9 +155,9 @@ export default function PointsPurchaseClient() {
               {/* 限定バッジ */}
               <div className="flex justify-center mb-4">
                 <div className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-6 py-2 rounded-full font-bold text-sm md:text-base animate-bounce shadow-lg">
-                  <Sparkles className="w-5 h-5" />
-                  <span>🎉 初回限定！特別割引価格 🎉</span>
-                  <Sparkles className="w-5 h-5" />
+                  <Sparkles className="w-5 h-5 flex-shrink-0" />
+                  <span className="whitespace-nowrap">🎉 初回限定！特別割引価格 🎉</span>
+                  <Sparkles className="w-5 h-5 flex-shrink-0" />
                 </div>
               </div>
 
@@ -152,7 +166,7 @@ export default function PointsPurchaseClient() {
                 <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
                   {firstTimePlan.name}
                 </h2>
-                <p className="text-gray-300 mb-6">
+                <p className="text-gray-300 mb-6 whitespace-nowrap">
                   {firstTimePlan.description}
                 </p>
 
