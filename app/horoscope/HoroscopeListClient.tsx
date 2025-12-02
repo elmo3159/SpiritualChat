@@ -187,7 +187,7 @@ export default function HoroscopeListClient() {
             </div>
 
             {/* スピチャ登録CTA */}
-            <div className="bg-gradient-to-br from-spiritual-pink/20 to-spiritual-purple/20 backdrop-blur-sm rounded-3xl p-6 md:p-10 shadow-2xl border-2 border-spiritual-pink/40">
+            <div className="bg-gradient-to-br from-white/95 to-pink-50/95 backdrop-blur-sm rounded-3xl p-6 md:p-10 shadow-2xl border-2 border-spiritual-pink/40">
               <div className="text-center">
                 <Sparkles className="w-12 h-12 text-spiritual-gold mx-auto mb-4" />
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
@@ -198,15 +198,15 @@ export default function HoroscopeListClient() {
                   パーソナライズされた鑑定結果をお届けします
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-6">
-                  <div className="flex items-center gap-2 text-gray-700">
+                  <div className="flex items-center gap-2 text-gray-800">
                     <span className="text-spiritual-gold">✓</span>
                     <span className="font-semibold">恋愛・復縁・片思い</span>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-700">
+                  <div className="flex items-center gap-2 text-gray-800">
                     <span className="text-spiritual-gold">✓</span>
                     <span className="font-semibold">仕事・転職・人間関係</span>
                   </div>
-                  <div className="flex items-center gap-2 text-gray-700">
+                  <div className="flex items-center gap-2 text-gray-800">
                     <span className="text-spiritual-gold">✓</span>
                     <span className="font-semibold">金運・家庭問題</span>
                   </div>
@@ -217,7 +217,7 @@ export default function HoroscopeListClient() {
                 >
                   スピチャで本格的に占う
                 </button>
-                <p className="text-sm text-gray-600 mt-3">
+                <p className="text-sm text-gray-700 mt-3">
                   ✨ 初回500pt無料 ／ 完全匿名で安心 ／ 24時間365日対応
                 </p>
               </div>
