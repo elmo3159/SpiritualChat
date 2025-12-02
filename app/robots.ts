@@ -23,6 +23,8 @@ export default function robots(): MetadataRoute.Robots {
           '/notifications',   // 通知ページは非公開
           '/fortune-tellers', // 占い師一覧（ログイン必須）
           '/points',          // ポイント関連ページ（ログイン必須）
+          '/login',           // ログインページはインデックス不要
+          '/signup',          // 新規登録ページもインデックス不要
         ],
       },
     ],
