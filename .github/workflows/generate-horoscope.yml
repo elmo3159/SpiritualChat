@@ -1,0 +1,33 @@
+name: Generate Daily Horoscope
+
+on:
+  schedule:
+    # 毎日 JST 0:00 (UTC 15:00) に実行
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+    # 手動実行も可能
+
+jobs:
+  generate-horoscope:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate Daily Horoscope
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X GET \
+            "${{ secrets.PRODUCTION_URL }}/api/cron/generate-horoscope" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json")
+
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+
+          echo "Response: $body"
+          echo "HTTP Status: $http_code"
+
+          if [ "$http_code" -ne 200 ]; then
+            echo "Error: API returned status $http_code"
+            exit 1
+          fi
+
+          echo "Horoscope generation completed successfully!"

@@ -56,8 +56,10 @@ export const config = {
      * - favicon.ico (favicon file)
      * - sitemap.xml (SEO)
      * - robots.txt (SEO)
+     * - sw.js (Service Worker)
+     * - manifest.json (PWA manifest)
      * Feel free to modify this pattern to include more paths.
      */
-    '/((?!_next/static|_next/image|favicon.ico|sitemap\\.xml|robots\\.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|sitemap\\.xml|robots\\.txt|sw\\.js|manifest\\.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
