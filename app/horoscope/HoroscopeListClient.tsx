@@ -13,22 +13,39 @@ interface HoroscopeData {
   post_date: string
 }
 
+// 日本時間（JST）の今日の日付を取得
+const getJSTDateString = () => {
+  const now = new Date()
+  const jstOffset = 9 * 60 // JST is UTC+9
+  const jstTime = new Date(now.getTime() + (jstOffset + now.getTimezoneOffset()) * 60 * 1000)
+  return jstTime.toISOString().split('T')[0]
+}
+
 export default function HoroscopeListClient() {
   const router = useRouter()
   const [horoscopes, setHoroscopes] = useState<HoroscopeData[]>([])
   const [selectedDate, setSelectedDate] = useState<string>('')
   const [isLoading, setIsLoading] = useState(true)
+  const [todayJST, setTodayJST] = useState<string>('')
+
+  // クライアントサイドでJST日付を設定
+  useEffect(() => {
+    setTodayJST(getJSTDateString())
+  }, [])
 
   useEffect(() => {
-    loadHoroscopes()
-  }, [selectedDate])
+    // todayJSTが設定されてから運勢を読み込む
+    if (todayJST) {
+      loadHoroscopes()
+    }
+  }, [selectedDate, todayJST])
 
   const loadHoroscopes = async () => {
     setIsLoading(true)
     const supabase = createClient()
 
-    // 日付が指定されていない場合は今日の日付を使用
-    const targetDate = selectedDate || new Date().toISOString().split('T')[0]
+    // 日付が指定されていない場合はJSTの今日の日付を使用
+    const targetDate = selectedDate || todayJST || getJSTDateString()
 
     const { data, error } = await supabase
       .from('horoscope_posts')
@@ -43,19 +60,22 @@ export default function HoroscopeListClient() {
     setIsLoading(false)
   }
 
+  // 表示用の日付（JSTベース）
+  const getFormattedDate = (dateStr: string) => {
+    const date = new Date(dateStr + 'T00:00:00+09:00') // JSTとして解釈
+    return date.toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'short',
+    })
+  }
+
   const formattedDate = selectedDate
-    ? new Date(selectedDate).toLocaleDateString('ja-JP', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'short',
-      })
-    : new Date().toLocaleDateString('ja-JP', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'short',
-      })
+    ? getFormattedDate(selectedDate)
+    : todayJST
+    ? getFormattedDate(todayJST)
+    : ''
 
   const getRankMedal = (rank: number) => {
     if (rank === 1) return '🥇'
@@ -90,12 +110,12 @@ export default function HoroscopeListClient() {
             </div>
           </div>
 
-          {/* 日付選択 */}
+          {/* 日付選択（JSTベース） */}
           <input
             type="date"
-            value={selectedDate || new Date().toISOString().split('T')[0]}
+            value={selectedDate || todayJST}
             onChange={(e) => setSelectedDate(e.target.value)}
-            max={new Date().toISOString().split('T')[0]}
+            max={todayJST}
             className="w-full md:w-auto px-4 py-2 rounded-lg bg-white/95 text-gray-900 font-semibold"
           />
         </div>
