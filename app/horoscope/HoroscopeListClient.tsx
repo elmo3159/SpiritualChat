@@ -13,12 +13,22 @@ interface HoroscopeData {
   post_date: string
 }
 
-// 日本時間（JST）の今日の日付を取得
+// 日本時間（JST）の今日の日付を取得（タイムゾーンAPI使用）
 const getJSTDateString = () => {
   const now = new Date()
-  const jstOffset = 9 * 60 // JST is UTC+9
-  const jstTime = new Date(now.getTime() + (jstOffset + now.getTimezoneOffset()) * 60 * 1000)
-  return jstTime.toISOString().split('T')[0]
+  // Asia/Tokyo タイムゾーンで日付を取得
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: 'Asia/Tokyo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }
+  const formatter = new Intl.DateTimeFormat('ja-JP', options)
+  const parts = formatter.formatToParts(now)
+  const year = parts.find(p => p.type === 'year')?.value
+  const month = parts.find(p => p.type === 'month')?.value
+  const day = parts.find(p => p.type === 'day')?.value
+  return `${year}-${month}-${day}`
 }
 
 export default function HoroscopeListClient() {
@@ -111,13 +121,15 @@ export default function HoroscopeListClient() {
           </div>
 
           {/* 日付選択（JSTベース） */}
-          <input
-            type="date"
-            value={selectedDate || todayJST}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            max={todayJST}
-            className="w-full md:w-auto px-4 py-2 rounded-lg bg-white/95 text-gray-900 font-semibold"
-          />
+          {todayJST && (
+            <input
+              type="date"
+              value={selectedDate || todayJST}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              max={todayJST}
+              className="w-full md:w-auto px-4 py-2 rounded-lg bg-white/95 text-gray-900 font-semibold"
+            />
+          )}
         </div>
       </div>
 
