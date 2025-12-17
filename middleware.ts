@@ -16,6 +16,11 @@ const RATE_LIMITED_PATHS = [
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Cron APIはミドルウェアをスキップ（リダイレクト防止）
+  if (pathname.startsWith('/api/cron/')) {
+    return NextResponse.next()
+  }
+
   // レート制限チェック（対象のAPIパスのみ）
   if (RATE_LIMITED_PATHS.some(path => pathname.startsWith(path))) {
     const rateLimitResponse = checkRateLimit(request)
